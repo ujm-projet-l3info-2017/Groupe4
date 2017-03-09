@@ -1,0 +1,92 @@
+<?php
+
+namespace Projet\StatisfootBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * but
+ *
+ * @ORM\Table(name="but")
+ * @ORM\Entity(repositoryClass="Projet\StatisfootBundle\Repository\butRepository")
+ */
+class but
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="min_jeu", type="integer")
+     */
+    private $minJeu;
+
+    /**
+
+    * @ORM\ManyToOne(targetEntity="Projet\StatisfootBundle\Entity\joueur")
+    * @ORM\JoinColumn(nullable=false)
+    */
+
+    private $joueur;
+
+    /**
+    * @ORM\ManyToOne(targetEntity="Projet\StatisfootBundle\Entity\type_but")
+    * @ORM\JoinColumn(nullable=false)
+    */    
+    private $type_but;
+
+    /**
+    * @ORM\ManyToOne(targetEntity="Projet\StatisfootBundle\Entity\type_action")
+    * @ORM\JoinColumn(nullable=false)
+    */
+    private $type_action;
+
+    /**
+    * @ORM\ManyToOne(targetEntity="Projet\StatisfootBundle\Entity\match_foot")
+    * @ORM\JoinColumn(nullable=false)
+    */
+
+    private $match_foot;
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set minJeu
+     *
+     * @param integer $minJeu
+     *
+     * @return but
+     */
+    public function setMinJeu($minJeu)
+    {
+        $this->minJeu = $minJeu;
+
+        return $this;
+    }
+
+    /**
+     * Get minJeu
+     *
+     * @return int
+     */
+    public function getMinJeu()
+    {
+        return $this->minJeu;
+    }
+}
+
