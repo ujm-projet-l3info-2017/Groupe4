@@ -1,3 +1,62 @@
-projet_statisfoot_homepage:
+projet_statisfoot_accueil:
     path:     /
-    defaults: { _controller: ProjetStatisfootBundle:Default:index }
+    defaults: 
+        _controller: ProjetStatisfootBundle:Match:index
+
+projet_statisfoot_accueil_date:
+    path:     /{date}
+    defaults: 
+        _controller: ProjetStatisfootBundle:Match:match_date
+    requirements:
+        date: \d{10}
+
+projet_statisfoot_match:
+    path:     /match/{id}
+    defaults: 
+        _controller: ProjetStatisfootBundle:Match:match_foot 
+    requirements:
+        id: \d+
+
+projet_statisfoot_equipe:
+    path:     /equipe/{id}
+    defaults: 
+        _controller: ProjetStatisfootBundle:Equipe:views
+    requirements:
+        id: \d+
+
+projet_statisfoot_effectif:
+    path:     /equipe/{id}/effectif
+    defaults: 
+        _controller: ProjetStatisfootBundle:Equipe:effectif
+    requirements:
+        id: \d+
+
+projet_statisfoot_joueur:
+    path:     /joueur/{id}
+    defaults: 
+        _controller: ProjetStatisfootBundle:Joueur:views
+    requirements:
+        id: \d+ 
+
+projet_statisfoot_stat_joueur:
+    path:     /joueur/{id}/stat
+    defaults: 
+        _controller: ProjetStatisfootBundle:Joueur:stat
+    requirements:
+        id: \d+
+
+projet_statisfoot_compet:
+    path:     /compet/{id}
+    defaults: 
+        _controller: ProjetStatisfootBundle:Competition:views
+    requirements:
+        id: \d+
+
+projet_statisfoot_compte_journee:
+    path:     /compet/{id}/{numJ}
+    defaults: 
+        _controller: ProjetStatisfootBundle:Competition:journee
+    requirements:
+        id: \d+
+        numJ: \d+
+

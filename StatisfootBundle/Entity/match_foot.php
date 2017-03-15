@@ -36,6 +36,13 @@ class match_foot
     private $lieu;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="num_journee", type="integer")
+    */
+    private $num_journee;
+
+    /**
     * @ORM\ManyToOne(targetEntity="Projet\StatisfootBundle\Entity\competition")
     * @ORM\JoinColumn(nullable=false)
     */
@@ -123,5 +130,29 @@ class match_foot
     public function getCompetition()
     {
         return $this->competition;
+    }
+
+    /**
+     * Set numJournee
+     *
+     * @param integer $numJournee
+     *
+     * @return match_foot
+     */
+    public function setNumJournee($numJournee)
+    {
+        $this->num_journee = $numJournee;
+
+        return $this;
+    }
+
+    /**
+     * Get numJournee
+     *
+     * @return integer
+     */
+    public function getNumJournee()
+    {
+        return $this->num_journee;
     }
 }

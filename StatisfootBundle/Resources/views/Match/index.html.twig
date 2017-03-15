@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+  <meta charset="utf-8">
+
+  <title>STATIS-FOOT</title>
+</head>
+
+
+<body>
+	{%for match in listeMatch%}
+	{{match.id}}
+	{{match.lieu}}
+	{{match.dateMatch|date('d/m/Y')}}
+	{%endfor%}
+</body>
+</html>
