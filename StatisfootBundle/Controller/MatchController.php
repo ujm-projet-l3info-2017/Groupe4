@@ -5,6 +5,10 @@ namespace Projet\StatisfootBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 //use Symfony\Component\BrowserKit\Response;
 use Symfony\Component\HttpFoundation\Response;
+
+use Projet\StatisfootBundle\Entity\match_equipe;
+use Projet\StatisfootBundle\Entity\match_foot;
+use Projet\StatisfootBundle\Entity\equipe;
 /**
 * 
 */
@@ -12,9 +16,19 @@ class MatchController extends Controller
 {
 	
 	public function indexAction(){
+		//Recuperation de tout les Matchs.
+		$matchs = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_foot')->findAll();
+		//Recuperation desequipes qui ont joues le match
+		$listeMatch =array();
+		foreach ($matchs as $ma) {
+			//echo $ma->getId();
+		$match_equipe = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_equipe')->findMatchEquipe($ma->getId());
+			//echo $match_equipe.getMa.getId();
+		//echo count($match_equipe);
+		//echo $match_equipe[0]->getMatch()->getLieu();
+		array_push($listeMatch, $match_equipe);
+		}
 
-		$match = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_foot');
-		$listeMatch = $match->findAll();
  		return $this->render('ProjetStatisfootBundle:Match:index.html.twig',array('listeMatch'=>$listeMatch));
 	}
 

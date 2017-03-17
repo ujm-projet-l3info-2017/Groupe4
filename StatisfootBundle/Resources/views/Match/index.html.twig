@@ -11,10 +11,18 @@
 
 
 <body>
-	{%for match in listeMatch%}
-	{{match.id}}
-	{{match.lieu}}
-	{{match.dateMatch|date('d/m/Y')}}
+<ul>
+	{%for match_equipe in listeMatch%}
+	<li>
+		{%for match in match_equipe%}
+		{{match.match.id}}
+		{{match.match.lieu}}
+		{{match.match.dateMatch|date('d/m/Y')}}</br>
+		{{match.equipe.nom}} VS
+		{%endfor%}
+		
+	</li>
 	{%endfor%}
+</ul>
 </body>
 </html>
