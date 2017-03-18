@@ -20,7 +20,7 @@ projet_statisfoot_match:
 projet_statisfoot_equipe:
     path:     /equipe/{id}
     defaults: 
-        _controller: ProjetStatisfootBundle:Equipe:views
+        _controller: ProjetStatisfootBundle:Equipe:view
     requirements:
         id: \d+
 
@@ -34,7 +34,7 @@ projet_statisfoot_effectif:
 projet_statisfoot_joueur:
     path:     /joueur/{id}
     defaults: 
-        _controller: ProjetStatisfootBundle:Joueur:views
+        _controller: ProjetStatisfootBundle:Joueur:view
     requirements:
         id: \d+ 
 
@@ -48,7 +48,7 @@ projet_statisfoot_stat_joueur:
 projet_statisfoot_compet:
     path:     /compet/{id}
     defaults: 
-        _controller: ProjetStatisfootBundle:Competition:views
+        _controller: ProjetStatisfootBundle:Competition:view
     requirements:
         id: \d+
 

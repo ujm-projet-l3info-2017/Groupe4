@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  127.0.0.1
--- Généré le :  Sam 18 Mars 2017 à 15:55
+-- Généré le :  Sam 18 Mars 2017 à 21:26
 -- Version du serveur :  5.7.14
--- Version de PHP :  5.6.25
+-- Version de PHP :  7.0.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -126,6 +126,24 @@ CREATE TABLE `joueur` (
   `date_naiss` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Contenu de la table `joueur`
+--
+
+INSERT INTO `joueur` (`id`, `poste_id`, `nom_j`, `prenom_j`, `date_naiss`) VALUES
+(1, 1, 'KOMAH', 'Momo', '1998-02-20'),
+(2, 2, 'KADRI', 'Aboubacar', '1997-03-16'),
+(3, 3, 'JORDI', 'Alba', '1989-03-03'),
+(4, 4, 'ALVES', 'Daniel', '1987-06-14'),
+(5, 5, 'NIANFO', 'Solo', '1992-03-29'),
+(6, 6, 'DASS', 'Eric', '1998-05-26'),
+(7, 7, 'MAHAMADOU', 'Nour', '1993-05-24'),
+(8, 8, 'PEDRO', 'Rodriguez', '1987-03-23'),
+(9, 9, 'SUAREZ', 'Luis', '1987-03-16'),
+(10, 9, 'MESSI', 'Lionel', '1986-12-20'),
+(11, 7, 'INIESTA', 'Andres', '1985-05-26'),
+(12, 6, 'XAVI', 'Hernandes', '1983-03-17');
+
 -- --------------------------------------------------------
 
 --
@@ -142,6 +160,24 @@ CREATE TABLE `joueur_equipe` (
   `date_debut` date NOT NULL,
   `date_fin` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Contenu de la table `joueur_equipe`
+--
+
+INSERT INTO `joueur_equipe` (`id`, `joueur_id`, `equipe_id`, `poste`, `titulaire`, `remplacant`, `date_debut`, `date_fin`) VALUES
+(1, 1, 1, 'GB', 1, 0, '2017-01-04', '2017-12-04'),
+(2, 2, 1, 'DC', 1, 0, '2017-01-04', '2017-12-04'),
+(3, 3, 1, 'LD', 1, 0, '2017-01-01', '2018-03-16'),
+(4, 4, 1, 'DC', 1, 0, '2017-03-16', '2019-03-28'),
+(5, 5, 2, 'GB', 1, 0, '2017-01-01', '2018-03-15'),
+(6, 6, 2, 'DC', 1, 0, '2017-03-18', '2018-03-14'),
+(7, 7, 2, 'DF', 1, 0, '2017-01-05', '2019-03-24'),
+(8, 8, 2, 'AC', 1, 0, '2017-03-01', '2018-04-19'),
+(9, 9, 2, 'MO', 1, 0, '2017-03-01', '2019-03-01'),
+(10, 10, 1, 'AC', 1, 0, '2017-01-09', '2018-03-28'),
+(11, 11, 1, 'AG', 1, 0, '2017-03-01', '2018-03-01'),
+(12, 12, 2, 'AD', 1, 0, '2016-12-22', '2019-05-26');
 
 -- --------------------------------------------------------
 
@@ -277,6 +313,21 @@ CREATE TABLE `poste` (
   `libelle_poste` varchar(40) COLLATE utf8_unicode_ci NOT NULL,
   `descrip_poste` varchar(40) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Contenu de la table `poste`
+--
+
+INSERT INTO `poste` (`id`, `libelle_poste`, `descrip_poste`) VALUES
+(1, 'GB', 'Gardien de But'),
+(2, 'DC', 'Défenseur Central'),
+(3, 'LD', 'Latéral Droit'),
+(4, 'LG', 'Latéral Gauche'),
+(5, 'MD', 'Milieu Défensif'),
+(6, 'MO', 'Milieu Offensif'),
+(7, 'AC', 'Attaquant Central'),
+(8, 'AG', 'Ailier Gauche'),
+(9, 'AD', 'Ailier Droit');
 
 -- --------------------------------------------------------
 
@@ -496,12 +547,12 @@ ALTER TABLE `equipe_manager`
 -- AUTO_INCREMENT pour la table `joueur`
 --
 ALTER TABLE `joueur`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 --
 -- AUTO_INCREMENT pour la table `joueur_equipe`
 --
 ALTER TABLE `joueur_equipe`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 --
 -- AUTO_INCREMENT pour la table `manager`
 --
@@ -536,7 +587,7 @@ ALTER TABLE `passe_decisive`
 -- AUTO_INCREMENT pour la table `poste`
 --
 ALTER TABLE `poste`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 --
 -- AUTO_INCREMENT pour la table `syst_jeu_def`
 --

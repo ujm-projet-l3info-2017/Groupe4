@@ -6,11 +6,11 @@
 </head>
 <body>
 	{% for joueur in joueurs%}
-		{{joueur.id}}
-		{{joueur.nom}}
-		{{joueur.prenom}}
-		{{joueur.niveau.libelle.Niv}}
-		{{equipe.club.nomClub}}
+		{{joueur.joueur.id}}
+		{{joueur.joueur.nomJ}}
+		{{joueur.joueur.prenomJ}}
+		{{joueur.joueur.poste.libellePoste}}
+		{{joueur.joueur.dateNaiss|date('d/m/Y')}}</br>
 	{% endfor %}
 </body>
 </html>

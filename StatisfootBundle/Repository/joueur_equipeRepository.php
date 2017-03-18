@@ -17,7 +17,11 @@ class joueur_equipeRepository extends EntityRepository
 			->addSelect('eq')
 			->leftJoin('j.joueur','joue')
 			->addSelect('joue')
-			->where('joue.date_fin > :date')
-			->setParameter('date', new \DateTIME());
+			->where('j.date_fin > :date')
+			->andWhere('eq.id = :id')
+			->setParameter('date', new \DateTIME())
+			->setParameter('id', $id);
+
+		return $qrb->getQuery()->getResult();
 	}
 }
