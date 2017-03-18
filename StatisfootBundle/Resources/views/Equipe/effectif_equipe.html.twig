@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>STATIS-FOOT</title>
+</head>
+<body>
+	{% for joueur in joueurs%}
+		{{joueur.id}}
+		{{joueur.nom}}
+		{{joueur.prenom}}
+		{{joueur.niveau.libelle.Niv}}
+		{{equipe.club.nomClub}}
+	{% endfor %}
+</body>
+</html>
