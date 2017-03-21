@@ -11,44 +11,28 @@ use Doctrine\ORM\EntityRepository;
  */
 class match_equipeRepository extends EntityRepository
 {
-	public function findMatchEquipe($idmatch){
-		$qrb = $this->createQueryBuilder('m')
+	//recuperation des equipes pour un match donné
+	public function findMatchEquipe($id_match){
+		$qb = $this->createQueryBuilder('m')
 			->leftJoin('m.match','match')
 			->addSelect('match')
 			->leftJoin('m.equipe','eq')
 			->addSelect('eq')
 			->where('match.id = :id')
-			->setParameter('id',$idmatch);
+			->setParameter('id',$id_match);
 			
-		return $qrb->getQuery()->getResult();
+		return $qb->getQuery()->getResult();
 	}
-// recuperation de tout les matchs d'une equipe.
-	public function findLesMatchs($id){
-		$matchs = $this->createQueryBuilder('m')
-		->leftJoin('m.match','match')
+
+	//recupération des matchs pour une equipe donnée
+	public function findMAtch($id_equipe){
+		$qb = $this->createQueryBuilder('m')
+			->leftJoin('m.match','match')
 			->addSelect('match')
 			->leftJoin('m.equipe','eq')
 			->addSelect('eq')
 			->where('eq.id = :id')
-			->setParameter('id',$id);
-
-		//->orderBy('match.dateMatch','DESC');
-		return $matchs->getQuery()->getResult();
+			->setParameter('id',$id_equipe);
+		return $qb->getQuery()->getResult();
 	}
-
-// recuperation d'un adversaire
-	public function findAdversaire($idmatch, $ideq){
-		$matchs = $this->createQueryBuilder('m')
-		->leftJoin('m.match','match')
-			->addSelect('match')
-			->leftJoin('m.equipe','eq')
-			->addSelect('eq')
-			->where('eq.id != :id')
-			->andwhere('match.id = :idmatch')
-			->setParameter('id',$ideq)
-			->setParameter('idmatch',$idmatch);
-
-			return $matchs->getQuery()->getResult();
-	}
-	
 }

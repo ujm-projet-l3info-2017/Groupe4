@@ -21,9 +21,14 @@ class MatchController extends Controller
 		//Recuperation desequipes qui ont joues le match
 		$listeMatch =array();
 		foreach ($matchs as $ma) {
+			//echo $ma->getId();
 		$match_equipe = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_equipe')->findMatchEquipe($ma->getId());
+			//echo $match_equipe.getMa.getId();
+		//echo count($match_equipe);
+		//echo $match_equipe[0]->getMatch()->getLieu();
 		array_push($listeMatch, $match_equipe);
 		}
+
  		return $this->render('ProjetStatisfootBundle:Match:index.html.twig',array('listeMatch'=>$listeMatch));
 	}
 
@@ -40,30 +45,9 @@ class MatchController extends Controller
 		if($match->getdateMatch() > $date){
 			$infodate = "Match à venir";
 		}
-		//Pour chaque equipe on recupere tout qu'il a joue
+		//les equipes qui ont joues le match.
 
-		//recuperation des equipes
-		$adversaires = array(); 
-		$match_equipe = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_equipe')->findMatchEquipe($id);
-		$copies = $match_equipe;
-		foreach ($match_equipe as $equipes) {
-			// les matchs joues par l'equipe
-			$LesMatchDeEquipe = $this->getDoctrine()->getRepository('ProjetStatisfootBundle:match_equipe')->findLesMatchs($equipes->getEquipe()->getId());
-
-			foreach ($LesMatchDeEquipe as $Mequipes) {
-				
-				/*
-				 *Ici pour chaque match on recupere son adversaire
-				 *
-				 */
-				$match_equipe2 = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_equipe')->findAdversaire($Mequipes->getMatch()->getId(), $equipes->getEquipe()->getId());
-				foreach ($match_equipe2 as $match_eq) {
-				array_push($adversaires, array('eq'=>$equipes,'ad'=>$match_eq));
-				}
-			}
-
-		}
-		
-		return $this->render('ProjetStatisfootBundle:Match:match.html.twig', array('match'=>$match, 'infodate'=>$infodate,'adversaires'=>$adversaires));
+		//$equipes = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_equipe')->findBy(array('match'=>$id));
+		return $this->render('ProjetStatisfootBundle:Match:match.html.twig', array('match'=>$match, 'infodate'=>$infodate));
 	}
 }

@@ -12,7 +12,7 @@ use Doctrine\ORM\EntityRepository;
 class joueur_equipeRepository extends EntityRepository
 {
 	public function findJoueurs($id){
-		$qrb = $this->createQueryBuilder('j')
+		$qb = $this->createQueryBuilder('j')
 			->leftJoin('j.equipe','eq')
 			->addSelect('eq')
 			->leftJoin('j.joueur','joue')
@@ -22,6 +22,20 @@ class joueur_equipeRepository extends EntityRepository
 			->setParameter('date', new \DateTIME())
 			->setParameter('id', $id);
 
-		return $qrb->getQuery()->getResult();
+		return $qb->getQuery()->getResult();
+	}
+
+	public function find_equipe($id_joueur){
+		$qb = $this->createQueryBuilder('j')
+			->leftJoin('j.equipe','eq')
+			->leftJoin('j.joueur','joue')
+			->leftJoin('eq')
+			->where('j.date_fin > :date')
+			->andWhere('j.id = :id')
+			->andWhere()
+			->setParameter('date', new \DateTIME())
+			->setParameter('id', $id);
+
+		return $qb->getQuery()->getResult();
 	}
 }

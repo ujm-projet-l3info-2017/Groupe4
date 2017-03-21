@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  127.0.0.1
--- Généré le :  Sam 18 Mars 2017 à 21:26
+-- Généré le :  Mar 21 Mars 2017 à 20:39
 -- Version du serveur :  5.7.14
 -- Version de PHP :  7.0.10
 
@@ -35,6 +35,18 @@ CREATE TABLE `but` (
   `min_jeu` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Contenu de la table `but`
+--
+
+INSERT INTO `but` (`id`, `joueur_id`, `type_but_id`, `type_action_id`, `match_foot_id`, `min_jeu`) VALUES
+(1, 7, 3, 1, 3, 50),
+(2, 7, 3, 2, 3, 86),
+(3, 7, 1, 2, 5, 12),
+(4, 7, 3, 3, 5, 30),
+(5, 6, 2, 2, 6, 12),
+(6, 8, 3, 2, 3, 45);
+
 -- --------------------------------------------------------
 
 --
@@ -52,7 +64,9 @@ CREATE TABLE `club` (
 
 INSERT INTO `club` (`id`, `nom_club`) VALUES
 (1, 'ASSE'),
-(2, 'OL');
+(2, 'OL'),
+(3, 'PSG'),
+(4, 'NICE');
 
 -- --------------------------------------------------------
 
@@ -74,7 +88,9 @@ CREATE TABLE `competition` (
 
 INSERT INTO `competition` (`id`, `nom_compet`, `saison`, `date_deb`, `date_fin`) VALUES
 (1, 'coup de france', '2016-2017', '2017-03-01', '2017-03-09'),
-(2, 'ligue1', '2016-2017', '2017-03-14', '2017-03-07');
+(2, 'ligue1', '2016-2017', '2017-03-14', '2017-03-07'),
+(3, 'Coupe de la Ligue', '2016-2017', '2016-09-01', '2017-06-22'),
+(4, 'UEFA Yougth League', '2016-2017', '2016-11-10', '2017-05-31');
 
 -- --------------------------------------------------------
 
@@ -96,7 +112,9 @@ CREATE TABLE `equipe` (
 
 INSERT INTO `equipe` (`id`, `club_id`, `niveau_id`, `systeme_id`, `nom`) VALUES
 (1, 1, 1, 1, 'ASSE de saint-etienne'),
-(2, 2, 1, 2, 'OL de Lyon');
+(2, 2, 1, 2, 'OL de Lyon'),
+(3, 3, 1, 1, 'PSG'),
+(4, 4, 1, 2, 'NICE');
 
 -- --------------------------------------------------------
 
@@ -222,7 +240,11 @@ INSERT INTO `match_equipe` (`id`, `equipe_id`, `match_id`, `but_marq`, `but_enc`
 (1, 1, 3, 0, 2, 0, 0, 0, 0, 0),
 (2, 2, 3, 2, 0, 0, 0, 0, 0, 0),
 (3, 1, 4, 1, 0, 8, 3, 5, 1, 0),
-(4, 2, 4, 0, 1, 2, 4, 6, 4, 2);
+(4, 2, 4, 0, 1, 2, 4, 6, 4, 2),
+(5, 3, 6, 0, 0, 0, 2, 5, 6, 5),
+(6, 1, 6, 0, 0, 0, 0, 0, 0, 1),
+(7, 1, 7, 1, 1, 0, 0, 0, 0, 0),
+(8, 4, 7, 1, 1, 2, 5, 0, 1, 5);
 
 -- --------------------------------------------------------
 
@@ -245,7 +267,9 @@ CREATE TABLE `match_foot` (
 INSERT INTO `match_foot` (`id`, `competition_id`, `date_match`, `lieu`, `num_journee`) VALUES
 (3, 1, '2017-03-15 00:00:00', 'Saint-etienne', 3),
 (4, 2, '2017-03-28 00:00:00', 'lyon', 8),
-(5, 2, '2017-01-09 00:00:00', 'Roanne', 10);
+(5, 2, '2017-01-09 00:00:00', 'Roanne', 10),
+(6, 1, '2016-12-05 00:00:00', 'lyon', 20),
+(7, 1, '2017-03-05 00:00:00', 'ST-ETIENNE', 21);
 
 -- --------------------------------------------------------
 
@@ -269,6 +293,16 @@ CREATE TABLE `match_joueur` (
   `carton_rouge` tinyint(1) NOT NULL,
   `carton_jaune` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Contenu de la table `match_joueur`
+--
+
+INSERT INTO `match_joueur` (`id`, `joueur_id`, `match_foot_id`, `poste`, `min_entre`, `min_sortie`, `nb_duel_gagne`, `nb_balle_inter`, `nb_balle_recup`, `nb_balle_arret`, `nb_centre`, `nb_tacle`, `carton_rouge`, `carton_jaune`) VALUES
+(1, 1, 3, 'GB', 0, 90, 2, 0, 0, 7, 0, 1, 0, 1),
+(2, 1, 6, 'GB', 0, 90, 2, 2, 0, 10, 0, 1, 0, 0),
+(3, 7, 3, 'AC', 0, 90, 5, 6, 7, 0, 2, 4, 0, 0),
+(4, 7, 6, 'AC', 0, 78, 1, 2, 1, 0, 3, 0, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -301,6 +335,17 @@ CREATE TABLE `passe_decisive` (
   `joueur_id` int(11) NOT NULL,
   `type_passe_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Contenu de la table `passe_decisive`
+--
+
+INSERT INTO `passe_decisive` (`id`, `but_id`, `joueur_id`, `type_passe_id`) VALUES
+(1, 1, 6, 4),
+(2, 2, 6, 5),
+(3, 3, 8, 1),
+(4, 5, 7, 3),
+(5, 6, 7, 5);
 
 -- --------------------------------------------------------
 
@@ -360,6 +405,16 @@ CREATE TABLE `type_action` (
   `libelle_type_act` varchar(40) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Contenu de la table `type_action`
+--
+
+INSERT INTO `type_action` (`id`, `libelle_type_act`) VALUES
+(1, 'Contre attaque'),
+(2, 'Corner'),
+(3, 'couf-franc indirect'),
+(4, 'action collective');
+
 -- --------------------------------------------------------
 
 --
@@ -371,6 +426,16 @@ CREATE TABLE `type_but` (
   `libelle_type_but` varchar(40) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Contenu de la table `type_but`
+--
+
+INSERT INTO `type_but` (`id`, `libelle_type_but`) VALUES
+(1, 'Coup de tete'),
+(2, 'Frappe Lointaine'),
+(3, 'tir enrobé'),
+(4, 'tir lobé');
+
 -- --------------------------------------------------------
 
 --
@@ -381,6 +446,17 @@ CREATE TABLE `type_passe` (
   `id` int(11) NOT NULL,
   `libelle_type_passe` varchar(40) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Contenu de la table `type_passe`
+--
+
+INSERT INTO `type_passe` (`id`, `libelle_type_passe`) VALUES
+(1, 'Centre sur Couf-franc'),
+(2, 'Centre sur Corner'),
+(3, 'Centre dans le jeu'),
+(4, 'passe à travers la defense'),
+(5, 'passe au dessus de la defense');
 
 --
 -- Index pour les tables exportées
@@ -522,22 +598,22 @@ ALTER TABLE `type_passe`
 -- AUTO_INCREMENT pour la table `but`
 --
 ALTER TABLE `but`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT pour la table `club`
 --
 ALTER TABLE `club`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT pour la table `competition`
 --
 ALTER TABLE `competition`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT pour la table `equipe`
 --
 ALTER TABLE `equipe`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT pour la table `equipe_manager`
 --
@@ -562,17 +638,17 @@ ALTER TABLE `manager`
 -- AUTO_INCREMENT pour la table `match_equipe`
 --
 ALTER TABLE `match_equipe`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT pour la table `match_foot`
 --
 ALTER TABLE `match_foot`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT pour la table `match_joueur`
 --
 ALTER TABLE `match_joueur`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT pour la table `niveau`
 --
@@ -582,7 +658,7 @@ ALTER TABLE `niveau`
 -- AUTO_INCREMENT pour la table `passe_decisive`
 --
 ALTER TABLE `passe_decisive`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT pour la table `poste`
 --
@@ -597,17 +673,17 @@ ALTER TABLE `syst_jeu_def`
 -- AUTO_INCREMENT pour la table `type_action`
 --
 ALTER TABLE `type_action`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT pour la table `type_but`
 --
 ALTER TABLE `type_but`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT pour la table `type_passe`
 --
 ALTER TABLE `type_passe`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- Contraintes pour les tables exportées
 --

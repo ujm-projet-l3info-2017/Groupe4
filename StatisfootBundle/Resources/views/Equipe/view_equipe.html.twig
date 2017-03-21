@@ -9,5 +9,17 @@
 	{{equipe.nom}}
 	{{equipe.niveau.libelleNiv}}
 	{{equipe.club.nomClub}}
+	</br>
+	<ul>
+	<p> les Matchs de l'Equipe </p>
+	{%for match_equipe in listeMatch%}
+	<li>
+		{%for match in match_equipe%}
+		{{match.match.dateMatch|date('d/m/Y')}}
+		{{match.equipe.nom}} VS
+		{%endfor%}
+	</li>
+	{%endfor%}
+</ul>
 </body>
 </html>

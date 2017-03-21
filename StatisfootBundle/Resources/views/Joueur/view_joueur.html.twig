@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>STATIS-FOOT</title>
+</head>
+<body>
+
+	<p> ID : {{joueur.id}}</p>
+	<p> Nom : {{joueur.nomJ}}</P>
+	<P> Prenom : {{joueur.prenomJ}}</P>
+	<p> Poste de Prédilection : {{joueur.poste.libellePoste}} </p>
+	<p> Né le : {{joueur.dateNaiss|date('d/m/Y')}}</p>
+	</br>
+	<p> Les statisitique du joueur </p>
+	<table>
+		<th>
+			<td>Nom Compet</td>
+			<td>But</td>
+			<td>Passe Dec</td>
+			<td>Duel Gag</td>
+			<td>Interception</td>
+			<td>Recuperation</td>
+			<td>Arret</td>
+			<td>Tacle</td>
+			<td>Carton J</td>
+			<td>Carton R</td>
+		</th>
+		{% for compet in stat %}
+		<tr>
+			<td>{{compet['nom']}}</td>
+			<td>{{compet['but']}}</td>
+			<td>{{compet['passe']}}</td>
+			<td>{{compet['duel']}}</td>
+			<td>{{compet['inter']}}</td>
+			<td>{{compet['recup']}}</td>
+			<td>{{compet['arret']}}</td>
+			<td>{{compet['tacle']}}</td>
+			<td>{{compet['cartonJ']}}</td>
+			<td>{{compet['cartonR']}}</td>
+		</tr>
+		{%endfor%}
+	</table>
+</body>
+</html>

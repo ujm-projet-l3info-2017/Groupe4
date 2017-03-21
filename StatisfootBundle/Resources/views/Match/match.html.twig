@@ -17,14 +17,5 @@
 	{{match.lieu}}
 	{{match.dateMatch|date('d/m/Y')}}
 	{{match.competition.nomCompet}}
-	<h3>Les derniers match de l'equipe</h3>
-	{%for ad in adversaires %}
-	{{ad.ad.match.id}}
-	{{ad.eq.equipe.nom }} 
-	{{ad.ad.butEnc 	}}
-	{{ad.ad.butMarq 	}}
-	{{ad.ad.equipe.nom}} </br>
-	{%endfor%}
-	<h3>Statistique des 5 derniers confrontations</h3>
 </body>
 </html>
