@@ -22,4 +22,33 @@ class match_equipeRepository extends EntityRepository
 			
 		return $qrb->getQuery()->getResult();
 	}
+// recuperation de tout les matchs d'une equipe.
+	public function findLesMatchs($id){
+		$matchs = $this->createQueryBuilder('m')
+		->leftJoin('m.match','match')
+			->addSelect('match')
+			->leftJoin('m.equipe','eq')
+			->addSelect('eq')
+			->where('eq.id = :id')
+			->setParameter('id',$id);
+
+		//->orderBy('match.dateMatch','DESC');
+		return $matchs->getQuery()->getResult();
+	}
+
+// recuperation d'un adversaire
+	public function findAdversaire($idmatch, $ideq){
+		$matchs = $this->createQueryBuilder('m')
+		->leftJoin('m.match','match')
+			->addSelect('match')
+			->leftJoin('m.equipe','eq')
+			->addSelect('eq')
+			->where('eq.id != :id')
+			->andwhere('match.id = :idmatch')
+			->setParameter('id',$ideq)
+			->setParameter('idmatch',$idmatch);
+
+			return $matchs->getQuery()->getResult();
+	}
+	
 }
