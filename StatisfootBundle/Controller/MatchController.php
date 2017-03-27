@@ -18,15 +18,20 @@ class MatchController extends Controller
 	public function indexAction(){
 		//Recuperation de tout les Matchs.
 		$matchs = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_foot')->findAll();
+		
 		//Recuperation desequipes qui ont joues le match
 		$listeMatch =array();
+
 		foreach ($matchs as $ma) {
-			//echo $ma->getId();
-		$match_equipe = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_equipe')->findMatchEquipe($ma->getId());
-			//echo $match_equipe.getMa.getId();
-		//echo count($match_equipe);
-		//echo $match_equipe[0]->getMatch()->getLieu();
-		array_push($listeMatch, $match_equipe);
+			$match_equipe = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_equipe')
+			->findMatchEquipe($ma->getId());
+
+			
+			$ma_eq = array("idMatch"=>$ma->getId(),"heure"=>$ma->getDateMatch(),
+				"NomEq1"=>$match_equipe[0]->getEquipe()->getNom(),"Eq1But"=>$match_equipe[0]->getButMarq(),
+				"NomEq2"=>$match_equipe[1]->getEquipe()->getNom(),"Eq2But"=>$match_equipe[1]->getButMarq());
+			
+			array_push($listeMatch, $ma_eq);
 		}
 
  		return $this->render('ProjetStatisfootBundle:Match:index.html.twig',array('listeMatch'=>$listeMatch));

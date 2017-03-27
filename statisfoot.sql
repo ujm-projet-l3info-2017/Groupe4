@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  127.0.0.1
--- Généré le :  Mar 21 Mars 2017 à 20:39
+-- Généré le :  Lun 27 Mars 2017 à 19:35
 -- Version du serveur :  5.7.14
 -- Version de PHP :  7.0.10
 
@@ -244,7 +244,9 @@ INSERT INTO `match_equipe` (`id`, `equipe_id`, `match_id`, `but_marq`, `but_enc`
 (5, 3, 6, 0, 0, 0, 2, 5, 6, 5),
 (6, 1, 6, 0, 0, 0, 0, 0, 0, 1),
 (7, 1, 7, 1, 1, 0, 0, 0, 0, 0),
-(8, 4, 7, 1, 1, 2, 5, 0, 1, 5);
+(8, 4, 7, 1, 1, 2, 5, 0, 1, 5),
+(9, 2, 5, 2, 3, 9, 6, 10, 3, 4),
+(10, 3, 5, 3, 2, 6, 10, 12, 4, 3);
 
 -- --------------------------------------------------------
 
@@ -638,7 +640,7 @@ ALTER TABLE `manager`
 -- AUTO_INCREMENT pour la table `match_equipe`
 --
 ALTER TABLE `match_equipe`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT pour la table `match_foot`
 --

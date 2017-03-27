@@ -14,14 +14,12 @@
 <ul>
 	{%for match in listeMatch%}
 	<li>
-	
 		{{match['idMatch']}}
 		{{match['heure']|date('d/m/Y')}}
 		{{match['NomEq1']}}
 		{{match['Eq1But']}} :
 		{{match['Eq2But']}}
-		{{match['NomEq2']}}
-		
+		{{match['NomEq2']}}		
 	</li>
 	{%endfor%}
 </ul>
