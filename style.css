@@ -1,0 +1,325 @@
+body
+{
+	background-color:#3F9FFF;
+	margin-bottom: 120px;
+}
+
+.haut
+{
+	float:center;
+	text-align:center;
+	padding:10px;
+	border-bottom:2px solid white;
+}
+
+.menu
+{
+	background-color:white;
+	color:#3F9FFF;
+	text-align:center;
+	font-size : 20px;
+	white-space: nowrap;  
+	border-radius:10px;
+
+}
+
+.titre
+{
+	font-size:27px;
+	font-weight:bold;
+	text-align:center;
+	text-decoration:underline;
+	color:#3F9FFF; 
+	}
+
+.gauche
+{
+	float:left;
+	width:69%;
+	border-right:2px solid white;
+	background-color:transparent;
+	padding: 10px;
+	color:white;
+}
+
+.droite
+{
+	color:#3F9FFF;
+	float : right;
+	width:25%;
+	background-color:white;
+	padding:10px;
+	margin : 10px;
+	text-align:center;
+	border-top:2px solid white;
+	border-radius:10px;
+}
+.milieu
+{
+	text-align:center;
+	background-color:#3F9FFF;
+	color:white;
+	margin:10px;
+	padding : 10px;
+	border-radius:10px;
+}
+
+.utile
+{
+    height: 100px;
+    margin-top: 0px;
+    clear:both;
+    text-align : justify;
+    font-size:large;
+    padding : 20px;
+	border-top:2px solid white;
+	color:white;
+}
+
+.news
+{
+	text-align:justify;
+	background-color:white;
+	color:black;
+	padding:10px;
+	margin:10px;
+	border-radius:10px;
+}
+
+ul {
+	list-style: none;
+}
+
+.news ul li{
+	display: inline-block;
+}
+	
+a,a:visited
+{
+	color:#3F9FFF;
+	text-decoration:none;
+}
+
+a:active
+{
+	color:black;
+}
+
+.info
+{
+	background-color: white;
+	color : #3F9FFF;
+	border-top:2px solid #3F9FFF;
+	margin : 5px;
+}
+
+
+.alignleft
+{
+	text-align:left;
+}
+
+.aligncenter
+{	
+	text-align:center;
+}
+
+.alignright
+{
+	text-align:right;
+}
+
+.contact
+{
+	text-align:center;
+	color:white;
+}
+
+.like
+{
+  color:green;
+  font-weight:bold;
+}
+
+.like a,.like a:visited
+{
+	color:green;
+	text-decoration:none;
+}
+
+.contact a, .contact a:visited
+{
+	color: white;
+	text-decoration:none;
+}
+
+.dislike
+{
+	color:red;
+	font-weight:bold;
+}
+
+.dislike a,.dislike a:visited
+{
+	color:red;
+	text-decoration:none;
+ }
+	
+.datename
+{
+	text-align:right;
+}
+
+.question
+{
+	font-weight:bold;
+}
+
+.separation
+{
+	border-top:2px solid #3F9FFF;
+}
+
+.separationbot
+{
+	border-bottom:2px solid #3F9FFF;
+}
+
+.cv
+{
+	font-style:italic;
+	font-size: 17px;
+}
+
+.faq
+{
+	text-align:center;
+	background-color:white;
+	color:black;
+	margin:10px;
+	padding : 10px;
+	border-radius:10px;
+}
+
+.sepblanc
+{
+	border-top:2px solid white;
+}
+
+.important 
+{
+	color:red;
+	text-align:center;
+	font-weight:bold;
+	border:2px solid red;
+	padding:5px;
+	border-radius:10px;
+}
+
+a:hover
+{
+	text-decoration:none;
+	color:red;
+}
+
+.vote
+{
+	float:right;
+}
+
+.categorie
+{
+	color:#3F9FFF;
+}
+
+.time
+{
+    color:#3F9FFF;
+    background-color:white;
+    text-align:center;
+    width : 40%;
+    margin-left:34%;
+    border-radius:10px;
+}
+/* Code  adapté et pris sur http://www.frogweb.fr/menus.php */
+.menu ul {
+	background-color:white;
+    padding: 0;
+    margin: 0;
+	border-radius:10px;
+    list-style: none;
+/* on centre le menu dans la page */
+    text-align: center;
+}
+.menu li {
+/* on place les liens du menu horizontalement */
+    display: inline-block;
+	background-color: #FF6347;
+}
+.menu ul li li {
+/* on enlève ce comportement pour les liens du sous menu */
+    display: inherit;
+	background-color:white;
+	border:1px solid #3F9FFF;
+
+}
+.menu ul li a {
+    text-decoration: none;
+    display: block;
+	background-color:white;
+}
+.menu ul ul {
+    position: absolute;
+	background-color:white;
+/* on cache les sous menus complètement sur la gauche */
+    left: -999em;
+    text-align: left;
+}
+.menu ul li:hover ul {
+/* Au survol des li du menu on replace les sous menus */
+    left: auto;
+	background-color:white;
+}
+.footer{
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	height: 70px;
+	background-color:#3F9FFF;
+	width: 100%;
+	font-family: georgia,serif;
+}
+
+
+table {
+border:3px solid #6495ed;
+border-collapse:collapse;
+width:90%;
+margin:auto;
+}
+ thead tfoot {
+background-color:#D0E3FA;
+background-image:url(sky.jpg);
+border:1px solid #6495ed;
+}
+tbody {
+background-color:#FFFFFF;
+border:1px solid #6495ed;
+}
+th {
+font-family:monospace;
+border:1px dotted #6495ed;
+padding:5px;
+background-color:#3F9FFF;
+width:25%;
+}
+td {
+font-family:sans-serif;
+font-size:80%;
+border:1px solid #6495ed;
+padding:5px;
+text-align:left;
+}
+caption {
+font-family:sans-serif;
+}

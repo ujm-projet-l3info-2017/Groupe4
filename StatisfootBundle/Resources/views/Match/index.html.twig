@@ -1,29 +1,92 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
+  <html lang="fr">
 
-<html>
+  <head>
 
-<head>
+    <meta charset="utf-8">
 
-  <meta charset="utf-8">
+    <meta name="viewport" content="with=device-width, initial-scale=1">
+    <div >
+    <title >
+      {% block title %}STATIS-FOOT accueil {% endblock %}
+    </title>
+    </div>
+    {% stylesheets 'bundles/ProjetStatisfoot/css/style.css' %}
+      <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
+    {% endstylesheets %}
+    <div class=aligncenter>
+      <h1>Toute la statistique du foot amateur</h1>
+    </div>
+  </head>
 
-  <title>STATIS-FOOT</title>
-</head>
+  <body>
+    <div >
+      <header >
+            <div class=milieu>
+                  <form action="" method="get">
+                        <input type="text" name="keywords"
+                          id="search_keywords" />
+                       <input type="submit" value="search" />
+                    <div class="help">
+                    </div>
+                  </form>
+            </div>
+          </header>
+    </div>
+    <div class=haut>
+    <div class=centre>
+    <div class=menu>
+    <marquee>le flash info commence bientot </marquee> 
+    </div>
+    </div>
+    </div>
+    <br><br>
+  <div class=centre>
+  <div class=menu>
+  <a href ="index.html">ACCUEIL</a> -  
+  <a href="TOP.html">Equipe</a>  -  
+  <a href="FLOP.html">Competition</a>  -  
+  <a href="aleatoire.html">Champinnat</a>  - 
+  <a href="connexion.html">CONNEXION</a>
+  </div>
+  </div>
+  </div>
+  <div class=gauche>
 
+    <div class=titre>Les maths du jour</div>
+    <ul >
+      {% for match in listeMatch %}
+      <li class =news>
+        <ul>
+          <li>{{match['NomEq1']}}</li>
+          <li>{{match['Eq1But']}} : </li>
+          <li>{{match['Eq2But']}}</li>
+          <li>{{match['NomEq2']}}</li>
+        </ul>
+      </li>
+      {% endfor %}
+    </ul>
 
-<body>
-<ul>
-	{%for match in listeMatch%}
-	<li>
-	
-		{{match['idMatch']}}
-		{{match['heure']|date('d/m/Y')}}
-		{{match['NomEq1']}}
-		{{match['Eq1But']}} :
-		{{match['Eq2But']}}
-		{{match['NomEq2']}}
-		
-	</li>
-	{%endfor%}
-</ul>
-</body>
-</html>
+    </div>
+  </div>
+  <div class=droite>
+  <div class=titre>Pour le foot </div><br><br>
+  <div class=cv></div>
+  <br><br>
+  <div class=cv> </div>
+
+  <div class=cv></div>
+  </div>
+  <div class=utile>
+  <div class=menu>
+  <a href ="index.html">ACCUEIL</a> -  
+  <a href="TOP.html">Equipe</a>  -  
+  <a href="FLOP.html">Compétition</a>  -  
+  <a href="aleatoire.html">Championnat</a>  -   
+  <a href="connexion.html">CONNEXION</a> -
+  </div>
+  <br><div class=contact><div class=aligncenter>si vous avez des questions, des remarques, des suggestions pour améliorer le site, n'hésitez pas à <a href=""> me contacter</a></div>
+  </div>
+  </div>
+    </body>
+  </html>
