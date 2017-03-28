@@ -12,14 +12,12 @@
 
 <body>
 <ul>
-	{%for match in listeMatch%}
+	{%for equipe in listeEquipe%}
 	<li class="news">
 		<ul>
-			<li>{{match['idMatch']}}</li>
-			<li>{{match['heure']|date('d/m/Y')}}</li>
-			<li>{{match['NomEq1']}}</li>
-			<li>{{match['Eq1But']}} : {{match['Eq2But']}} </li>
-			<li>{{match['NomEq2']}}</li>
+			<li>{{equipe.id}}</li>
+			<li>{{equipe.nom}}</li>
+			<li>{{equipe.niveau.libelleNiv}}</li>
 		</ul>	
 	</li>
 	{%endfor%}

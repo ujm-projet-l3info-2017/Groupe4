@@ -18,6 +18,11 @@ projet_statisfoot_match:
         id: \d+
 
 projet_statisfoot_equipe:
+    path:     /listeEquipe
+    defaults: 
+        _controller: ProjetStatisfootBundle:Equipe:listequipe
+
+projet_statisfoot_equipe:
     path:     /equipe/{id}
     defaults: 
         _controller: ProjetStatisfootBundle:Equipe:view

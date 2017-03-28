@@ -9,6 +9,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 */
 class EquipeController extends Controller
 {
+	public function listequipeAction(){
+		$equipes = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:equipe')->findAll();
+
+		return $this->render('ProjetStatisfootBundle:Equipe:liste_equipe.html.twig', array('listeEquipe'=>$equipes));
+	}
+
 	public function viewAction($id){
 		$equipe = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:equipe')->find($id);
 
