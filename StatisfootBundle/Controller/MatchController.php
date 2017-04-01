@@ -37,6 +37,27 @@ class MatchController extends Controller
  		return $this->render('ProjetStatisfootBundle:Match:index.html.twig',array('listeMatch'=>$listeMatch));
 	}
 
+	public function indexDateAction($date){
+		$matchs = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_foot')->findMatchDate($date);
+		
+		//Recuperation des equipes qui ont joués le match
+		$listeMatch =array();
+
+		foreach ($matchs as $ma) {
+			$match_equipe = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_equipe')
+			->findMatchEquipe($ma->getId());
+
+			
+			$ma_eq = array("idMatch"=>$ma->getId(),"heure"=>$ma->getDateMatch(),
+				"NomEq1"=>$match_equipe[0]->getEquipe()->getNom(),"Eq1But"=>$match_equipe[0]->getButMarq(),
+				"NomEq2"=>$match_equipe[1]->getEquipe()->getNom(),"Eq2But"=>$match_equipe[1]->getButMarq());
+			
+			array_push($listeMatch, $ma_eq);
+		}
+
+ 		return $this->render('ProjetStatisfootBundle:Match:index_date.html.twig',array('listeMatch'=>$listeMatch));
+	}
+
 	public function match_footAction($id){
 		$match = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_foot')->find($id);
 		$date = new \Datetime();

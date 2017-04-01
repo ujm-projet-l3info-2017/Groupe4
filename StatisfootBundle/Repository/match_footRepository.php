@@ -10,6 +10,7 @@ namespace Projet\StatisfootBundle\Repository;
  */
 class match_footRepository extends \Doctrine\ORM\EntityRepository
 {
+	//fonction qui recupere tous les maths d'une compétition donnée
 	public function findMatchCompet($id_compet){
 		$qb = $this->createQueryBuilder('m')
 			->leftJoin('m.competition','compet')
@@ -19,6 +20,18 @@ class match_footRepository extends \Doctrine\ORM\EntityRepository
 		return $qb->getQuery()->getResult();
 	}
 
+
+	//fonction qui recupere tous les maths pour une date donnée
+	public function findMatchDate($date){
+		$qb = $this->createQueryBuilder('m')
+			->where('m.dateMatch = :date')
+			->setParameter('date',$date);
+			
+		return $qb->getQuery()->getResult();
+	}
+
+
+	//fonction qui recupere tous les maths d'une journée pour une compétition donnée
 	public function findMatchCompetJour($id_compet,$num){
 		$qb = $this->createQueryBuilder('m')
 			->leftJoin('m.competition','compet')

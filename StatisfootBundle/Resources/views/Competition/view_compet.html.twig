@@ -1,17 +1,10 @@
-<!DOCTYPE html>
+{% extends "ProjetStatisfootBundle::layout.html.twig" %}
 
-<html>
+{% block title %}{{ parent() }} - Accueil{% endblock %}
 
-<head>
-	{% stylesheets 'bundles/ProjetStatisfoot/css/style.css' %}
-      <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
-    {% endstylesheets %}
-  <meta charset="utf-8">
-  <title>STATIS-FOOT</title>
-</head>
-
-<body>
-<ul>
+{% block body %}
+<div class="gauche">
+	<ul>
 	{%for match in listeMatch%}
 	<li class="news">
 		<ul>
@@ -24,5 +17,10 @@
 	</li>
 	{%endfor%}
 </ul>
-</body>
-</html>
+</div>
+
+<div class="droite">
+<div class="titre">Pour le foot </div>
+<h1>Notre div droite</h1>
+</div>
+{% endblock %}

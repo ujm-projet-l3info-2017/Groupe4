@@ -1,26 +1,20 @@
-<!DOCTYPE html>
 
-<html>
+{% extends "ProjetStatisfootBundle::layout.html.twig" %}
 
-<head>
-	{% stylesheets 'bundles/ProjetStatisfoot/css/style.css' %}
-      <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
-    {% endstylesheets %}
-  <meta charset="utf-8">
-  <title>STATIS-FOOT</title>
-</head>
+{% block title %}{{ parent() }} - ListeEquipe{% endblock %}
 
-<body>
-<ul>
-	{%for equipe in listeEquipe%}
-	<li class="news">
-		<ul>
-			<li>{{equipe.id}}</li>
-			<li>{{equipe.nom}}</li>
-			<li>{{equipe.niveau.libelleNiv}}</li>
-		</ul>	
-	</li>
-	{%endfor%}
-</ul>
-</body>
-</html>
+{% block body %}
+
+<div class="gauche"></div>
+	<ul>
+		{%for equipe in listeEquipe%}
+		<li class="news">
+			<ul>
+				<li>{{equipe.id}}</li>
+				<li>{{equipe.nom}}</li>
+				<li>{{equipe.niveau.libelleNiv}}</li>
+			</ul>	
+		</li>
+		{%endfor%}
+	</ul>
+{% endblock %}

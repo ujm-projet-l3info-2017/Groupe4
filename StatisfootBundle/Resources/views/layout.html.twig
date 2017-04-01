@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta charset="utf-8">
+	  {% stylesheets 'bundles/ProjetStatisfoot/css/style.css' %}
+      <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
+    {% endstylesheets %}    
+    <title>{% block title %}STATISFOOT{% endblock %}</title>
+  </head>
+  <body>
+
+  	 <div class="aligncenter">
+      <h1>Toute la statistique du foot amateur</h1>
+    </div>
+     <div >
+      <header >
+            <div class="milieu">
+                  <form action="" method="get">
+                        <input type="text" name="keywords"
+                          id="search_keywords" />
+                       <input type="submit" value="search" />
+                    <div class="help">
+                    </div>
+                  </form>
+            </div>
+      </header>
+    </div>
+
+  <div class=menu>
+  <a href ="index.html">ACCUEIL</a> -  
+  <a href="TOP.html">Equipe</a>  -  
+  <a href="FLOP.html">Competition</a>  -  
+  <a href="aleatoire.html">Champinnat</a>  - 
+  <a href="connexion.html">CONNEXION</a>
+  </div>
+
+    {% block body %}
+    
+    {% endblock %}
+
+    <div class="contact">
+    	<div class="aligncenter">
+    		si vous avez des questions, des remarques, des suggestions pour améliorer le site, n'hésitez pas à <a href=""> me contacter</a>
+    	</div>
+  </div>
+
+  </body>
+</html>

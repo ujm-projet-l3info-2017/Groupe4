@@ -6,7 +6,7 @@ projet_statisfoot_accueil:
 projet_statisfoot_accueil_date:
     path:     /{date}
     defaults: 
-        _controller: ProjetStatisfootBundle:Match:match_date
+        _controller: ProjetStatisfootBundle:Match:indexDate
     requirements:
         date: \d{10}
 
