@@ -1,25 +1,42 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <title>STATIS-FOOT</title>
-</head>
-<body>
-	{{equipe.id}}
-	{{equipe.nom}}
-	{{equipe.niveau.libelleNiv}}
-	{{equipe.club.nomClub}}
-	</br>
-	<ul>
-	<p> les Matchs de l'Equipe </p>
-	{%for match_equipe in listeMatch%}
-	<li>
-		{%for match in match_equipe%}
-		{{match.match.dateMatch|date('d/m/Y')}}
-		{{match.equipe.nom}} VS
-		{%endfor%}
-	</li>
-	{%endfor%}
-</ul>
-</body>
-</html>
+{% extends "ProjetStatisfootBundle::layout.html.twig" %}
+
+{% block title %}{{ parent() }} - {{equipe.nom}}{% endblock %}
+
+{% block body %}
+	<div class="haut">
+		{{equipe.id}}
+		{{equipe.nom}}
+		{{equipe.niveau.libelleNiv}}
+		{{equipe.club.nomClub}}
+	</div>
+	<div class="gauche">
+		<p> les Matchs de l'Equipe </p>
+		 <ul >
+	      {% for match in listeMatch %}
+	      <li class ="news">
+	        <ul>
+	          <li>{{match['NomEq1']}}</li>
+	          <li>{{match['Eq1But']}} <a href="{{ path('statisfoot_match', {'id': match['idMatch']}) }}"> VS </a></li>
+	          <li>{{match['Eq2But']}}</li>
+	          <li>{{match['NomEq2']}}</li>
+	        </ul>
+	      </li>
+	      {% endfor %}
+	    </ul>
+	</div>
+	<div class="droite">
+		<p>Liste des joueurs</p>
+		<ul>
+			{% for joueur in joueurs%}
+				<li>
+					<a href="{{ path('statisfoot_joueur', {'id': joueur.joueur.id}) }}">
+					{{joueur.joueur.id}}
+					{{joueur.joueur.nomJ}}
+					{{joueur.joueur.prenomJ}}
+					{{joueur.joueur.poste.libellePoste}}
+					</a>
+				</li>
+			{% endfor %}
+		</ul>
+	</div>
+{% endblock %}

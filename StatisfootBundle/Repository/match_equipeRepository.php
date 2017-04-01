@@ -30,7 +30,6 @@ class match_equipeRepository extends EntityRepository
 			->leftJoin('m.match','match')
 			->addSelect('match')
 			->leftJoin('m.equipe','eq')
-			->addSelect('eq')
 			->where('eq.id = :id')
 			->setParameter('id',$id_equipe);
 		return $qb->getQuery()->getResult();

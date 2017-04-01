@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class JoueurController extends Controller
 {
 	public function viewAction($id){
+
 		$joueur = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:joueur')->find($id);
 
 		$competition = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:competition')->findAll();
@@ -61,10 +62,14 @@ class JoueurController extends Controller
 				"recup"=>$nbRecup,"arret"=>$nbArret,"centre"=>$nbCentre,"tacle"=>$nbTacle,"cartonJ"=>$nbCJ,"cartonR"=>$nbCR);
 
 			array_push($stat, $tab);
-			echo $nbCentre;
 		}
 
+		$equipe = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:joueur_equipe')->findEquipe($id);
+
+		$coequipiers = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:joueur_equipe')
+		->findCoequipiers($id, $equipe[0]->getEquipe()->getId());
+
 		return $this->render('ProjetStatisfootBundle:Joueur:view_joueur.html.twig', array('joueur'=>$joueur,
-			'stat'=>$stat));
+			'stat'=>$stat, 'coequipiers'=>$coequipiers));
 	}
 }

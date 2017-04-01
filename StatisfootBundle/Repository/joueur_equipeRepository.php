@@ -11,30 +11,43 @@ use Doctrine\ORM\EntityRepository;
  */
 class joueur_equipeRepository extends EntityRepository
 {
-	public function findJoueurs($id){
+	public function findJoueurs($idE){
 		$qb = $this->createQueryBuilder('j')
 			->leftJoin('j.equipe','eq')
-			->addSelect('eq')
 			->leftJoin('j.joueur','joue')
 			->addSelect('joue')
 			->where('j.date_fin > :date')
 			->andWhere('eq.id = :id')
 			->setParameter('date', new \DateTIME())
-			->setParameter('id', $id);
+			->setParameter('id', $idE);
 
 		return $qb->getQuery()->getResult();
 	}
 
-	public function find_equipe($id_joueur){
+	public function findEquipe($idJ){
 		$qb = $this->createQueryBuilder('j')
 			->leftJoin('j.equipe','eq')
 			->leftJoin('j.joueur','joue')
-			->leftJoin('eq')
+			->addSelect('eq')
 			->where('j.date_fin > :date')
 			->andWhere('j.id = :id')
-			->andWhere()
 			->setParameter('date', new \DateTIME())
-			->setParameter('id', $id);
+			->setParameter('id', $idJ);
+
+		return $qb->getQuery()->getResult();
+	}
+
+	public function findCoequipiers($idJ, $idE){
+		$qb = $this->createQueryBuilder('j')
+			->leftJoin('j.equipe','eq')
+			->leftJoin('j.joueur','joue')
+			->addSelect('joue')
+			->where('j.date_fin > :date')
+			->andWhere('joue.id != :idJ')
+			->andWhere('eq.id = :idE')
+			->setParameter('date', new \DateTIME())
+			->setParameter('idJ', $idJ)
+			->setParameter('idE', $idE);
 
 		return $qb->getQuery()->getResult();
 	}

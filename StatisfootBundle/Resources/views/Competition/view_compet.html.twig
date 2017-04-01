@@ -1,26 +1,30 @@
+
 {% extends "ProjetStatisfootBundle::layout.html.twig" %}
 
-{% block title %}{{ parent() }} - Accueil{% endblock %}
+{% block title %}{{ parent() }} - {{compet.nomCompet}}{% endblock %}
 
 {% block body %}
+
 <div class="gauche">
-	<ul>
-	{%for match in listeMatch%}
-	<li class="news">
-		<ul>
-			<li>{{match['idMatch']}}</li>
-			<li>{{match['heure']|date('d/m/Y')}}</li>
-			<li>{{match['NomEq1']}}</li>
-			<li>{{match['Eq1But']}} : {{match['Eq2But']}} </li>
-			<li>{{match['NomEq2']}}</li>
-		</ul>	
-	</li>
-	{%endfor%}
-</ul>
+
+	<div class="haut">
+		{{compet.nomCompet}}
+	</div>
+	<ul >
+	      {% for match in listeMatch %}
+	      <li class ="news">
+	        <ul>
+	          <li>{{match['NomEq1']}}</li>
+	          <li>{{match['Eq1But']}} <a href="{{ path('statisfoot_match', {'id': match['idMatch']}) }}"> VS </a></li>
+	          <li>{{match['Eq2But']}}</li>
+	          <li>{{match['NomEq2']}}</li>
+	        </ul>
+	      </li>
+	      {% endfor %}
+	</ul>
 </div>
 
 <div class="droite">
-<div class="titre">Pour le foot </div>
-<h1>Notre div droite</h1>
+<h1>Le classement</h1>
 </div>
 {% endblock %}

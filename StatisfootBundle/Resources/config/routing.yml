@@ -1,63 +1,63 @@
-projet_statisfoot_accueil:
+statisfoot_accueil:
     path:     /
     defaults: 
         _controller: ProjetStatisfootBundle:Match:index
 
-projet_statisfoot_accueil_date:
+statisfoot_accueil_date:
     path:     /{date}
     defaults: 
         _controller: ProjetStatisfootBundle:Match:indexDate
     requirements:
         date: \d{10}
 
-projet_statisfoot_match:
+statisfoot_match:
     path:     /match/{id}
     defaults: 
         _controller: ProjetStatisfootBundle:Match:match_foot 
     requirements:
         id: \d+
 
-projet_statisfoot_equipe:
+statisfoot_liste_equipe:
     path:     /listeEquipe
     defaults: 
         _controller: ProjetStatisfootBundle:Equipe:listequipe
 
-projet_statisfoot_equipe:
+statisfoot_equipe:
     path:     /equipe/{id}
     defaults: 
         _controller: ProjetStatisfootBundle:Equipe:view
     requirements:
         id: \d+
 
-projet_statisfoot_effectif:
+statisfoot_effectif:
     path:     /equipe/{id}/effectif
     defaults: 
         _controller: ProjetStatisfootBundle:Equipe:effectif
     requirements:
         id: \d+
 
-projet_statisfoot_joueur:
+statisfoot_joueur:
     path:     /joueur/{id}
     defaults: 
         _controller: ProjetStatisfootBundle:Joueur:view
     requirements:
         id: \d+ 
 
-projet_statisfoot_stat_joueur:
+statisfoot_stat_joueur:
     path:     /joueur/{id}/stat
     defaults: 
         _controller: ProjetStatisfootBundle:Joueur:stat
     requirements:
         id: \d+
 
-projet_statisfoot_compet:
+statisfoot_compet:
     path:     /compet/{id}
     defaults: 
         _controller: ProjetStatisfootBundle:Competition:view
     requirements:
         id: \d+
 
-projet_statisfoot_compte_journee:
+statisfoot_compte_journee:
     path:     /compet/{id}/{numJ}
     defaults: 
         _controller: ProjetStatisfootBundle:Competition:journee

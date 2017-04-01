@@ -5,16 +5,18 @@
 
 {% block body %}
 
-<div class="gauche"></div>
+<div class="gauche">
 	<ul>
 		{%for equipe in listeEquipe%}
 		<li class="news">
 			<ul>
 				<li>{{equipe.id}}</li>
-				<li>{{equipe.nom}}</li>
+				<li><a href="{{ path('statisfoot_equipe', {'id': equipe.id}) }}">{{equipe.nom}}</a></li>
 				<li>{{equipe.niveau.libelleNiv}}</li>
 			</ul>	
 		</li>
 		{%endfor%}
 	</ul>
+</div>
+
 {% endblock %}
