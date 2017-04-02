@@ -1,25 +1,10 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<title >
-	      {% block title %}STATIS-FOOT accueil {% endblock %}
-	    </title>
-		{% stylesheets 'bundles/ProjetStatisfoot/css/style.css' %}
-  		    <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
-  	    {% endstylesheets %}
-	
-	</head>
-	<body>
-		<div class="header_bar">
-			<nar class="topbar-menu">
-				<a href="">STATISFOOT</a>
-			</nar>
-			<div class="recherche_container">
-				<input id="recherche_input" type="text" value "recherche" placeholder="Recherche...">
-			</div>
-		</div>
 
-		<div class="structure">
+{% extends "ProjetStatisfootBundle::layout.html.twig" %}
+
+{% block title %}{{ parent() }} - Accueil{% endblock %}
+
+{% block body %}
+
 			<div class="bloc_middle">
 
 				<div class="table_container">
@@ -57,19 +42,19 @@
 
 
 							    {% for match in listeMatch %}
-
 							    <tr class="unselectable tr_match">
 							      <td>
 							      	<span class="match_state_hours">15h00</span>
 							      </td>
 							      <td class="team_a">{{match['NomEq1']}}</td>
-							       <td class="team_mid"> {{match['Eq1But']}} - {{match['Eq2But']}}</td>
+							       <td class="team_mid">  
+							       		<a href="{{ path('statisfoot_match', {'id': match['idMatch']}) }}">
+							        		{{match['Eq1But']}} - {{match['Eq2But']}}
+							       		</a>
+							       </td>
 							      <td class="team_b">{{match['NomEq2']}}</td>
 							    </tr>
 							    {% endfor %}
-
-
-
 							  </tbody>
 							</table>
 						</div>
@@ -117,6 +102,4 @@
 
 
 			</div>
-		</div>
-	</body>
-</html>
+{% endblock %}
