@@ -29,8 +29,51 @@ class CompetitionController extends Controller
 			array_push($listeMatch, $ma_eq);
 		}
 
+		//recuperation des equipes engagées dans la competition
+		$equipes = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_equipe')
+			->findEquipeCompet($competition->getId());
+
+		//recuperation des resultats des matchs de la compétition
+		$resultats = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_equipe')
+			->findResultatsCompet($competition->getId());
+
+		$classement = array();	
+
+		foreach ($equipes as $eq) {
+			$nbr = 0;
+			$points = 0;
+			$buts = 0;
+			foreach ($resultats as $result) {
+				if ($eq->getEquipe()->getId() == $result->getEquipe()->getId()) {
+					$nbr++;
+					$buts = $buts + ($result->getButMarq() - $result->getButEnc());
+
+					//si l'equipe etait vicotrieuse
+					if ($result->getButMarq() > $result->getButEnc()) {
+						$points+=3;
+					}
+
+					//si l'equipe a fait match nulle
+					elseif ($result->getButMarq() == $result->getButEnc()) {
+						$points+=1;
+					}
+				}
+			}
+
+			array_push($classement, array("idEq"=>$eq->getEquipe()->getId(),"nomEq"=>$eq->getEquipe()->getNom(),"nbJour"=>$nbr,"buts"=>$buts,"points"=>$points));
+
+		}
+
+		//tri des equipes par nombre de points
+		$tab = array();
+		foreach ($classement as $equi) {
+			array_push($tab, $equi["points"]);
+		}
+
+		array_multisort($tab, SORT_DESC, $classement);
+
 		return $this->render('ProjetStatisfootBundle:Competition:view_compet.html.twig', array('compet'=>$competition,
-			'listeMatch'=>$listeMatch));
+			'listeMatch'=>$listeMatch, 'classement'=>$classement));
 	}	
 
 	//affichage des match d'une compettion par journée 

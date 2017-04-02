@@ -25,6 +25,11 @@
 </div>
 
 <div class="droite">
-<h1>Le classement</h1>
+	<h1>Le classement</h1>
+	<ul>
+		{% for equipe in classement %}
+		<li>{{equipe['idEq']}} : {{equipe['nbJour']}} {{equipe['nomEq']}}  {{equipe['buts']}} <b>{{equipe['points']}}</b> </li>
+		{% endfor %}
+	</ul>
 </div>
 {% endblock %}

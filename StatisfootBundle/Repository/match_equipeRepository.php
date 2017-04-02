@@ -24,6 +24,29 @@ class match_equipeRepository extends EntityRepository
 		return $qb->getQuery()->getResult();
 	}
 
+	//recupération des equipes engagé dans une compétition
+	public function findEquipeCompet($idC){
+		$qb = $this->createQueryBuilder('m')
+			->leftJoin('m.match','match')
+			->leftJoin('m.equipe','eq')
+			->leftJoin('match.competition','compet')
+			->addSelect('eq')
+			->distinct(true)
+			->where('compet.id = :idC')
+			->setParameter('idC',$idC);
+		return $qb->getQuery()->getResult();
+	}
+
+	//recupération des resultats des matchs d'une compétion données
+	public function findResultatsCompet($idC){
+		$qb = $this->createQueryBuilder('m')
+			->leftJoin('m.match','match')
+			->leftJoin('match.competition','compet')
+			->where('compet.id = :idC')
+			->setParameter('idC',$idC);
+		return $qb->getQuery()->getResult();
+	}
+
 	//recupération des matchs pour une equipe donnée
 	public function findMAtch($id_equipe){
 		$qb = $this->createQueryBuilder('m')
