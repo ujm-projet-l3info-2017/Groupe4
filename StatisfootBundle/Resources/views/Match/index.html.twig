@@ -1,30 +1,122 @@
- 
-{% extends "ProjetStatisfootBundle::layout.html.twig" %}
+<!DOCTYPE html>
+<html>
+	<head>
+		<title >
+	      {% block title %}STATIS-FOOT accueil {% endblock %}
+	    </title>
+		{% stylesheets 'bundles/ProjetStatisfoot/css/style.css' %}
+  		    <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
+  	    {% endstylesheets %}
+	
+	</head>
+	<body>
+		<div class="header_bar">
+			<nar class="topbar-menu">
+				<a href="">STATISFOOT</a>
+			</nar>
+			<div class="recherche_container">
+				<input id="recherche_input" type="text" value "recherche" placeholder="Recherche...">
+			</div>
+		</div>
 
-{% block title %}{{ parent() }} - Accueil{% endblock %}
+		<div class="structure">
+			<div class="bloc_middle">
 
-{% block body %}
-   
- 
-  <div class="gauche">
-    <div class="titre">Les maths du jour</div>
-    <ul >
-      {% for match in listeMatch %}
-      <li class ="news">
-        <ul>
-          <li>{{match['NomEq1']}}</li>
-          <li>{{match['Eq1But']}} <a href="{{ path('statisfoot_match', {'id': match['idMatch']}) }}"> VS </a></li>
-          <li>{{match['Eq2But']}}</li>
-          <li>{{match['NomEq2']}}</li>
-        </ul>
-      </li>
-      {% endfor %}
-    </ul>
-  </div>
+				<div class="table_container">
+					<div class="table_titre">MATCHS DU JOUR</div>
+						<div class="table_ligue">					
+							<div class="subheader_container">
+								<div class="subheader"> Championnat B </div>
+							</div>
+							<table class="table_match">
+							  <tbody>
+							    <tr class="unselectable tr_match">
+							      <td>
+							      	<span class="match_state_end">FIN</span>
+							      </td>
+							      <td class="team_a">Leicester</td>
+							      <td class="team_mid">-</td>
+							      <td class="team_b">Manchester</td>
+							    </tr>
+							    <tr class="unselectable tr_match">
+							      <td>
+							      	<span class="match_state_now">42'</span>
+							      </td>
+							      <td class="team_a">BCA</td>
+							       <td class="team_mid">-</td>
+							      <td class="team_b">PSG</td>
+							    </tr>
+							    <tr class="unselectable tr_match">
+							      <td>
+							      	<span class="match_state_hours">15h00</span>
+							      </td>
+							      <td class="team_a">Larry</td>
+							       <td class="team_mid">-</td>
+							      <td class="team_b">the Bird</td>
+							    </tr>
 
-  <div class="droite">
-   <div class="titre">Pour le foot </div>
-   <h1>Notre div droite</h1>
-  </div>
-  
-{% endblock %}
+
+							    {% for match in listeMatch %}
+
+							    <tr class="unselectable tr_match">
+							      <td>
+							      	<span class="match_state_hours">15h00</span>
+							      </td>
+							      <td class="team_a">{{match['NomEq1']}}</td>
+							       <td class="team_mid"> {{match['Eq1But']}} - {{match['Eq2But']}}</td>
+							      <td class="team_b">{{match['NomEq2']}}</td>
+							    </tr>
+							    {% endfor %}
+
+
+
+							  </tbody>
+							</table>
+						</div>
+					
+				</div>
+
+				<div class="table_championnat_container">
+					<div class="table_championat">
+						<table>
+							<tbody class="">
+								<tr class="tr_championnat unselectable">
+									<td class="unselected">
+										CHAMPIONNAT A
+									</td>
+								</tr>
+								<tr class="tr_championnat unselectable">
+									<td class="selected">
+										CHAMPIONNAT B
+									</td>
+								</tr>
+								<tr class="tr_championnat unselectable">
+									<td class="unselected">
+										CHAMPIONNAT C
+									</td>
+								</tr>
+								<tr class="tr_championnat unselectable">
+									<td class="unselected">
+										CHAMPIONNAT D
+									</td>
+								</tr>
+								<tr class="tr_championnat unselectable">
+									<td class="unselected">
+										CHAMPIONNAT E
+									</td>
+								</tr>
+								<tr class="tr_championnat unselectable">
+									<td class="unselected">
+										CHAMPIONNAT F
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+
+			</div>
+		</div>
+	</body>
+</html>
