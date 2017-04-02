@@ -44,7 +44,7 @@ class CompetitionController extends Controller
 			$points = 0;
 			$buts = 0;
 			foreach ($resultats as $result) {
-				if ($eq->getEquipe()->getId() == $result->getEquipe()->getId()) {
+				if ($eq['id'] == $result->getEquipe()->getId()) {
 					$nbr++;
 					$buts = $buts + ($result->getButMarq() - $result->getButEnc());
 
@@ -60,7 +60,7 @@ class CompetitionController extends Controller
 				}
 			}
 
-			array_push($classement, array("idEq"=>$eq->getEquipe()->getId(),"nomEq"=>$eq->getEquipe()->getNom(),"nbJour"=>$nbr,"buts"=>$buts,"points"=>$points));
+			array_push($classement, array("idEq"=>$eq['id'],"nomEq"=>$eq['nom'],"nbJour"=>$nbr,"buts"=>$buts,"points"=>$points));
 
 		}
 

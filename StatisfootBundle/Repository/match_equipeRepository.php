@@ -30,8 +30,7 @@ class match_equipeRepository extends EntityRepository
 			->leftJoin('m.match','match')
 			->leftJoin('m.equipe','eq')
 			->leftJoin('match.competition','compet')
-			->addSelect('eq')
-			->distinct(true)
+			->select('DISTINCT eq.id, eq.id AS id, eq.nom AS nom')
 			->where('compet.id = :idC')
 			->setParameter('idC',$idC);
 		return $qb->getQuery()->getResult();
@@ -57,6 +56,7 @@ class match_equipeRepository extends EntityRepository
 			->setParameter('id',$id_equipe);
 		return $qb->getQuery()->getResult();
 	}
+
 	// recuperation de tout les matchs d'une equipe.
 	public function findLesMatchs($id){
 		$matchs = $this->createQueryBuilder('m')
@@ -66,11 +66,9 @@ class match_equipeRepository extends EntityRepository
 			->addSelect('eq')
 			->where('eq.id = :id')
 			->setParameter('id',$id);
-
 		//->orderBy('match.dateMatch','DESC');
 		return $matchs->getQuery()->getResult();
 	}
-
 // recuperation d'un adversaire
 	public function findAdversaire($idmatch, $ideq){
 		$matchs = $this->createQueryBuilder('m')
@@ -82,7 +80,6 @@ class match_equipeRepository extends EntityRepository
 			->andwhere('match.id = :idmatch')
 			->setParameter('id',$ideq)
 			->setParameter('idmatch',$idmatch);
-
 			return $matchs->getQuery()->getResult();
 	}
 }

@@ -1,11 +1,8 @@
 <?php
-
 namespace Projet\StatisfootBundle\Controller;
-
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 //use Symfony\Component\BrowserKit\Response;
 use Symfony\Component\HttpFoundation\Response;
-
 use Projet\StatisfootBundle\Entity\match_equipe;
 use Projet\StatisfootBundle\Entity\match_foot;
 use Projet\StatisfootBundle\Entity\equipe;
@@ -33,7 +30,6 @@ class MatchController extends Controller
 		}
  		return $this->render('ProjetStatisfootBundle:Match:index.html.twig',array('listeMatch'=>$listeMatch));
 	}
-
 	public function match_footAction($id){
 		$match = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_foot')->find($id);
 		$date = new \Datetime();
@@ -48,7 +44,6 @@ class MatchController extends Controller
 			$infodate = "Match à venir";
 		}
 		//Pour chaque equipe on recupere tout qu'il a joue
-
 		//recuperation des equipes
 		$adversaires = array(); 
 		$match_equipe = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_equipe')->findMatchEquipe($id);
@@ -56,7 +51,6 @@ class MatchController extends Controller
 		foreach ($match_equipe as $equipes) {
 			// les matchs joues par l'equipe
 			$LesMatchDeEquipe = $this->getDoctrine()->getRepository('ProjetStatisfootBundle:match_equipe')->findLesMatchs($equipes->getEquipe()->getId());
-
 			foreach ($LesMatchDeEquipe as $Mequipes) {
 				
 				/*
@@ -73,7 +67,6 @@ class MatchController extends Controller
 					'NomEq2'=>$match_eq->getEquipe()->getNom()));
 				}
 			}
-
 		}
 		
 		return $this->render('ProjetStatisfootBundle:Match:match.html.twig', array('match'=>$match, 'infodate'=>$infodate,'adversaires'=>$adversaires));
