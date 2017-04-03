@@ -33,25 +33,58 @@
 							</table>
 						</div>
 					</div>
-				</div>
 
 				<div class="droite">
 					<h1>Le classement des équipes</h1>
-					<ul>
+					<table id="classm">
+						<tr class="head_tab">
+							<td>Nom</td>
+							<td>Match</td>
+							<td>Buts</td>
+							<td>Point</td>
+						</tr>
 						{% for equipe in classement %}
-						<li>{{equipe['idEq']}} : {{equipe['nbJour']}} {{equipe['nomEq']}}  {{equipe['buts']}} <b>{{equipe['points']}}</b> </li>
+						<tr class="unselectable tr_match">
+							<td>
+								<a href="{{ path('statisfoot_equipe', {'id': equipe['idEq']}) }}">
+							     		{{equipe['nomEq']}}
+							    </a>
+							</td>
+							<td>
+								{{equipe['nbJour']}}
+							</td>
+							<td>
+							   {{equipe['buts']}}
+							</td> 
+							<td>
+							 	<b>{{equipe['points']}}</b>
+							</td>
+						 </tr>
 						{% endfor %}
-					</ul>
+					</table>
 					<h1>Le classement des buteurs</h1>
-					<ul>
+					<table>
+						<tr class="head_tab">
+							<td>Nom</td>
+							<td>Match</td>
+							<td>Buts</td>
+						</tr>
 						{% for joueur in classementButeurs %}
-						<li>
-							<a href="{{path('statisfoot_joueur',{'id' : joueur['idJ']})}}">
-							{{joueur['idJ']}} : {{joueur['nbrM']}} {{joueur['nomJ']}}  {{joueur['prenomJ']}} <b>{{joueur['buts']}}</b> 
-							</a>
-						</li>
+						<tr class="unselectable tr_match">
+							<td>
+								<a href="{{path('statisfoot_joueur',{'id' : joueur['idJ']})}}">
+							 		{{joueur['nomJ']}}  {{joueur['prenomJ']}}  
+								</a>
+							</td>
+							<td>
+								{{joueur['nbrM']}}
+							</td>
+							<td>
+								<b>{{joueur['buts']}}</b>
+							</td>
+						</tr>
 						{% endfor %}
-					</ul>
+					</table>
 				</div>
 </div>
 

@@ -181,5 +181,16 @@ td:hover.unselected{
 	background-color: #219652;
 }
 
+/*
+*
+*           COMPETITION
+*
+*/
+.droite{
+    float: right;
+}
 
-    
+.head_tab{
+    color: black;
+    font-weight: bold;
+}
