@@ -3,40 +3,57 @@
 {% block title %}{{ parent() }} - {{equipe.nom}}{% endblock %}
 
 {% block body %}
-	<div class="haut">
-		{{equipe.id}}
-		{{equipe.nom}}
-		{{equipe.niveau.libelleNiv}}
-		{{equipe.club.nomClub}}
-	</div>
-	<div class="gauche">
-		<p> les Matchs de l'Equipe </p>
-		 <ul >
-	      {% for match in listeMatch %}
-	      <li class ="news">
-	        <ul>
-	          <li>{{match['NomEq1']}}</li>
-	          <li>{{match['Eq1But']}} <a href="{{ path('statisfoot_match', {'id': match['idMatch']}) }}"> VS </a></li>
-	          <li>{{match['Eq2But']}}</li>
-	          <li>{{match['NomEq2']}}</li>
-	        </ul>
-	      </li>
-	      {% endfor %}
-	    </ul>
-	</div>
-	<div class="droite">
-		<p>Liste des joueurs</p>
-		<ul>
-			{% for joueur in joueurs%}
-				<li>
-					<a href="{{ path('statisfoot_joueur', {'id': joueur.joueur.id}) }}">
-					{{joueur.joueur.id}}
-					{{joueur.joueur.nomJ}}
-					{{joueur.joueur.prenomJ}}
-					{{joueur.joueur.poste.libellePoste}}
-					</a>
-				</li>
-			{% endfor %}
-		</ul>
-	</div>
+
+<div class="bloc_middle">
+				<div class="haut">
+					{{equipe.id}}
+					{{equipe.nom}}
+					{{equipe.niveau.libelleNiv}}
+					{{equipe.club.nomClub}}
+				</div>
+				
+				<div class="table_container">
+					<div class="table_titre">MATCHS DU JOUR</div>
+						<div class="table_ligue">					
+							<div class="subheader_container">
+								<div class="subheader"> Championnat B </div>
+							</div>
+							<table class="table_match">
+							  <tbody>
+								 {% for match in listeMatch %}
+							    <tr class="unselectable tr_match">
+							      <td>
+							      	<span class="match_state_hours">15h00</span>
+							      </td>
+							      <td class="team_a">{{match['NomEq1']}}</td>
+							       <td class="team_mid">  
+							       		<a href="{{ path('statisfoot_match', {'id': match['idMatch']}) }}">
+							        		{{match['Eq1But']}} - {{match['Eq2But']}}
+							       		</a>
+							       </td>
+							      <td class="team_b">{{match['NomEq2']}}</td>
+							    </tr>
+							    {% endfor %}
+							  </tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+								
+				<div class="droite">
+					<p>Liste des joueurs</p>
+					<ul>
+						{% for joueur in joueurs%}
+							<li>
+								<a href="{{ path('statisfoot_joueur', {'id': joueur.joueur.id}) }}">
+								{{joueur.joueur.id}}
+								{{joueur.joueur.nomJ}}
+								{{joueur.joueur.prenomJ}}
+								{{joueur.joueur.poste.libellePoste}}
+								</a>
+							</li>
+						{% endfor %}
+					</ul>
+				</div>
+</div>
 {% endblock %}
