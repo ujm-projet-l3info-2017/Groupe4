@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class match_joueurRepository extends EntityRepository
 {
+	//recuperation des statatisque d'un joueur pour une competition donnée
 	public function findStat($id_joueur,$id_compet){
 		$qb = $this->createQueryBuilder('m')
 			->leftJoin('m.match_foot','match')
@@ -19,6 +20,20 @@ class match_joueurRepository extends EntityRepository
 			->andWhere('compet.id = :idC')
 			->setParameter('idJ',$id_joueur)
 			->setParameter('idC',$id_compet);
+		
+		return $qb->getQuery()->getResult();
+	}
+
+	//recupération des joueurs engagés dans une compétition données
+	public function findJoueurCompet($idC){
+		$qb = $this->createQueryBuilder('m')
+			->leftJoin('m.match_foot','match')
+			->leftJoin('m.joueur','j')
+			->leftJoin('match.competition','compet')
+			->select('COUNT(j.id) AS nbrM, j.id AS id, j.nomJ AS nom, j.prenomJ AS prenom')
+			->where('compet.id = :idC')
+			->setParameter('idC',$idC)
+			->groupBy('j.id');
 		
 		return $qb->getQuery()->getResult();
 	}

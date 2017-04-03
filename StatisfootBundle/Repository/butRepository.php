@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class butRepository extends EntityRepository
 {
+	//recupération des buts marqués par un joueur dans une compétitions donnée
 	public function findBut_compet($id_joueur,$id_compet){
 		$qb = $this->createQueryBuilder('b')
 			->leftJoin('b.match_foot','match')
@@ -19,6 +20,19 @@ class butRepository extends EntityRepository
 			->andWhere('compet.id = :idC')
 			->setParameter('idJ',$id_joueur)
 			->setParameter('idC',$id_compet);
+		
+		return $qb->getQuery()->getResult();
+	}
+
+	//recupération des buts marqués dans une compétitions donnée
+	public function findButCompet($idC){
+		$qb = $this->createQueryBuilder('b')
+			->leftJoin('b.match_foot','match')
+			->leftJoin('b.joueur','j')
+			->leftJoin('match.competition','compet')
+			->addSelect('j')
+			->where('compet.id = :idC')
+			->setParameter('idC',$idC);
 		
 		return $qb->getQuery()->getResult();
 	}
