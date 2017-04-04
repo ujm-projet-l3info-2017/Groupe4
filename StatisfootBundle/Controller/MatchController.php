@@ -1,8 +1,11 @@
 <?php
+
 namespace Projet\StatisfootBundle\Controller;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 //use Symfony\Component\BrowserKit\Response;
 use Symfony\Component\HttpFoundation\Response;
+
 use Projet\StatisfootBundle\Entity\match_equipe;
 use Projet\StatisfootBundle\Entity\match_foot;
 use Projet\StatisfootBundle\Entity\equipe;
@@ -30,6 +33,7 @@ class MatchController extends Controller
 		}
  		return $this->render('ProjetStatisfootBundle:Match:index.html.twig',array('listeMatch'=>$listeMatch));
 	}
+
 	public function match_footAction($id){
 		$match = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_foot')->find($id);
 		$date = new \Datetime();
@@ -43,22 +47,48 @@ class MatchController extends Controller
 		if($match->getdateMatch() > $date){
 			$infodate = "Match à venir";
 		}
-		//Pour chaque equipe on recupere tout qu'il a joue
+		
+		
+		$m = array();
+		$eq1eq2 = array();
 		//recuperation des equipes
 		$adversaires = array(); 
 		$match_equipe = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_equipe')->findMatchEquipe($id);
 		$copies = $match_equipe;
+		
+		array_push($m, $match_equipe[0]);
+		array_push($m, $match_equipe[1]);
+		//echo "eq1".$match_equipe[0]->getEquipe()->getNom();
+		//echo "eq2".$match_equipe[1]->getEquipe()->getNom();
+		 array_push($eq1eq2,
+							array('IdMatch'=>$match_equipe[0]->getMatch()->getId(),
+							'NomEq1'=>$match_equipe[0]->getEquipe()->getNom(),
+							'Eq1But'=>$match_equipe[0]->getButMarq(),
+							'Eq2But'=>$match_equipe[0]->getButEnc(),
+							));
+					
 		foreach ($match_equipe as $equipes) {
 			// les matchs joues par l'equipe
 			$LesMatchDeEquipe = $this->getDoctrine()->getRepository('ProjetStatisfootBundle:match_equipe')->findLesMatchs($equipes->getEquipe()->getId());
+			
 			foreach ($LesMatchDeEquipe as $Mequipes) {
-				
+				//d'abord les 5dernier confrontation entre les eqs.
+
 				/*
 				 *Ici pour chaque match on recupere son adversaire
 				 *
 				 */
 				$match_equipe2 = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_equipe')->findAdversaire($Mequipes->getMatch()->getId(), $equipes->getEquipe()->getId());
 				foreach ($match_equipe2 as $match_eq) {
+
+					
+					if($match_eq->getEquipe()->getId()== $match_equipe[1]->getEquipe()->getId() && $match_eq->getEquipe()->getId() != $match_equipe[0]->getEquipe()->getId() ){
+						array_push($eq1eq2,
+							array('IdMatch'=>$match_eq->getMatch()->getId(),
+							'Eq1But'=>$match_eq->getButMarq(),
+							'Eq2But'=>$match_eq->getButEnc(),
+							'NomEq1'=>$match_eq->getEquipe()->getNom()));
+					}
 				array_push($adversaires,
 				array('IdMatch'=>$match_eq->getMatch()->getId(),
 					'NomEq1'=>$equipes->getEquipe()->getNom(),
@@ -66,9 +96,10 @@ class MatchController extends Controller
 					'Eq2But'=>$match_eq->getButEnc(),
 					'NomEq2'=>$match_eq->getEquipe()->getNom()));
 				}
+
 			}
-		}
-		
-		return $this->render('ProjetStatisfootBundle:Match:match.html.twig', array('match'=>$match, 'infodate'=>$infodate,'adversaires'=>$adversaires));
+
+		}		
+		return $this->render('ProjetStatisfootBundle:Match:match.html.twig', array('match'=>$m, 'infodate'=>$infodate,'adversaires'=>$adversaires, 'eq1VSeq2'=>$eq1eq2));
 	}
 }
