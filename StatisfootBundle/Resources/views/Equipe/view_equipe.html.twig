@@ -41,19 +41,35 @@
 				</div>
 								
 				<div class="droite">
-					<p>Liste des joueurs</p>
-					<ul>
+					<div >Liste des joueurs</div>
+					<table class="table_match">
+					<tr class="head_tab"> 
+						<td> N°</td>
+						<td>Nom</td>
+						<td>Poste</td>
+						<td>Description</td>
+					</tr>
 						{% for joueur in joueurs%}
-							<li>
-								<a href="{{ path('statisfoot_joueur', {'id': joueur.joueur.id}) }}">
-								{{joueur.joueur.id}}
-								{{joueur.joueur.nomJ}}
-								{{joueur.joueur.prenomJ}}
-								{{joueur.joueur.poste.libellePoste}}
-								</a>
-							</li>
+							<tr class="unselectable tr_match">
+								<td>
+									{{joueur.joueur.id}}
+								</td>
+								<td>
+									<a href="{{ path('statisfoot_joueur', {'id': joueur.joueur.id}) }}">								
+									{{joueur.joueur.nomJ}}
+									{{joueur.joueur.prenomJ}}
+									</a>
+								</td>
+								<td>
+									{{joueur.joueur.poste.libellePoste}}
+								</td>
+								<td>
+									{{joueur.joueur.poste.descripPoste}}
+								</td>
+				
+							</tr>
 						{% endfor %}
-					</ul>
+					</table>
 				</div>
 </div>
 {% endblock %}

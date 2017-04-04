@@ -6,18 +6,57 @@
 {% block body %}
 
 
-<div class="gauche">
+<div class="haut">
+
 	<div id="inf_gen">
-		<p> ID : {{joueur.id}}</p>
-		<p> Nom : {{joueur.nomJ}}</P>
-		<P> Prenom : {{joueur.prenomJ}}</P>
-		<p> Poste de Prédilection : {{joueur.poste.libellePoste}} {{joueur.poste.descripPoste}} </p>
-		<p> Né le : {{joueur.dateNaiss|date('d/m/Y')}}</p>
+		<div id="photo">
+			<img src="messi.jpg"  alt="photo">
+		</div>
+		<div>
+			<p> ID : {{joueur.id}}</p>
+			<p> Nom : {{joueur.nomJ}}</P>
+			<P> Prenom : {{joueur.prenomJ}}</P>
+			<p> Poste de Prédilection : {{joueur.poste.libellePoste}} {{joueur.poste.descripPoste}} </p>
+			<p> Né le : {{joueur.dateNaiss|date('d/m/Y')}}</p>
+		</div>
 	</div>
+	<div id="coep">
+		<div >Liste des joueurs</div>
+		<table class="table_match">
+		<tr class="head_tab"> 
+			<td> N°</td>
+			<td>Nom</td>
+			<td>Poste</td>
+			<td>Description</td>
+		</tr>
+			{% for coep in coequipiers%}
+				<tr class="unselectable tr_match">
+					<td>
+						{{coep.joueur.id}}
+					</td>
+					<td>
+						<a href="{{ path('statisfoot_joueur', {'id': coep.joueur.id}) }}">								
+						{{coep.joueur.nomJ}}
+						{{coep.joueur.prenomJ}}
+						</a>
+					</td>
+					<td>
+						{{coep.joueur.poste.libellePoste}}
+					</td>
+					<td>
+						{{coep.joueur.poste.descripPoste}}
+					</td>
+	
+				</tr>
+			{% endfor %}
+		</table>
+	</div>
+</div>
+<div class="bas">	
 	<div id="stat">
 		<p> Les statisitique du joueur </p>
-		<table>
-			<tr>
+		<table >
+			<tr class="head_tab">
 				<td>Nom Compet</td>
 				<td>But</td>
 				<td>Passe Dec</td>
@@ -30,7 +69,7 @@
 				<td>Carton R</td>
 			</tr>
 			{% for compet in stat %}
-			<tr>
+			<tr class="unselectable tr_match">
 				<td>{{compet['nom']}}</td>
 				<td>{{compet['but']}}</td>
 				<td>{{compet['passe']}}</td>
@@ -46,21 +85,5 @@
 		</table>
 	</div>
 </div>
-
-<div class="droite">
-	<p>Liste des joueurs</p>
-		<ul>
-			{% for coeq in coequipiers%}
-				<li>
-					<a href="{{ path('statisfoot_joueur', {'id': coeq.joueur.id}) }}">
-					{{coeq.joueur.id}}
-					{{coeq.joueur.nomJ}}
-					{{coeq.joueur.prenomJ}}
-					{{coeq.joueur.poste.libellePoste}}
-					</a>
-				</li>
-			{% endfor %}
-		</ul>
-</div>	
 
 {% endblock %}

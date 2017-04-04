@@ -194,3 +194,26 @@ td:hover.unselected{
     color: black;
     font-weight: bold;
 }
+
+
+/*
+*
+*           JOUEUR
+*
+*/
+
+#inf_gen{
+    float: left;
+}
+
+#inf_gen div{
+    display: inline-block;
+}
+
+#coep{
+    float: right;
+}
+
+.bas{
+    padding-top: 180px;
+}
