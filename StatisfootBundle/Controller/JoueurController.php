@@ -13,11 +13,14 @@ class JoueurController extends Controller
 
 		$joueur = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:joueur')->find($id);
 
-		$competition = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:competition')->findAll();
+		$equipe = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:joueur_equipe')->findEquipe($id);
+
+		$competition = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_equipe')
+		->findCompetEquipe($equipe[0]->getEquipe()->getId());
 
 		$stat = array();
 
-		foreach ($competition as $compet) {
+		foreach ($competition as $compet){
 			$nbDuel = 0;
 			$nbInter = 0;
 			$nbRecup = 0;
@@ -27,7 +30,7 @@ class JoueurController extends Controller
 			$nbCJ = 0;
 			$nbCR = 0;
 			$stat_match = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_joueur')
-			->findStat($id,$compet->getId());
+			->findStat($id,$compet['id']);
 
 			//recuperation des performances du joueur pour chaque joueur
 			foreach ($stat_match as $match) {
@@ -39,17 +42,17 @@ class JoueurController extends Controller
 				$nbTacle +=$match->getNbTacle(); 
 				$nbCJ +=$match->getCartonJaune();
 
-				if ($match->getCartonRouge()) {
+				if ($match->getCartonRouge()){
 					$nbCR++;
 				}
 			}
 
 
 			$buts = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:but')
-			->findBut_compet($id,$compet->getId());
+			->findBut_compet($id,$compet['id']);
 
 			$passes = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:passe_decisive')
-			->findPasse_compet($id,$compet->getId());
+			->findPasse_compet($id,$compet['id']);
 
 			//but marqué par le joueur dans la competion
 			$but = count($buts);
@@ -58,13 +61,11 @@ class JoueurController extends Controller
 			$pd = count($passes);
 
 			//creation du tableau resultat dans la competition donnée
-			$tab = array("nom"=>$compet->getNomCompet(),"but"=>$but, "passe"=>$pd,"duel"=>$nbDuel,"inter"=>$nbInter,
+			$tab = array("id"=>$compet['id'],"nom"=>$compet['nom'],"but"=>$but, "passe"=>$pd,"duel"=>$nbDuel,"inter"=>$nbInter,
 				"recup"=>$nbRecup,"arret"=>$nbArret,"centre"=>$nbCentre,"tacle"=>$nbTacle,"cartonJ"=>$nbCJ,"cartonR"=>$nbCR);
 
 			array_push($stat, $tab);
 		}
-
-		$equipe = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:joueur_equipe')->findEquipe($id);
 
 		$coequipiers = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:joueur_equipe')
 		->findCoequipiers($id, $equipe[0]->getEquipe()->getId());

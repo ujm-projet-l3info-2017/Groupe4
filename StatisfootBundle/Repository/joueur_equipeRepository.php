@@ -59,7 +59,7 @@ class joueur_equipeRepository extends EntityRepository
 			->leftJoin('j.joueur','joue')
 			->leftJoin('eq.club','c')
 			->leftJoin('eq.niveau','n')
-			->select('eq.id AS id, c.nomClub AS nom, n.libelleNiv AS niv, j.date_debut AS date')
+			->select('eq.id AS id, eq.nom AS nomE, c.nomClub AS nomC, n.libelleNiv AS niv, j.date_debut AS date')
 			->where('j.id = :idJ')
 			->setParameter('idJ', $idJ);
 

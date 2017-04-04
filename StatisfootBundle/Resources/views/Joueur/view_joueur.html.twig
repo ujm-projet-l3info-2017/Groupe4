@@ -70,7 +70,11 @@
 			</tr>
 			{% for compet in stat %}
 			<tr class="unselectable tr_match">
-				<td>{{compet['nom']}}</td>
+				<td>
+					<a href="{{ path('statisfoot_compet', {'id': compet['id']}) }}">
+					{{compet['nom']}}
+					</a>
+				</td>
 				<td>{{compet['but']}}</td>
 				<td>{{compet['passe']}}</td>
 				<td>{{compet['duel']}}</td>
@@ -97,7 +101,7 @@
 				<td>{{equipe['date']|date('d/m/Y')}}</td>
 				<td>
 					<a href="{{ path('statisfoot_equipe', {'id': equipe['id']}) }}">	
-						{{equipe['nom']}}
+						{{equipe['nomC']}} {{equipe['nomE']}}
 					<a/>
 				</td>
 				<td>{{equipe['niv']}}</td>
