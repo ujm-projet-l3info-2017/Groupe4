@@ -69,7 +69,9 @@ class JoueurController extends Controller
 		$coequipiers = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:joueur_equipe')
 		->findCoequipiers($id, $equipe[0]->getEquipe()->getId());
 
+		$lesEquipes = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:joueur_equipe')->findLesEquipes($id);
+
 		return $this->render('ProjetStatisfootBundle:Joueur:view_joueur.html.twig', array('joueur'=>$joueur,
-			'stat'=>$stat, 'coequipiers'=>$coequipiers));
+			'stat'=>$stat, 'coequipiers'=>$coequipiers,'lesEquipes'=>$lesEquipes));
 	}
 }

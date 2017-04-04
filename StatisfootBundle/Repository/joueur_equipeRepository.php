@@ -51,4 +51,18 @@ class joueur_equipeRepository extends EntityRepository
 
 		return $qb->getQuery()->getResult();
 	}
+
+	//recuperation des equipes pour les equipes a joué le joueur
+	public function findLesEquipes($idJ){
+		$qb = $this->createQueryBuilder('j')
+			->leftJoin('j.equipe','eq')
+			->leftJoin('j.joueur','joue')
+			->leftJoin('eq.club','c')
+			->leftJoin('eq.niveau','n')
+			->select('eq.id AS id, c.nomClub AS nom, n.libelleNiv AS niv, j.date_debut AS date')
+			->where('j.id = :idJ')
+			->setParameter('idJ', $idJ);
+
+		return $qb->getQuery()->getResult();
+	}	
 }

@@ -10,7 +10,7 @@
 
 	<div id="inf_gen">
 		<div id="photo">
-			<img src="messi.jpg"  alt="photo">
+			<img src="{{asset('bundles/ProjetStatisfoot/images/messi.jpg')}}" width="220" height="200"  alt="photo">
 		</div>
 		<div>
 			<p> ID : {{joueur.id}}</p>
@@ -80,6 +80,27 @@
 				<td>{{compet['tacle']}}</td>
 				<td>{{compet['cartonJ']}}</td>
 				<td>{{compet['cartonR']}}</td>
+			</tr>
+			{%endfor%}
+		</table>
+	</div>
+	<div id="tranfert">
+		<p> Les equipes du joueur </p>
+		<table >
+			<tr class="head_tab">
+				<td>Debut Contrat</td>
+				<td>Club</td>
+				<td>Niveau</td>
+			</tr>
+			{% for equipe in lesEquipes %}
+			<tr class="unselectable tr_match">
+				<td>{{equipe['date']|date('d/m/Y')}}</td>
+				<td>
+					<a href="{{ path('statisfoot_equipe', {'id': equipe['id']}) }}">	
+						{{equipe['nom']}}
+					<a/>
+				</td>
+				<td>{{equipe['niv']}}</td>
 			</tr>
 			{%endfor%}
 		</table>
