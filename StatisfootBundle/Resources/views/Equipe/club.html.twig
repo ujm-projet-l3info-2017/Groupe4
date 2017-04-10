@@ -1,0 +1,32 @@
+
+{% extends "ProjetStatisfootBundle::layout.html.twig" %}
+
+{% block title %}{{ parent() }} - ListeEquipe{% endblock %}
+
+{% block body %}
+<div class="info_gen">
+	<div class="haut">
+		<h1>{{club.nomClub}}
+		les informations générales sur le club</h1>
+	<div>
+	<div class="bas">
+		<h1> La liste du palmares du club</h1>
+	<div>
+</div>
+<div class="droite">
+	<h3> Liste des Equipes </h3>
+	<table class="table_match">
+		<tr class="head_tab"> 
+			<td> Nom </td>
+			<td> Niveau </td>
+		</tr>
+		{%for equipe in listeEquipe%}
+		<tr class="unselectable tr_match">
+				<td><a href="{{ path('statisfoot_equipe', {'id': equipe.id}) }}">{{equipe.nom}}</a></td>
+				<td>{{equipe.niveau.libelleNiv}}</td>	
+		</tr>
+		{%endfor%}
+	</table>
+</div>
+
+{% endblock %}
