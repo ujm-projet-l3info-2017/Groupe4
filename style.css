@@ -136,6 +136,11 @@ body{
     box-shadow: 0px 11px 29px -10px rgba(0,0,0,0.75);
 }
 
+#pop_menu_clubs li, #pop_menu_competitions li{
+    list-style: none;
+    display: inline-block;
+}
+
 .el_container:after{
     content: "";
     display: none;
@@ -368,11 +373,11 @@ td.selected{
 *
 */
 
-#inf_gen{
+.inf_gen{
     float: left;
 }
 
-#inf_gen div{
+.inf_gen div{
     display: inline-block;
 }
 
@@ -382,4 +387,15 @@ td.selected{
 
 .bas{
     padding-top: 180px;
+}
+
+
+/*
+*
+*           JOUEUR
+*
+*/
+
+.bas{
+    min-height: 100px;
 }
