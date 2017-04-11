@@ -40,12 +40,4 @@ class EquipeController extends Controller
 		return $this->render('ProjetStatisfootBundle:Equipe:view_equipe.html.twig', array('equipe'=>$equipe,
 			'listeMatch'=>$listeMatch,'joueurs'=>$joueurs));
 	}
-
-	public function clubAction($id){
-		$club = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:club')->find($id);
-
-		$listeEquipe = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:equipe')->findEquipes($id);
-
-		return $this->render('ProjetStatisfootBundle:Equipe:club.html.twig', array('listeEquipe'=>$listeEquipe, 'club'=>$club));		
-	}
 }
