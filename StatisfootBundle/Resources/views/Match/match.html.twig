@@ -6,13 +6,19 @@
 <div class="bloc_middle">
 	<div class="table_titre">
 	<h5>{{nomCompet}}</h5></br>
-	<h2>
-		{{match[0].equipe.nom}}
-		{{match[0].ButMarq}}
-		-
-		{{match[0].ButEnc}}
-		{{match[1].equipe.nom}}
-	</h2>
+	<div class="match_result_container">
+		<div class = match_result>
+			<div class="team_a_match">{{match[0].equipe.nom}}
+				<div class="score_match">{{match[0].ButMarq}}</div>
+			</div>
+			<div class="team_mid_match">
+				 - 
+				</div>
+			<div class="team_b_match">{{match[1].equipe.nom}}
+				<div class="score_match">{{match[0].ButEnc}}</div>
+			</div>
+		</div>
+	</div>
 	</div>
 
 	<h3>FACE A FACE </h3>
