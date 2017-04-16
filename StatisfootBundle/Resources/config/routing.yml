@@ -17,6 +17,11 @@ statisfoot_match:
     requirements:
         id: \d+
 
+statisfoot_club:
+    path:     /club/{id}
+    defaults: 
+        _controller: ProjetStatisfootBundle:Equipe:club
+
 statisfoot_liste_equipe:
     path:     /listeEquipe
     defaults: 
