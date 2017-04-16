@@ -14,6 +14,14 @@ use Projet\StatisfootBundle\Entity\equipe;
 */
 class MatchController extends Controller
 {
+
+	public function menuAction(){
+		$compet = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:competition')->findAll();
+
+		$clubs = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:club')->findAll();
+
+		return $this->render('ProjetStatisfootBundle:Match:menu.html.twig',array('competition'=>$compet,'lesClubs'=>$clubs));
+	}
 	
 	public function indexAction(){
 		//Recuperation de tout les Matchs.
