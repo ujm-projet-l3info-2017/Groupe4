@@ -8,7 +8,7 @@
     <title>{% block title %}STATISFOOT{% endblock %}</title>
   </head>
   <body>
-
+ 
   <!-- HEADER-BAR -->
   <div class="header_bar">
   	<div class="left_header_part">
@@ -16,22 +16,7 @@
 	      <a href="{{ path('statisfoot_accueil') }}">STATISFOOT</a>
 	    </div>
 	    <div class="menu_list_container unselectable">
-		    <div class="menu_list">
-		    	<div class="el_container first_el">
-		    		<div class="el">COMPETITIONS</div>
-		    		<div id="pop_menu_competitions">
-
-				  	</div>
-		    	</div>
-		    </div>
-		    <div class="menu_list">
-		    		<div class="el_container">
-		    			<div class="el">CLUBS</div>
-		    			<div id="pop_menu_clubs">
-				  		
-				  		</div>
-		    		</div>
-		    </div>
+		    {{ render(controller("ProjetStatisfootBundle:Match:menu")) }}
 	    </div>
 	</div>
     <div class="recherche_container">
