@@ -1,32 +1,29 @@
  <div class="menu_list">
 	<div class="el_container first_el">
-		<div class="el">
-			COMPETITIONS
-			<ul id="pop_menu_competitions">
-				{% for compet in competition %}
+		<div class="el">COMPETITIONS</div>
+		<div id="pop_menu_competitions">
+			{% for compet in competition %}
 
-				<li> 
-					<a href="{{ path('statisfoot_compet', {'id': compet.id}) }}">
-					{{compet.nomCompet}}
-					</a>
-				</li>
-				{% endfor%}
-		  	</ul>
+			<li> 
+				<a href="{{ path('statisfoot_compet', {'id': compet.id}) }}">
+				{{compet.nomCompet}}
+				</a>
+			</li>
+			{% endfor%}
 	  	</div>
 	</div>
 </div>
 <div class="menu_list">
 		<div class="el_container">
-			<div class="el">CLUBS
-				<ul id="pop_menu_clubs">
-			  		{% for club in lesClubs %}
-					<li> 
-						<a href="{{ path('statisfoot_club', {'id': club.id}) }}">
-						{{club.nomClub}}
-						</a>
-					</li>
-					{% endfor%}
-		  		</ul>
+			<div class="el">CLUBS</div>
+			<div id="pop_menu_clubs">
+		  		{% for club in lesClubs %}
+				<li> 
+					<a href="{{ path('statisfoot_club', {'id': club.id}) }}">
+					{{club.nomClub}}
+					</a>
+				</li>
+				{% endfor%}
 	  		</div>
 		</div>
 </div>
