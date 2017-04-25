@@ -107,4 +107,29 @@ class match_equipeRepository extends EntityRepository
 			->setParameter('idmatch',$idmatch);
 			return $matchs->getQuery()->getResult();
 	}
+
+	public function faceface($id1, $id2){
+		$query2 = $this->createQueryBuilder('m1');
+		$ma = $query2->select('match1.id')
+			->leftJoin('m1.match','match1')
+			->leftJoin('m1.equipe','eq1')
+			->where('eq1.id = :id1');
+
+		$query = $this->createQueryBuilder('m');
+
+		$qb = $query->select('m')
+			->leftJoin('m.match','match')
+			->leftJoin('m.equipe','eq')
+			->addSelect('match')
+			->addSelect('eq')
+			->where('eq.id = :id')
+			->andWhere($query->expr()->in('match.id',$ma->getDQL()))
+			->setMaxResults('5')
+			->setParameter('id',$id2)
+			->setParameter('id1',$id1);
+
+		return $query->getQuery()->getResult();
+	}
+}
+
 }
