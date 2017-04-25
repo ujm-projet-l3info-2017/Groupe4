@@ -1,0 +1,80 @@
+{% extends "ProjetStatisfootBundle::layout.html.twig" %}
+
+{% block title %}{{ parent() }} -{{manager.nomManag}} {% endblock %}
+
+{% block body %}
+
+<h1> {{manager.username}} </h1>
+<div class="bloc_middle">
+				<div class="haut">
+					{{equipe.id}}
+					{{equipe.nom}}
+					{{equipe.niveau.libelleNiv}}
+					{{equipe.club.nomClub}}
+				</div>
+				
+				<div class="table_container">
+					<div class="table_titre">MATCHS A VENIR</div>
+						<div class="table_ligue">					
+							<div class="subheader_container">
+								<div class="subheader"> Championnat B </div>
+							</div>
+							<table class="table_match">
+							  <tbody>
+								 {% for match in listeMatch %}
+							    <tr class="unselectable tr_match">
+							      <td>
+							      	<span class="match_state_hours">{{match['heure']|date('d/m/Y')}}</span>
+							      </td>
+							      <td class="team_a">{{match['NomEq1']}}</td>
+							       <td class="team_mid">  
+							       		<a href="{{ path('statisfoot_match', {'id': match['idMatch']}) }}">
+							        		{{match['heure']|date('h : m')}}
+							       		</a>
+							       </td>
+							      <td class="team_b">{{match['NomEq2']}}</td>
+							    </tr>
+							    {% endfor %}
+							  </tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+								
+				<div class="droite">
+					<div >Liste des joueurs</div>
+					<table class="table_match">
+					<tr class="head_tab"> 
+						<td> N°</td>
+						<td>Nom</td>
+						<td>Poste</td>
+						<td>Description</td>
+					</tr>
+						{% for joueur in joueurs%}
+							<tr class="unselectable tr_match">
+								<td>
+									{{joueur.joueur.id}}
+								</td>
+								<td>
+									<a href="{{ path('statisfoot_joueur', {'id': joueur.joueur.id}) }}">								
+									{{joueur.joueur.nomJ}}
+									{{joueur.joueur.prenomJ}}
+									</a>
+								</td>
+								<td>
+									{{joueur.joueur.poste.libellePoste}}
+								</td>
+								<td>
+									{{joueur.joueur.poste.descripPoste}}
+								</td>
+				
+							</tr>
+						{% endfor %}
+					</table>
+
+					<div id="ajout" class="bouton"> 
+						<a href="{{ path('statisfoot_manage_joueur_ajout') }}"> Nouveau Joueur </a>
+					</div>
+				</div>
+</div>
+{% endblock %}

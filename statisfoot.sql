@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  127.0.0.1
--- Généré le :  Lun 27 Mars 2017 à 19:35
+-- Généré le :  Mar 25 Avril 2017 à 10:13
 -- Version du serveur :  5.7.14
 -- Version de PHP :  7.0.10
 
@@ -130,6 +130,15 @@ CREATE TABLE `equipe_manager` (
   `date_fin` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Contenu de la table `equipe_manager`
+--
+
+INSERT INTO `equipe_manager` (`id`, `manager_id`, `equipe_id`, `date_debut`, `date_fin`) VALUES
+(1, 3, 1, '2016-01-16', '2017-10-31'),
+(2, 1, 2, '2015-04-25', '2018-04-19'),
+(3, 2, 3, '2016-12-18', '2017-12-18');
+
 -- --------------------------------------------------------
 
 --
@@ -207,11 +216,22 @@ CREATE TABLE `manager` (
   `id` int(11) NOT NULL,
   `nom_manag` varchar(40) COLLATE utf8_unicode_ci NOT NULL,
   `prenom_manag` varchar(40) COLLATE utf8_unicode_ci NOT NULL,
-  `pseudo` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `email` varchar(40) COLLATE utf8_unicode_ci NOT NULL,
-  `mdp` longtext COLLATE utf8_unicode_ci NOT NULL,
-  `num_tel` varchar(12) COLLATE utf8_unicode_ci NOT NULL
+  `password` longtext COLLATE utf8_unicode_ci NOT NULL,
+  `num_tel` varchar(12) COLLATE utf8_unicode_ci NOT NULL,
+  `username` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `salt` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `roles` longtext COLLATE utf8_unicode_ci NOT NULL COMMENT '(DC2Type:array)'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Contenu de la table `manager`
+--
+
+INSERT INTO `manager` (`id`, `nom_manag`, `prenom_manag`, `email`, `password`, `num_tel`, `username`, `salt`, `roles`) VALUES
+(1, 'NomAlexandre', 'PrenomAlexandre', 'EmailAlexandre', 'Alexandre', '0669965325', 'Alexandre', '', 'a:1:{i:0;s:12:"ROLE_MANAGER";}'),
+(2, 'NomMarine', 'PrenomMarine', 'EmailMarine', 'Marine', '0669965325', 'Marine', '', 'a:1:{i:0;s:12:"ROLE_MANAGER";}'),
+(3, 'NomAnna', 'PrenomAnna', 'EmailAnna', 'Anna', '0669965325', 'Anna', '', 'a:1:{i:0;s:12:"ROLE_MANAGER";}');
 
 -- --------------------------------------------------------
 
@@ -223,13 +243,13 @@ CREATE TABLE `match_equipe` (
   `id` int(11) NOT NULL,
   `equipe_id` int(11) NOT NULL,
   `match_id` int(11) NOT NULL,
-  `but_marq` int(11) NOT NULL,
-  `but_enc` int(11) NOT NULL,
-  `corner_obt` int(11) NOT NULL,
-  `corner_conc` int(11) NOT NULL,
-  `tir_cadre` int(11) NOT NULL,
-  `cf_obt` int(11) NOT NULL,
-  `cf_conc` int(11) NOT NULL
+  `but_marq` int(11) DEFAULT NULL,
+  `but_enc` int(11) DEFAULT NULL,
+  `corner_obt` int(11) DEFAULT NULL,
+  `corner_conc` int(11) DEFAULT NULL,
+  `tir_cadre` int(11) DEFAULT NULL,
+  `cf_obt` int(11) DEFAULT NULL,
+  `cf_conc` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -246,7 +266,15 @@ INSERT INTO `match_equipe` (`id`, `equipe_id`, `match_id`, `but_marq`, `but_enc`
 (7, 1, 7, 1, 1, 0, 0, 0, 0, 0),
 (8, 4, 7, 1, 1, 2, 5, 0, 1, 5),
 (9, 2, 5, 2, 3, 9, 6, 10, 3, 4),
-(10, 3, 5, 3, 2, 6, 10, 12, 4, 3);
+(10, 3, 5, 3, 2, 6, 10, 12, 4, 3),
+(11, 1, 8, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(12, 2, 8, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(13, 1, 9, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(14, 2, 9, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(15, 1, 11, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(16, 3, 10, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(17, 1, 10, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(18, 4, 11, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -271,7 +299,11 @@ INSERT INTO `match_foot` (`id`, `competition_id`, `date_match`, `lieu`, `num_jou
 (4, 2, '2017-03-28 00:00:00', 'lyon', 8),
 (5, 2, '2017-01-09 00:00:00', 'Roanne', 10),
 (6, 1, '2016-12-05 00:00:00', 'lyon', 20),
-(7, 1, '2017-03-05 00:00:00', 'ST-ETIENNE', 21);
+(7, 1, '2017-03-05 00:00:00', 'ST-ETIENNE', 21),
+(8, 1, '2017-05-16 15:00:00', 'Saint-Etienne', 6),
+(9, 1, '2017-05-28 16:00:00', 'Saint-Etienne', 8),
+(10, 2, '2017-05-21 14:00:00', 'Lyon', 5),
+(11, 2, '2017-05-23 10:00:00', 'Lyon', 4);
 
 -- --------------------------------------------------------
 
@@ -460,6 +492,20 @@ INSERT INTO `type_passe` (`id`, `libelle_type_passe`) VALUES
 (4, 'passe à travers la defense'),
 (5, 'passe au dessus de la defense');
 
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `user`
+--
+
+CREATE TABLE `user` (
+  `id` int(11) NOT NULL,
+  `username` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `password` longtext COLLATE utf8_unicode_ci NOT NULL,
+  `salt` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `roles` longtext COLLATE utf8_unicode_ci NOT NULL COMMENT '(DC2Type:array)'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 --
 -- Index pour les tables exportées
 --
@@ -522,7 +568,8 @@ ALTER TABLE `joueur_equipe`
 -- Index pour la table `manager`
 --
 ALTER TABLE `manager`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `UNIQ_FA2425B9F85E0677` (`username`);
 
 --
 -- Index pour la table `match_equipe`
@@ -593,6 +640,13 @@ ALTER TABLE `type_passe`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Index pour la table `user`
+--
+ALTER TABLE `user`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `UNIQ_8D93D649F85E0677` (`username`);
+
+--
 -- AUTO_INCREMENT pour les tables exportées
 --
 
@@ -620,7 +674,7 @@ ALTER TABLE `equipe`
 -- AUTO_INCREMENT pour la table `equipe_manager`
 --
 ALTER TABLE `equipe_manager`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT pour la table `joueur`
 --
@@ -635,17 +689,17 @@ ALTER TABLE `joueur_equipe`
 -- AUTO_INCREMENT pour la table `manager`
 --
 ALTER TABLE `manager`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT pour la table `match_equipe`
 --
 ALTER TABLE `match_equipe`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 --
 -- AUTO_INCREMENT pour la table `match_foot`
 --
 ALTER TABLE `match_foot`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 --
 -- AUTO_INCREMENT pour la table `match_joueur`
 --
@@ -686,6 +740,11 @@ ALTER TABLE `type_but`
 --
 ALTER TABLE `type_passe`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+--
+-- AUTO_INCREMENT pour la table `user`
+--
+ALTER TABLE `user`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- Contraintes pour les tables exportées
 --

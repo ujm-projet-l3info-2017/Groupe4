@@ -59,13 +59,26 @@ class match_equipeRepository extends EntityRepository
 	}
 
 	//recupération des matchs pour une equipe donnée
-	public function findMAtch($id_equipe){
+	public function findMatch($id_equipe){
 		$qb = $this->createQueryBuilder('m')
 			->leftJoin('m.match','match')
 			->addSelect('match')
 			->leftJoin('m.equipe','eq')
 			->where('eq.id = :id')
 			->setParameter('id',$id_equipe);
+		return $qb->getQuery()->getResult();
+	}
+
+	//recupération des matchs à venir pour une equipe donnée
+	public function findMatchAVenir($id_equipe){
+		$qb = $this->createQueryBuilder('m')
+			->leftJoin('m.match','match')
+			->addSelect('match')
+			->leftJoin('m.equipe','eq')
+			->where('eq.id = :id')
+			->andwhere('match.dateMatch > :date')
+			->setParameter('id', $id_equipe)
+			->setParameter('date', new \DateTIME());
 		return $qb->getQuery()->getResult();
 	}
 
@@ -93,27 +106,5 @@ class match_equipeRepository extends EntityRepository
 			->setParameter('id',$ideq)
 			->setParameter('idmatch',$idmatch);
 			return $matchs->getQuery()->getResult();
-	}
-	public function faceface($id1, $id2){
-		$query2 = $this->createQueryBuilder('m1');
-		$ma = $query2->select('match1.id')
-			->leftJoin('m1.match','match1')
-			->leftJoin('m1.equipe','eq1')
-			->where('eq1.id = :id1');
-
-		$query = $this->createQueryBuilder('m');
-
-		$qb = $query->select('m')
-			->leftJoin('m.match','match')
-			->leftJoin('m.equipe','eq')
-			->addSelect('match')
-			->addSelect('eq')
-			->where('eq.id = :id')
-			->andWhere($query->expr()->in('match.id',$ma->getDQL()))
-			->setMaxResults('5')
-			->setParameter('id',$id2)
-			->setParameter('id1',$id1);
-
-		return $query->getQuery()->getResult();
 	}
 }

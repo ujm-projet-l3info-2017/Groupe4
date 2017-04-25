@@ -10,4 +10,14 @@ namespace Projet\StatisfootBundle\Repository;
  */
 class equipeRepository extends \Doctrine\ORM\EntityRepository
 {
+	public function findEquipes($idC){
+		$qb = $this->createQueryBuilder('e')
+			->leftJoin('e.club','c')
+			->leftJoin('e.niveau','n')
+			->addSelect('n')
+			->where('c.id = :id')
+			->setParameter('id', $idC);
+
+		return $qb->getQuery()->getResult();
+	}
 }

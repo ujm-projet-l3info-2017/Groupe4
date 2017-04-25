@@ -50,7 +50,7 @@ class joueur_equipe
     private $date_debut;
 
     /**
-    * @var bool
+    * @var date
     *
     * @ORM\Column(name="date_fin", type="date")
     */
@@ -68,6 +68,13 @@ class joueur_equipe
     * @ORM\JoinColumn(nullable=false)
     */
     private $equipe;
+
+    public function __construct(){
+        $this->date_debut = new \DateTime();
+        $this->date_fin = date("Y-m-d",strtotime("+10 year", new DateTime()));
+        $this->titulaire = false;
+        $this->remplacant = true;
+    }
 
     /**
      * Get id

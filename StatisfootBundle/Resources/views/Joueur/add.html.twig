@@ -1,0 +1,80 @@
+{% extends "ProjetStatisfootBundle::layout.html.twig" %}
+
+{% block title %}{{ parent() }} - Nouveau Joueur {% endblock %}
+
+{% block body %}
+
+<h3>Formulaire d'annonce</h3>
+
+<table>
+
+  {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+
+  {# Les erreurs générales du formulaire. #}
+
+  {{ form_errors(form) }}
+
+  {# Génération du label + error + widget pour un champ. #}
+
+  {# Génération manuelle et éclatée : #}
+
+  <tr class="form-group">
+
+    {# Génération du label. #}
+    <td>
+
+      {{ form_label(form.nomJ, "Nom du Joueur : ", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+       {{ form_errors(form.nomJ) }}
+
+    </td>
+    <td>
+
+      {{ form_widget(form.nomJ, {'attr': {'class': 'form-control'}}) }}
+
+    </td>
+
+  </tr>
+
+  <tr class="form-group">
+
+    {# Génération du label. #}
+    <td>
+
+    {{ form_label(form.prenomJ, "Prenom du Joueur : ", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+
+    {{ form_errors(form.prenomJ) }}
+    </td>
+
+    <td>
+
+      {{ form_widget(form.prenomJ, {'attr': {'class': 'form-control'}}) }}
+
+    </td>
+
+  </tr>
+  <tr>
+    <td>
+      {{ form_label(form.dateNaiss, "Date de Naissance : ") }}
+    </td>
+    <td>
+        {{ form_widget(form.dateNaiss) }} 
+    </td>     
+  </tr>
+  <tr>
+    <td>
+        {{ form_label(form.poste, "Poste de Jeu : ") }}
+    </td>
+    <td>
+      {{ form_widget(form.poste) }}
+    </td>
+  </tr>
+</table>
+
+   {{ form_widget(form.Ajouter, {'attr': {'class': 'bouton'}}) }}
+
+  {{ form_rest(form) }}
+
+  {{ form_end(form) }}
+
+</div>
+{% endblock %}

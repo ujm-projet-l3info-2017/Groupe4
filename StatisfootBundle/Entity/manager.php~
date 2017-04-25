@@ -285,3 +285,4 @@ class manager implements UserInterface
 
     }
 }
+

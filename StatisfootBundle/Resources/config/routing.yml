@@ -34,6 +34,39 @@ statisfoot_equipe:
     requirements:
         id: \d+
 
+statisfoot_manage_equipe:
+    path:     /manage/equipe/{id}
+    defaults: 
+        _controller: ProjetStatisfootBundle:Equipe:manage_equipe
+    requirements:
+        id: \d+
+
+statisfoot_manage_joueur:
+    path:     /manage/joueur/{id}
+    defaults: 
+        _controller: ProjetStatisfootBundle:Joueur:manage_joueur
+    requirements:
+        id: \d+
+
+statisfoot_manage_joueur_ajout:
+    path:     /manage/joueur/ajout
+    defaults: 
+        _controller: ProjetStatisfootBundle:Joueur:manage_add
+
+statisfoot_manage_joueur_mod:
+    path:     /manage/joueur/mod/{id}
+    defaults: 
+        _controller: ProjetStatisfootBundle:Joueur:manage_mod
+    requirements:
+        id: \d+
+
+statisfoot_manage_joueur_sup:
+    path:     /manage/joueur/sup/{id}
+    defaults: 
+        _controller: ProjetStatisfootBundle:Joueur:manage_sup
+    requirements:
+        id: \d+
+
 statisfoot_effectif:
     path:     /equipe/{id}/effectif
     defaults: 
