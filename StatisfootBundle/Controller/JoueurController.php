@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Projet\StatisfootBundle\Entity\joueur;
 use Projet\StatisfootBundle\Entity\joueur_equipe;
 use Projet\StatisfootBundle\Form\joueurType;
+use Projet\StatisfootBundle\Form\joueurModType;
 
 /**
 * 
@@ -82,14 +83,15 @@ class JoueurController extends Controller
 			'stat'=>$stat, 'coequipiers'=>$coequipiers,'lesEquipes'=>$lesEquipes));
 	}
 
-	public function manage_joueurAction($id){
+	public function manage_joueurAction($id, Request $request){
 		$joueur = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:joueur')->find($id);
 
-		$equipe = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:joueur_equipe')
-		->findEquipe($id);
+		$id_equipe = $request->getSession()->get('id_equipe');
+		$equipe = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:equipe')
+		->find($id_equipe);
 
 		$competition = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_equipe')
-		->findCompetEquipe($equipe[0]->getEquipe()->getId());
+		->findCompetEquipe($equipe->getId());
 
 		$stat = array();
 
@@ -141,7 +143,7 @@ class JoueurController extends Controller
 		}
 
 		$coequipiers = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:joueur_equipe')
-		->findCoequipiers($id, $equipe[0]->getEquipe()->getId());
+		->findCoequipiers($id, $equipe->getId());
 
 		$lesEquipes = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:joueur_equipe')
 		->findLesEquipes($id);
@@ -150,7 +152,7 @@ class JoueurController extends Controller
 			'stat'=>$stat, 'coequipiers'=>$coequipiers,'lesEquipes'=>$lesEquipes));
 	}
 
-	public function manage_addAction(Request $request){
+	public function joueur_addAction(Request $request){
 		$joueur = new joueur();
 
 		$form   = $this->get('form.factory')->create(joueurType::class, $joueur);
@@ -181,5 +183,46 @@ class JoueurController extends Controller
 
 		    return $this->render('ProjetStatisfootBundle:Joueur:add.html.twig', array(
 		      'form' => $form->createView(),));
+	}
+
+	public function joueur_modAction($id, Request $request){
+		$joueur = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:joueur')->find($id);
+
+		if(null==$joueur){
+			throw new NotFoundHttpException("Le joueur d'id : ".$id." n'existe pas");
+		}
+
+		$form   = $this->get('form.factory')->create(joueurModType::class, $joueur);
+
+		if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
+			$em = $this->getDoctrine()->getManager();
+			$em->flush($joueur);
+
+			$request->getSession()->getFlashBag()->add('notice', 'Joueur a bien été modifié.');
+
+		    return $this->redirectToRoute('statisfoot_manage_joueur', array('id' => $joueur->getId()));
+		}
+
+		return $this->render('ProjetStatisfootBundle:Joueur:mod.html.twig', array(
+		      'joueur'=> $joueur,'form' => $form->createView(),));
+	}
+
+	public function joueur_supAction($id, Request $request){
+		$contrat = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:joueur_equipe')
+		->findContrat($id);
+
+		if(null==$joueur){
+			throw new NotFoundHttpException("Le joueur d'id : ".$id." n'existe pas");
+		}
+
+		if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
+			$em = $this->getDoctrine()->getManager();
+			$contrat->setDateFin(new \DateTime());
+			$em->flush($contrat);
+			return $this->redirectToRoute('statisfoot_manage_equipe', 
+				array('id'=>$request->getSession()->get('id_man')));
+		}
+
+		return $this->redirectToRoute('statisfoot_manage_joueur', array('id' => $id));
 	}
 }

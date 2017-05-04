@@ -71,7 +71,7 @@ class joueur_equipe
 
     public function __construct(){
         $this->date_debut = new \DateTime();
-        $this->date_fin = date("Y-m-d",strtotime("+10 year", new DateTime()));
+        $this->date_fin = new \DateTime("2050-05-10");
         $this->titulaire = false;
         $this->remplacant = true;
     }

@@ -64,6 +64,7 @@ class EquipeController extends Controller
 		$session = $request->getSession();
 
 		$session->set('id_equipe',$equipe->getId());
+		$session->set('id_man',$manager->getId());
 
 
 		//recuperation de la liste des joueurs

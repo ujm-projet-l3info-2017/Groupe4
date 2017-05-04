@@ -130,6 +130,5 @@ class match_equipeRepository extends EntityRepository
 
 		return $query->getQuery()->getResult();
 	}
-}
 
 }

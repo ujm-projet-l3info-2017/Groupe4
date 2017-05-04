@@ -10,7 +10,24 @@
 
 	<div class="inf_gen">
 		<div id="photo">
-			<img src="{{asset('bundles/ProjetStatisfoot/images/messi.jpg')}}" width="220" height="200"  alt="photo">
+			<img src="{{asset('bundles/ProjetStatisfoot/images/messi.jpg')}}" width="220" height="180"  alt="photo">
+			<div id="gestion">
+				<div id="mod" class="bouton"> 
+						<a href="{{ path('statisfoot_manage_joueur_mod', {'id': joueur.id}) }}"> Modifier Infos </a>
+				</div>
+				<div id="sup" class="bouton"> 
+						 Détacher
+				</div>
+				<div id="voile">
+					<div id="block_sup">
+						<p> Etes-vous sûr de detacher cet joueur de votre equipe ? </p>
+						<div id="ann" class="bouton">Annuler</div>
+						<div id="continuer" class="bouton">
+							<a href="{{ path('statisfoot_manage_joueur_sup', {'id': joueur.id}) }}">Continuer</a>
+						</div>  
+					</div>
+				</div>
+			</div>
 		</div>
 		<div>
 			<p> ID : {{joueur.id}}</p>
@@ -35,7 +52,7 @@
 						{{coep.joueur.id}}
 					</td>
 					<td>
-						<a href="{{ path('statisfoot_joueur', {'id': coep.joueur.id}) }}">								
+						<a href="{{ path('statisfoot_manage_joueur', {'id': coep.joueur.id}) }}">								
 						{{coep.joueur.nomJ}}
 						{{coep.joueur.prenomJ}}
 						</a>

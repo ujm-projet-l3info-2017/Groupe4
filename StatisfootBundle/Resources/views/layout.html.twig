@@ -13,10 +13,36 @@
   <div class="header_bar">
   	<div class="left_header_part">
 	    <div class="topbar-menu">
-	      <a href="{{ path('statisfoot_accueil') }}">STATISFOOT</a>
+        {% if app.user.id is defined %}
+	        <a href="{{ path('statisfoot_accueil_manage') }}">STATISFOOT</a>
+        {% else %}
+          <a href="{{ path('statisfoot_accueil') }}">STATISFOOT</a>
+        {% endif %}
 	    </div>
 	    <div class="menu_list_container unselectable">
-		    {{ render(controller("ProjetStatisfootBundle:Match:menu")) }}
+        {% if app.user.id is defined %}
+
+          <div class="menu_list">
+            <div class="el_container first_el">
+              <div class="el">
+                <a href="{{ path('statisfoot_manage_equipe',{'id' : app.user.id }) }}"> Mon Equipe </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="menu_list">
+            <div class="el_container first_el">
+              <div class="el">
+                <a href="{{ path('logout')}}"> Déconnexion </a>
+              </div>
+            </div>
+          </div>
+
+        {% else %}  
+
+		      {{ render(controller("ProjetStatisfootBundle:Match:menu")) }}
+        
+        {% endif %}
 	    </div>
 	</div>
     <div class="recherche_container">

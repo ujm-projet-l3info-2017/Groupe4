@@ -3,6 +3,11 @@ statisfoot_accueil:
     defaults: 
         _controller: ProjetStatisfootBundle:Match:index
 
+statisfoot_accueil_manage:
+    path:     /manage
+    defaults: 
+        _controller: ProjetStatisfootBundle:Match:index_manage
+
 statisfoot_accueil_date:
     path:     /{date}
     defaults: 
@@ -51,19 +56,19 @@ statisfoot_manage_joueur:
 statisfoot_manage_joueur_ajout:
     path:     /manage/joueur/ajout
     defaults: 
-        _controller: ProjetStatisfootBundle:Joueur:manage_add
+        _controller: ProjetStatisfootBundle:Joueur:joueur_add
 
 statisfoot_manage_joueur_mod:
     path:     /manage/joueur/mod/{id}
     defaults: 
-        _controller: ProjetStatisfootBundle:Joueur:manage_mod
+        _controller: ProjetStatisfootBundle:Joueur:joueur_mod
     requirements:
         id: \d+
 
 statisfoot_manage_joueur_sup:
     path:     /manage/joueur/sup/{id}
     defaults: 
-        _controller: ProjetStatisfootBundle:Joueur:manage_sup
+        _controller: ProjetStatisfootBundle:Joueur:joueur_sup
     requirements:
         id: \d+
 
