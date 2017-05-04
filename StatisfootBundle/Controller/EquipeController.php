@@ -71,6 +71,76 @@ class EquipeController extends Controller
 		$joueurs = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:joueur_equipe')
 		->findJoueurs($equipe->getId());
 
+		$titu = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:joueur_equipe')
+		->findTitulaires($equipe->getId());
+
+		$remplac = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:joueur_equipe')
+		->findRemplacants($equipe->getId());
+		
+		$titulaires = array();
+		$tab = array();
+		//on trie la liste des titulaires par poste
+		foreach ($titu as $tit) {
+			if ($tit->getPoste() == 'GB') {
+				$rang = 1;
+			} 
+			elseif ($tit->getPoste() == 'DC' || $tit->getPoste() == 'LIB') {
+				$rang=2;
+			} 
+			elseif ($tit->getPoste() == 'LD' || $tit->getPoste() == 'LG') {
+				$rang=3;	
+			}
+			elseif ($tit->getPoste() == 'DEF') {
+				$rang=4;	
+			}
+			elseif ($tit->getPoste() == 'MR' || $tit->getPoste() == 'MO') {
+				$rang=5;	
+			}
+			elseif ($tit->getPoste() == 'AG' || $tit->getPoste() == 'AD') {
+				$rang=6;
+			}
+			else{
+				$rang=7;
+			}
+
+			array_push($tab, $rang);
+			array_push($titulaires, array('joueur'=>$tit->getJoueur(),'poste'=>$tit->getPoste(),'rang'=>$rang));
+		}
+
+		array_multisort($tab, SORT_ASC, $titulaires);
+
+		$remplacants = array();
+		$tab = array();
+		//on trie la liste des remplaçants par poste aussi 
+		foreach ($remplac as $rem) {
+			if ($rem->getPoste() == 'GB') {
+				$rang=1;
+			} 
+			elseif ($rem->getPoste() == 'DC' || $rem->getPoste() == 'LIB') {
+				$rang=2;
+			} 
+			elseif ($rem->getPoste() == 'LD' || $rem->getPoste() == 'LG') {
+				$rang=3;	
+			}
+			elseif ($rem->getPoste() == 'DEF') {
+				$rang=4;	
+			}
+			elseif ($rem->getPoste() == 'MR' || $rem->getPoste() == 'MO') {
+				$rang=5;	
+			}
+			elseif ($rem->getPoste() == 'AG' || $rem->getPoste() == 'AD') {
+				$rang=6;
+			}
+			else{
+				$rang=7;
+			}
+
+			array_push($tab, $rang);
+			array_push($remplacants, array('joueur'=>$rem->getJoueur(),'poste'=>$rem->getPoste(),'rang'=>$rang));
+		}
+
+		array_multisort($tab, SORT_ASC, $remplacants);
+
 		//recuperations des matchs à venir pour l'equipe
 		$matchs = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_equipe')
 		->findMatchAVenir($equipe->getId());
@@ -88,6 +158,7 @@ class EquipeController extends Controller
 		}
 
 		return $this->render('ProjetStatisfootBundle:Equipe:manage_equipe.html.twig', array('manager'=>$manager, 
-			'joueurs'=>$joueurs, 'listeMatch'=>$listeMatch, 'equipe'=>$equipe));
+			'joueurs'=>$joueurs, 'titulaires' => $titulaires, 'remplacants' => $remplacants, 'listeMatch'=>$listeMatch,
+			 'equipe'=>$equipe));
 	}
 }

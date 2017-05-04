@@ -24,6 +24,36 @@ class joueur_equipeRepository extends EntityRepository
 		return $qb->getQuery()->getResult();
 	}
 
+	public function findTitulaires($idE){
+		$qb = $this->createQueryBuilder('j')
+			->leftJoin('j.equipe','eq')
+			->leftJoin('j.joueur','joue')
+			->addSelect('joue')
+			->where('j.date_fin > :date')
+			->andWhere('j.titulaire = :tit')
+			->andWhere('eq.id = :id')
+			->setParameter('date', new \DateTIME())
+			->setParameter('tit', true)
+			->setParameter('id', $idE);
+
+		return $qb->getQuery()->getResult();
+	}
+
+	public function findRemplacants($idE){
+		$qb = $this->createQueryBuilder('j')
+			->leftJoin('j.equipe','eq')
+			->leftJoin('j.joueur','joue')
+			->addSelect('joue')
+			->where('j.date_fin > :date')
+			->andWhere('j.remplacant = :rem')
+			->andWhere('eq.id = :id')
+			->setParameter('date', new \DateTIME())
+			->setParameter('rem', true)
+			->setParameter('id', $idE);
+
+		return $qb->getQuery()->getResult();
+	}
+
 	public function findEquipe($idJ){
 		$qb = $this->createQueryBuilder('j')
 			->leftJoin('j.equipe','eq')

@@ -6,11 +6,63 @@
 
 <h1> {{manager.username}} </h1>
 <div class="bloc_middle">
+
 				<div class="haut">
 					{{equipe.id}}
 					{{equipe.nom}}
 					{{equipe.niveau.libelleNiv}}
 					{{equipe.club.nomClub}}
+				</div>
+
+				<div id="compo">
+					<div id="remp">
+						<h3>Les Remplaçants</h3>
+						<table class="table_match">
+							<tr class="head_tab"> 
+								<td> N°</td>
+								<td>Nom</td>
+								<td>Poste</td>
+							</tr>
+							{% for remp in remplacants%}
+								<tr class="unselectable tr_match">
+									<td>
+										{{remp['joueur'].id}}
+									</td>
+									<td>								
+										{{remp['joueur'].nomJ}}
+										{{remp['joueur'].prenomJ}}
+									</td>
+									<td>
+										{{remp['poste']}}
+									</td>				
+								</tr>
+							{% endfor %}
+						</table>
+					</div>
+					<div id="titu">
+						<h3>Les Titulaires</h3>
+						<table class="table_match">
+							<tr class="head_tab"> 
+								<td> N°</td>
+								<td>Nom</td>
+								<td>Poste</td>
+							</tr>
+							{% for tit in titulaires %}
+								<tr class="unselectable tr_match">
+									<td>
+										{{tit['joueur'].id}}
+									</td>
+									<td>								
+										{{tit['joueur'].nomJ}}
+										{{tit['joueur'].prenomJ}}
+									</td>
+									<td>
+										{{tit['poste']}}
+									</td>				
+								</tr>
+							{% endfor %}
+						</table>
+					</div>
 				</div>
 				
 				<div class="table_container">
