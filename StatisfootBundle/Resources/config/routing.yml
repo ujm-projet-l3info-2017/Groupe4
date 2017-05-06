@@ -44,7 +44,7 @@ statisfoot_manage_equipe:
     defaults: 
         _controller: ProjetStatisfootBundle:Equipe:manage_equipe
     requirements:
-        id: \d+
+        id: \d+  
 
 statisfoot_manage_joueur:
     path:     /manage/joueur/{id}
@@ -71,6 +71,14 @@ statisfoot_manage_joueur_sup:
         _controller: ProjetStatisfootBundle:Joueur:joueur_sup
     requirements:
         id: \d+
+
+statisfoot_manage_joueur_remp:
+    path:     /manage/joueur/remp/{idRt}/{idRe}
+    defaults: 
+        _controller: ProjetStatisfootBundle:Joueur:joueur_remp
+    requirements:
+        idRt: \d+
+        idRe: \d+     
 
 statisfoot_effectif:
     path:     /equipe/{id}/effectif

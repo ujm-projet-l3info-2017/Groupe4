@@ -1,6 +1,19 @@
 (function() {
 
-    function remplacer(remplace, remplacant)
+    function remplacer(remplace, remplacant){
+        var idRt = remplacant.getAttribute('data-id'),
+            idRe = remplace.getAttribute('data-id'),
+            xhr= new XMLHttpRequest();
+            alert(idRt+" et "+idRe);
+            xhr.open("GET","http://localhost/Symfony/web/app_dev.php/statisfoot/manage/joueur/remp/"+idRt+"/"+idRe,true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    alert('Reussi');
+                }
+            }
+
+            xhr.send(null);
+    }
 
     var dndHandler = {
 
@@ -93,6 +106,8 @@
 
                 target.parentNode.removeChild(target); //suppression de l'element remplacé
                 draggedElement.parentNode.removeChild(draggedElement); // Suppression de l'élément d'origine
+
+                remplacer(clonedTarget,clonedElement);
 
             });
 

@@ -4,6 +4,7 @@ namespace Projet\StatisfootBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Projet\StatisfootBundle\Entity\joueur;
 use Projet\StatisfootBundle\Entity\joueur_equipe;
 use Projet\StatisfootBundle\Form\joueurType;
@@ -225,4 +226,37 @@ class JoueurController extends Controller
 
 		return $this->redirectToRoute('statisfoot_manage_joueur', array('id' => $id));
 	}
+
+	public function joueur_rempAction($idRt, $idRe, Request $request){
+
+
+			$remplacant = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:joueur_equipe')
+			->findJoueurAndEquipe($idRt);
+
+			$remplace = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:joueur_equipe')
+			->findJoueurAndEquipe($idRe);
+
+			if ($remplacant[0]->getTitulaire()) {
+				$poste = $remplacant[0]->getPoste();
+				$remplacant[0]->setPoste($remplace[0]->getPoste());
+				$remplace[0]->setPoste($poste);
+			} else {
+				$remplacant[0]->setTitulaire(true);
+				$remplacant[0]->setRemplacant(false);
+				$remplacant[0]->setPoste($remplace[0]->getPoste());
+
+				$remplace[0]->setTitulaire(false);
+				$remplace[0]->setRemplacant(true);
+			}
+
+			$em = $this->getDoctrine()->getManager();
+			$em->flush($remplace);
+			$em->flush($remplacant);
+
+			return new Response($idRt." et ".$idRe, 200);
+		
+
+		// return new Response("Erreur : ce n'est pas une requete POST".$request->get('idRt'), 400);
+	}
+
 }
