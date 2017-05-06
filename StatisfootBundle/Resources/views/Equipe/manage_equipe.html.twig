@@ -26,13 +26,13 @@
 							{% for remp in remplacants%}
 								<tr class="unselectable tr_match">
 									<td>
-										{{remp['joueur'].id}}
-									</td>
-									<td>								
+										<span class="boule draggable" data-id="{{remp['joueur'].id}}" data-nom="{{remp['joueur'].nomJ}}" data-pre="{{remp['joueur'].prenomJ}}" data-poste="{{remp['poste']}}" draggable="true">
+										   {{remp['joueur'].id}}
+										</span>
+									</td><td>								
 										{{remp['joueur'].nomJ}}
 										{{remp['joueur'].prenomJ}}
-									</td>
-									<td>
+									</td><td>
 										{{remp['poste']}}
 									</td>				
 								</tr>
@@ -49,14 +49,14 @@
 							</tr>
 							{% for tit in titulaires %}
 								<tr class="unselectable tr_match">
-									<td>
-										{{tit['joueur'].id}}
-									</td>
-									<td>								
+									<td class="titulaire">
+										<span class="boule dropper draggable" data-id="{{tit['joueur'].id}}" data-nom="{{tit['joueur'].nomJ}}" data-pre="{{tit['joueur'].prenomJ}}" data-poste="{{tit['poste']}}">
+										   {{tit['joueur'].id}}
+										</span>
+									</td><td>								
 										{{tit['joueur'].nomJ}}
 										{{tit['joueur'].prenomJ}}
-									</td>
-									<td>
+									</td><td>
 										{{tit['poste']}}
 									</td>				
 								</tr>
@@ -129,4 +129,13 @@
 					</div>
 				</div>
 </div>
+
+{% javascripts 'bundles/ProjetStatisfoot/js/dragAndDrop.js' %}
+
+  <script type="text/javascript" src="{{ asset_url }}"></script>
+
+{% endjavascripts %}
+
 {% endblock %}
+
+
