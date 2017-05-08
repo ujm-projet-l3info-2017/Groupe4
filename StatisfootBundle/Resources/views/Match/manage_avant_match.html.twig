@@ -1,0 +1,192 @@
+{% extends "ProjetStatisfootBundle::layout.html.twig" %}
+
+{% block title %}{{ parent() }} - Preparation du Match{% endblock %}
+
+{% block body %}
+<div class="bloc_middle">
+	<div class="table_titre">
+	<h1>{{nomCompet}}</h1></br>
+	<div class="match_result_container">
+		<div class = match_result>
+			<div class="team_a_match">
+				{{equipe.nom}}
+			</div>
+			<div class="team_mid_match">
+				 VS 
+			</div>
+			<div class="team_b_match">
+				{{equipeAdv.nom}}
+			</div>
+			</div>
+		</div>
+	</div>
+	</div>
+
+	<div id="compo">
+		<div id="remp">
+			<h3>Les Remplaçants</h3>
+			<table class="table_match">
+				<tr class="head_tab"> 
+					<td> N°</td>
+					<td>Nom</td>
+					<td>Poste</td>
+				</tr>
+				{% for remp in remplacants%}
+					<tr class="unselectable tr_match">
+						<td>
+							<span class="boule draggable" data-id="{{remp['joueur'].id}}" data-nom="{{remp['joueur'].nomJ}}" data-pre="{{remp['joueur'].prenomJ}}" data-poste="{{remp['poste']}}" draggable="true">
+							   {{remp['joueur'].id}}
+							</span>
+						</td><td>								
+							{{remp['joueur'].nomJ}}
+							{{remp['joueur'].prenomJ}}
+						</td><td>
+							{{remp['poste']}}
+						</td>				
+					</tr>
+				{% endfor %}
+			</table>
+		</div>
+		
+		<div id="titu">
+			<h3>Les Titulaires</h3>
+			<table class="table_match">
+				<tr class="head_tab"> 
+					<td> N°</td>
+					<td>Nom</td>
+					<td>Poste</td>
+				</tr>
+				{% for tit in titulaires %}
+					<tr class="unselectable tr_match">
+						<td class="titulaire">
+							<span class="boule dropper draggable" data-id="{{tit['joueur'].id}}" data-nom="{{tit['joueur'].nomJ}}" data-pre="{{tit['joueur'].prenomJ}}" data-poste="{{tit['poste']}}">
+							   {{tit['joueur'].id}}
+							</span>
+						</td><td>								
+							{{tit['joueur'].nomJ}}
+							{{tit['joueur'].prenomJ}}
+						</td><td>
+							{{tit['poste']}}
+						</td>				
+					</tr>
+				{% endfor %}
+			</table>
+		</div>
+	</div>
+
+	<h3>FACE A FACE </h3>
+
+	<div class="table_container">
+		<table class="table_match">
+		<tbody>
+			<div class="subheader_container">
+				<div class="subheader">  
+					{{equipe.nom}}
+						{%for face in faceface %}
+								
+							{% if face.butMarq > face.butEnc %}
+								V
+							{%elseif face.butMarq == face.butEnc %}
+							    N
+							{%else%}
+							     D
+							{%endif%}
+						{%endfor%}
+					{{"            "}}
+					{{equipeAdv.nom}}:
+					{%for face in faceface %}
+							
+							{% if face.butMarq < face.butEnc %}
+								V
+							{%elseif face.butMarq == face.butEnc %}
+							    N
+							{%else%}
+							     D
+							{%endif%}
+					{%endfor%}
+				</div>
+			</div>
+			{%for face in faceface %}
+				<tr class="unselectable tr_match">
+							<td><span class="match_state_hours">{{face.match.dateMatch|date('d/m/Y')}}</span></td>
+							<td class="team_a">{{equipe.nom}}</td> 
+							<td class="team_mid">{{face.butMarq}}-{{face.butEnc}}</td>
+							<td class="team_b">{{equipeAdv.nom}}</td> 
+				</tr>	
+			{%endfor%}
+		</tbody>
+		</table>
+
+		<table class="table_match">
+			<tbody>
+				<div class="subheader_container">
+					<div class="subheader"> Les derniers Matchs de {{equipeAdv.nom}} </div>
+				</div>
+				{%for ad in derniersMatch %}
+						<tr class="unselectable tr_match">
+							<td>
+						      	<span class="match_state_hours">{{ad['heure']|date('d/m/Y')}}</span>
+						    </td>
+							<td class="team_a">{{ad['NomEq1']}}</td> 
+							<td class="team_mid">{{ad['Eq1But'] }} - {{ad['Eq2But']}}</td>
+							<td class="team_b">{{ad['NomEq2']}}</td> 
+						</tr>	
+				{%endfor%}
+			</tbody>
+		</table>
+</div>
+
+<div class="droite">
+					<div class="table_titre">Le classement des équipes</div>
+					<table id="classm">
+						<tr class="head_tab">
+							<td>Nom</td>
+							<td>Match</td>
+							<td>Buts</td>
+							<td>Point</td>
+						</tr>
+						{% for equipe in classement %}
+						<tr class="unselectable tr_match">
+							<td>
+								<a href="{{ path('statisfoot_equipe', {'id': equipe['idEq']}) }}">
+							     		{{equipe['nomEq']}}
+							    </a>
+							</td>
+							<td>
+								{{equipe['nbJour']}}
+							</td>
+							<td>
+							   {{equipe['buts']}}
+							</td> 
+							<td>
+							 	<b>{{equipe['points']}}</b>
+							</td>
+						 </tr>
+						{% endfor %}
+					</table>
+					<div class="table_titre">Le classement des buteurs</div>
+					<table>
+						<tr class="head_tab">
+							<td>Nom</td>
+							<td>Match</td>
+							<td>Buts</td>
+						</tr>
+						{% for joueur in classementButeurs %}
+						<tr class="unselectable tr_match">
+							<td>
+								<a href="{{path('statisfoot_joueur',{'id' : joueur['idJ']})}}">
+							 		{{joueur['nomJ']}}  {{joueur['prenomJ']}}  
+								</a>
+							</td>
+							<td>
+								{{joueur['nbrM']}}
+							</td>
+							<td>
+								<b>{{joueur['buts']}}</b>
+							</td>
+						</tr>
+						{% endfor %}
+					</table>
+				</div>
+</div>
+{%endblock%}

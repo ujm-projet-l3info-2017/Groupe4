@@ -69,6 +69,21 @@ class match_equipeRepository extends EntityRepository
 		return $qb->getQuery()->getResult();
 	}
 
+	//recupération des 5 derniers matchs pour une equipe donnée
+	public function find5DerniersMatch($id_equipe){
+		$qb = $this->createQueryBuilder('m')
+			->leftJoin('m.match','match')
+			->addSelect('match')
+			->leftJoin('m.equipe','eq')
+			->where('eq.id = :id')
+			->andWhere('m.butMarq >= :but')
+			->setParameter('id',$id_equipe)
+			->setParameter('but',0)
+			->orderBy('match.dateMatch','DESC')
+			->setMaxResults('5');
+		return $qb->getQuery()->getResult();
+	}
+
 	//recupération des matchs à venir pour une equipe donnée
 	public function findMatchAVenir($id_equipe){
 		$qb = $this->createQueryBuilder('m')
@@ -94,7 +109,8 @@ class match_equipeRepository extends EntityRepository
 		//->orderBy('match.dateMatch','DESC');
 		return $matchs->getQuery()->getResult();
 	}
-// recuperation d'un adversaire
+
+	// recuperation d'un adversaire
 	public function findAdversaire($idmatch, $ideq){
 		$matchs = $this->createQueryBuilder('m')
 			->leftJoin('m.match','match')
@@ -105,9 +121,11 @@ class match_equipeRepository extends EntityRepository
 			->andwhere('match.id = :idmatch')
 			->setParameter('id',$ideq)
 			->setParameter('idmatch',$idmatch);
+
 			return $matchs->getQuery()->getResult();
 	}
 
+	//recuperation des 5 derniers face à entre 2 equipes
 	public function faceface($id1, $id2){
 		$query2 = $this->createQueryBuilder('m1');
 		$ma = $query2->select('match1.id')
@@ -123,9 +141,12 @@ class match_equipeRepository extends EntityRepository
 			->addSelect('match')
 			->addSelect('eq')
 			->where('eq.id = :id')
+			->andWhere('m.butMarq >= :but')
 			->andWhere($query->expr()->in('match.id',$ma->getDQL()))
+			->orderBy('match.dateMatch','DESC')
 			->setMaxResults('5')
 			->setParameter('id',$id2)
+			->setParameter('but',0)
 			->setParameter('id1',$id1);
 
 		return $query->getQuery()->getResult();

@@ -22,6 +22,20 @@ statisfoot_match:
     requirements:
         id: \d+
 
+statisfoot_manage_avant_match:
+    path:     /manage/avant/match/{id}
+    defaults: 
+        _controller: ProjetStatisfootBundle:Match:avant_match 
+    requirements:
+        id: \d+
+
+statisfoot_manage_match_encours:
+    path:     /manage/match/encours/{id}
+    defaults: 
+        _controller: ProjetStatisfootBundle:Match:match_encours 
+    requirements:
+        id: \d+
+
 statisfoot_club:
     path:     /club/{id}
     defaults: 

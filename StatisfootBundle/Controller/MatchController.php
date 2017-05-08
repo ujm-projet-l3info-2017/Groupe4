@@ -5,7 +5,7 @@ namespace Projet\StatisfootBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 //use Symfony\Component\BrowserKit\Response;
 use Symfony\Component\HttpFoundation\Response;
-
+use Symfony\Component\HttpFoundation\Request;
 use Projet\StatisfootBundle\Entity\match_equipe;
 use Projet\StatisfootBundle\Entity\match_foot;
 use Projet\StatisfootBundle\Entity\equipe;
@@ -62,6 +62,7 @@ class MatchController extends Controller
 	}
 
 	public function match_footAction($id){
+
 		$match = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_foot')->find($id);
 		$date = new \Datetime();
 		// les autres match de la competition
@@ -217,6 +218,216 @@ class MatchController extends Controller
 		array_multisort($tab, SORT_DESC, $classementButeurs);
 
 
-		return $this->render('ProjetStatisfootBundle:Match:match.html.twig', array('match'=>$m, 'adversairesEq1'=>$tabadversaire1, 'adversairesEq2'=>$tabadversaire2, 'faceface'=>$faceface, 'classement'=>$classement,'classementButeurs'=>$classementButeurs, 'nomCompet'=>$match->getCompetition()->getNomCompet()));
+		return $this->render('ProjetStatisfootBundle:Match:match.html.twig', array('match'=>$m, 
+			'adversairesEq1'=>$tabadversaire1,'adversairesEq2'=>$tabadversaire2, 'faceface'=>$faceface, 'classement'=>$classement,
+			'classementButeurs'=>$classementButeurs, 'nomCompet'=>$match->getCompetition()->getNomCompet()));
 	}
+
+	//Controller page gestion Avant Match
+	public function avant_matchAction($id, Request $request)
+	{
+
+		$id_equipe = $request->getSession()->get('id_equipe');
+
+		$equipe =  $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:equipe')->find($id_equipe);
+
+		$titu = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:joueur_equipe')
+		->findTitulaires($equipe->getId());
+
+		$remplac = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:joueur_equipe')
+		->findRemplacants($equipe->getId());
+		
+		$titulaires = array();
+		$tab = array();
+		//on trie la liste des titulaires par poste
+		foreach ($titu as $tit) {
+			if ($tit->getPoste() == 'GB') {
+				$rang = 1;
+			} 
+			elseif ($tit->getPoste() == 'DC' || $tit->getPoste() == 'LIB') {
+				$rang=2;
+			} 
+			elseif ($tit->getPoste() == 'LD' || $tit->getPoste() == 'LG') {
+				$rang=3;	
+			}
+			elseif ($tit->getPoste() == 'DEF') {
+				$rang=4;	
+			}
+			elseif ($tit->getPoste() == 'MR' || $tit->getPoste() == 'MO') {
+				$rang=5;	
+			}
+			elseif ($tit->getPoste() == 'AG' || $tit->getPoste() == 'AD') {
+				$rang=6;
+			}
+			else{
+				$rang=7;
+			}
+
+			array_push($tab, $rang);
+			array_push($titulaires, array('joueur'=>$tit->getJoueur(),'poste'=>$tit->getPoste(),'rang'=>$rang));
+		}
+
+		array_multisort($tab, SORT_ASC, $titulaires);
+
+		$remplacants = array();
+		$tab = array();
+		//on trie la liste des remplaçants par poste aussi 
+		foreach ($remplac as $rem) {
+			if ($rem->getPoste() == 'GB') {
+				$rang=1;
+			} 
+			elseif ($rem->getPoste() == 'DC' || $rem->getPoste() == 'LIB') {
+				$rang=2;
+			} 
+			elseif ($rem->getPoste() == 'LD' || $rem->getPoste() == 'LG') {
+				$rang=3;	
+			}
+			elseif ($rem->getPoste() == 'DEF') {
+				$rang=4;	
+			}
+			elseif ($rem->getPoste() == 'MR' || $rem->getPoste() == 'MO') {
+				$rang=5;	
+			}
+			elseif ($rem->getPoste() == 'AG' || $rem->getPoste() == 'AD') {
+				$rang=6;
+			}
+			else{
+				$rang=7;
+			}
+
+			array_push($tab, $rang);
+			array_push($remplacants, array('joueur'=>$rem->getJoueur(),'poste'=>$rem->getPoste(),'rang'=>$rang));
+		}
+
+		array_multisort($tab, SORT_ASC, $remplacants);
+
+		//fin recuperation des joueurs de l'equipe
+
+		$match = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_foot')->find($id);
+
+		$req = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_equipe')
+			->findAdversaire($match->getId(), $equipe->getId());
+
+		$equipeAdv = $req[0]->getEquipe();
+
+		//on recupere les cinqs derniers match pour l'equipe adverse
+		$matchs = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_equipe')
+		->find5DerniersMatch($equipeAdv->getId());
+
+		$derniersMatchsAdv =array();
+
+		foreach ($matchs as $ma) {
+			$match_equipe = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_equipe')
+			->findMatchEquipe($ma->getMatch()->getId());
+			
+			$ma_eq = array("idMatch"=>$ma->getMatch()->getId(),"heure"=>$ma->getMatch()->getDateMatch(),
+				"NomEq1"=>$match_equipe[0]->getEquipe()->getNom(),"Eq1But"=>$match_equipe[0]->getButMarq(),
+				"NomEq2"=>$match_equipe[1]->getEquipe()->getNom(),"Eq2But"=>$match_equipe[1]->getButMarq());
+			
+			array_push($derniersMatchsAdv, $ma_eq);
+		}
+
+		//on recupere les 5 derniers face à face entre les 2 equipes 
+		$faceface =  $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_equipe')
+		->faceface($equipe->getId(), $equipeAdv->getId());		
+
+		//classement des equipes dans la competion concerné par ce match
+		$competition = $match->getCompetition();
+			//recuperation de tous les  matchs de la competition
+		$matchs = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_foot')
+		->findMatchCompet($competition->getId());
+
+		$listeMatch = array();
+
+		foreach ($matchs as $ma) {
+			$match_equipe = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_equipe')
+			->findMatchEquipe($ma->getId());
+			
+			$ma_eq = array("idMatch"=>$ma->getId(),"heure"=>$ma->getDateMatch(),
+				"NomEq1"=>$match_equipe[0]->getEquipe()->getNom(),"Eq1But"=>$match_equipe[0]->getButMarq(),
+				"NomEq2"=>$match_equipe[1]->getEquipe()->getNom(),"Eq2But"=>$match_equipe[1]->getButMarq());
+			
+			array_push($listeMatch, $ma_eq);
+		}
+
+		//recuperation des equipes engagées dans la competition
+		$equipes = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_equipe')
+			->findEquipeCompet($competition->getId());
+
+		//recuperation des resultats des matchs de la compétition
+		$resultats = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_equipe')
+			->findResultatsCompet($competition->getId());
+
+		$classement = array();	
+
+		foreach ($equipes as $eq) {
+			$nbr = 0;
+			$points = 0;
+			$buts = 0;
+			foreach ($resultats as $result) {
+				if ($eq['id'] == $result->getEquipe()->getId()) {
+					$nbr++;
+					$buts = $buts + ($result->getButMarq() - $result->getButEnc());
+
+					//si l'equipe etait vicotrieuse
+					if ($result->getButMarq() > $result->getButEnc()) {
+						$points+=3;
+					}
+
+					//si l'equipe a fait match nulle
+					elseif ($result->getButMarq() == $result->getButEnc()) {
+						$points+=1;
+					}
+				}
+			}
+
+			array_push($classement, array("idEq"=>$eq['id'],"nomEq"=>$eq['nom'],"nbJour"=>$nbr,"buts"=>$buts,"points"=>$points));
+
+		}
+
+		//tri des equipes par nombre de points
+		$tab = array();
+		foreach ($classement as $equi) {
+			array_push($tab, $equi["points"]);
+		}
+
+		array_multisort($tab, SORT_DESC, $classement);
+
+		//recup du classement des meilleurs buteurs 
+
+		$joueurs =  $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_joueur')->findJoueurCompet($id);
+
+		$buts =  $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:but')->findButCompet($id);
+
+		$classementButeurs = array();
+
+		foreach ($joueurs as $j) {
+			$nbrB = 0;
+
+			foreach ($buts as $b) {
+				if ($j['id']==$b->getJoueur()->getId()) {
+					$nbrB++;
+				}
+			}
+			if ($nbrB > 0) {
+				array_push($classementButeurs, array("idJ"=>$j['id'],"nomJ"=>$j['nom'],"prenomJ"=>$j['prenom'],"nbrM"=>$j['nbrM'],
+				"buts"=>$nbrB));
+			}
+		}
+
+		//tri des joueurs par nombre de buts
+		$tab = array();
+		foreach ($classementButeurs as $joue) {
+			array_push($tab, $joue["buts"]);
+		}
+
+		array_multisort($tab, SORT_DESC, $classementButeurs);
+
+		return $this->render('ProjetStatisfootBundle:Match:manage_avant_match.html.twig', array(
+			'equipe'=>$equipe, 'equipeAdv'=>$equipeAdv, 'faceface'=>$faceface,'classement'=>$classement,
+			'titulaires'=>$titulaires, 'remplacants'=>$remplacants,'derniersMatch'=>$derniersMatchsAdv,
+			'classementButeurs'=>$classementButeurs, 'nomCompet'=>$match->getCompetition()->getNomCompet()));
+	}
+
+	//function qui gere les matchs en cours
 }
