@@ -36,4 +36,16 @@ class butRepository extends EntityRepository
 		
 		return $qb->getQuery()->getResult();
 	}
+
+	//recuperation du dernier but d'un match
+	public function findDernierButMatch($idM){
+		$qb = $this->createQueryBuilder('b')
+			->leftJoin('b.match_foot','match')
+			->where('match.id = :id')
+			->setParameter('id',$idM)
+			->orderBy('b.id','DESC')
+			->setMaxResults('1');
+		
+		return $qb->getQuery()->getResult();
+	}
 }

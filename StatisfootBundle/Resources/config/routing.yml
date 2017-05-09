@@ -92,7 +92,26 @@ statisfoot_manage_joueur_remp:
         _controller: ProjetStatisfootBundle:Joueur:joueur_remp
     requirements:
         idRt: \d+
-        idRe: \d+     
+        idRe: \d+  
+
+statisfoot_manage_joueur_but:
+    path:     /manage/joueur/but/{idJ}/{idM}/{idB}/{idA}
+    defaults: 
+        _controller: ProjetStatisfootBundle:Joueur:joueur_but
+    requirements:
+        idJ: \d+
+        idM: \d+
+        idB: \d+
+        idA: \d+
+
+statisfoot_manage_joueur_passe:
+    path:     /manage/joueur/passe/{idJ}/{idM}/{idP}
+    defaults: 
+        _controller: ProjetStatisfootBundle:Joueur:joueur_passe
+    requirements:
+        idJ: \d+
+        idM: \d+
+        idP: \d+     
 
 statisfoot_effectif:
     path:     /equipe/{id}/effectif

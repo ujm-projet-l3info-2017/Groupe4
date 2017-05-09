@@ -7,6 +7,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Projet\StatisfootBundle\Entity\joueur;
 use Projet\StatisfootBundle\Entity\joueur_equipe;
+use Projet\StatisfootBundle\Entity\but;
+use Projet\StatisfootBundle\Entity\passe_decisive;
 use Projet\StatisfootBundle\Form\joueurType;
 use Projet\StatisfootBundle\Form\joueurModType;
 
@@ -250,13 +252,62 @@ class JoueurController extends Controller
 			}
 
 			$em = $this->getDoctrine()->getManager();
-			$em->flush($remplace);
-			$em->flush($remplacant);
+
+			$em->flush();
 
 			return new Response($idRt." et ".$idRe, 200);
 		
 
 		// return new Response("Erreur : ce n'est pas une requete POST".$request->get('idRt'), 400);
+	}
+
+	public function joueur_but($idJ,$idM,$idB,$idA, Request $request){
+
+		$em = $this->getDoctrine()->getManager();
+
+		$but = new but();
+
+		$joueur = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:joueur')->find($idJ);
+
+		$match = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_foot')->find($idM);
+
+		$typeBut = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:type_but')->find($idB);
+
+		if ($idA = 0) {
+			$typeAction = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:type_action')->find(5);
+		}
+		else{
+			$typeAction = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:type_action')->find($idA);
+		}
+
+		$but->setMinJeu(40);
+		$but->setJoueur($joueur);
+		$but->setTypeBut($typeBut);
+		$but->setTypeAction($typeAction);
+		$but->setMatchFoot($match);
+
+		$em->persist($but);
+		$em->flush();
+	}
+
+	public function joueur_passe($idJ,$idM,$idP Request $request){
+
+		$em = $this->getDoctrine()->getManager();
+
+		$passe = new passe();
+
+		$joueur = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:joueur')->find($idJ);
+
+		$but = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:but')->findDernierButMatch($idM);
+
+		$typePasse = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:type_passe')->find($idP);
+
+		$passe->setBut($but);
+		$passe->setJoueur($joueur);
+		$passe->setTypePasse($typePasse);
+
+		$em->persist($passe);
+		$em->flush();
 	}
 
 }

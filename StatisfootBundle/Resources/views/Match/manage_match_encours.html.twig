@@ -71,71 +71,72 @@
 						</td>
 						<td>
 							<ul class="boiteAction" data-id="{{tit['joueur'].id}}" data-match="{{ match.id }}">
-								<li class="bouton but"  data-action="but"> But 
+								<li class="bouton but"  data-action="1"> But 
 									<ul class="s_list">
-										<li class="bouton" data-type="tete"> Tête 
+										<li class="bouton" data-type="1"> Tête 
 											<ul class="ss_list">
-												<li class="bouton" data-type="corner"> Corner </li>
-												<li class="bouton" data-type="contre"> Contre Attaque </li>
-												<li class="bouton" data-type="cf"> Cf indirect </li>
-												<li class="bouton" data-type="ccollect"> A. Collect </li>
+												<li class="bouton type_action" data-type="2"> Corner </li>
+												<li class="bouton type_action" data-type="1"> Contre Attaque </li>
+												<li class="bouton type_action" data-type="3"> Cf indirect </li>
+												<li class="bouton type_action" data-type="4"> A. Collect </li>
 											</ul>
 										</li>
-										<li class="bouton" data-type="frappe"> Frappe 
+										<li class="bouton" data-type="2"> Frappe 
 											<ul class="ss_list">
-												<li class="bouton" data-type="corner"> Corner </li>
-												<li class="bouton" data-type="contre"> Contre Attaque </li>
-												<li class="bouton" data-type="cf"> Cf indirect </li>
-												<li class="bouton" data-type="ccollect"> A. Collect </li>
+												<li class="bouton type_action" data-type="2"> Corner </li>
+												<li class="bouton type_action" data-type="1"> Contre Attaque </li>
+												<li class="bouton type_action" data-type="3"> Cf indirect </li>
+												<li class="bouton type_action" data-type="4"> A. Collect </li>
 											</ul>
 										</li>
-										<li class="bouton" data-type="enrobe"> Tir Enrobé 
+										<li class="bouton" data-type="3"> Tir Enrobé 
 											<ul class="ss_list">
-												<li class="bouton" data-type="corner"> Corner </li>
-												<li class="bouton" data-type="contre"> Contre Attaque </li>
-												<li class="bouton" data-type="cf"> Cf indirect </li>
-												<li class="bouton" data-type="ccollect"> A. Collect </li>
-											</ul class="ss_list">
-										</li>
-										<li class="bouton" data-type="lobe"> Tir Lobé 
-											<ul class="ss_list">
-												<li class="bouton" data-type="corner"> Corner </li>
-												<li class="bouton" data-type="contre"> Contre Attaque </li>
-												<li class="bouton" data-type="cf"> Cf indirect </li>
-												<li class="bouton" data-type="ccollect"> A. Collect </li>
+												<li class="bouton type_action" data-type="2"> Corner </li>
+												<li class="bouton type_action" data-type="1"> Contre Attaque </li>
+												<li class="bouton type_action" data-type="3"> Cf indirect </li>
+												<li class="bouton type_action" data-type="4"> A. Collect </li>
 											</ul>
 										</li>
-										<li class="bouton" data-type="vole"> R. Volée 
+										<li class="bouton" data-type="4"> Tir Lobé 
 											<ul class="ss_list">
-												<li class="bouton" data-type="corner"> Corner </li>
-												<li class="bouton" data-type="contre"> Contre Attaque </li>
-												<li class="bouton" data-type="cf"> Cf indirect </li>
-												<li class="bouton" data-type="ccollect"> A. Collect </li>
+												<li class="bouton type_action" data-type="2"> Corner </li>
+												<li class="bouton type_action" data-type="1"> Contre Attaque </li>
+												<li class="bouton type_action" data-type="3"> Cf indirect </li>
+												<li class="bouton type_action" data-type="4"> A. Collect </li>
 											</ul>
 										</li>
-										<li class="bouton" data-type="penalty"> Penalty </li>
-										<li class="bouton" data-type="cf"> Cf Direct </li>
-										<li class="bouton" data-type="csc"> CSC </li>
+										<li class="bouton" data-type="5"> R. Volée 
+											<ul class="ss_list">
+												<li class="bouton type_action" data-type="2"> Corner </li>
+												<li class="bouton type_action" data-type="1"> Contre Attaque </li>
+												<li class="bouton type_action" data-type="3"> Cf indirect </li>
+												<li class="bouton type_action" data-type="4"> A. Collect </li>
+											</ul>
+										</li>
+										<li class="bouton type_but" data-type="6"> Penalty </li>
+										<li class="bouton type_but" data-type="7"> Cf Direct </li>
+										<li class="bouton type_but" data-type="8"> CSC </li>
 									</ul>
 								</li>
-								<li class="bouton passe" data-action="passe"> Passe Dec 
+								<li class="bouton passe" data-action="2"> Passe Dec 
 									<ul class="s_list">
-										<li class="bouton" data-type="corner"> C. Corner </li>
-										<li class="bouton" data-type="cf"> C. Cf  </li>
-										<li class="bouton" data-type="centre"> Centre </li>
-										<li class="bouton" data-type="simple"> P. Simple </li>
-										<li class="bouton" data-type="travers"> P. Travers </li>
-										<li class="bouton" data-type="dessus"> P. Dessus </li>
+										<li class="bouton type_passe" data-type="2"> C. Corner </li>
+										<li class="bouton type_passe" data-type="1"> C. Cf  </li>
+										<li class="bouton type_passe" data-type="3"> Centre </li>
+										<li class="bouton type_passe" data-type="6"> P. Simple </li>
+										<li class="bouton type_passe" data-type="4"> P. Travers </li>
+										<li class="bouton type_passe" data-type="5"> P. Dessus </li>
 									</ul>
 								</li>
-								<li class="bouton" data-action="duel"> Duel Gagné  </li>
-								<li class="bouton" data-action="inter"> Interception </li>
-								<li class="bouton" data-action="recup"> Recupèration </li>
-								<li class="bouton" data-action="tacle"> Tacle Reussi </li>
-								<li class="bouton" data-action="arret"> Arret </li>
-								<li class="bouton" data-action="centre"> Centre Reussi </li>
-								<li class="bouton" data-action="cj"> Carton Jaune  </li>
-								<li class="bouton" data-action="cr"> Carton Rouge </li>
+								<li class="bouton simple" data-action="11"> Tir Cadré </li>
+								<li class="bouton simple" data-action="3"> Duel Gagné </li>
+								<li class="bouton simple" data-action="4"> Interception </li>
+								<li class="bouton simple" data-action="5"> Recupèration </li>
+								<li class="bouton simple" data-action="6"> Tacle Reussi </li>
+								<li class="bouton simple" data-action="7"> Arret </li>
+								<li class="bouton simple" data-action="8"> Centre Reussi </li>
+								<li class="bouton simple" data-action="9"> Carton Jaune  </li>
+								<li class="bouton simple" data-action="10"> Carton Rouge </li>
 							</ul>
 						</td>				
 					</tr>
