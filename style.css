@@ -427,8 +427,16 @@ label{
     font-weight: bold;
 }
 
+.bouton a{
+    color: white;
+}
+
 .bouton:hover{
     background-color: white;
+    color: green;
+}
+
+.bouton:hover a{
     color: green;
 }
 
@@ -436,9 +444,130 @@ label{
     display: block;
 }
 
+/*#compo{
+    margin: auto;
+    width: 650px;
+}*/
+
 #compo div {
     display: inline-block;
 }
+
+#remp{
+    margin-right: 50px;
+}
+
+.boule{
+    display: inline-block;
+    width: 35px;
+    height: 35px;
+    line-height: 35px;
+    text-align: center;
+    border-radius: 20px;
+}
+
+#titu .boule{
+    background-color: green;    
+}
+
+#remp .boule{
+    background-color: red;
+}
+
+.drop_over{
+    background-color: yellow;
+}
+
+#lance_match{
+    width: 200px;
+    margin: auto;
+    margin-top: 25px;
+}
+
+/*
+*
+*           MATCH EN COURS
+*
+*/
+
+.joueur td:last-child{
+    display: none;
+}
+
+.boiteAction{
+    position: absolute;
+    width: 275px;
+    margin-top: -10px;
+    margin-left: -30px; 
+}
+
+.boiteAction li{
+    width: 125px;
+    display: inline-block;
+    list-style: none;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    border-radius: 2px;
+}
+
+.boiteAction > li{
+     margin-right: 6px;
+}
+
+.joueur:hover td:last-child{
+    display: block;
+}
+
+.s_list, .ss_list{
+    position: absolute;
+    display: none;
+    margin-top: -42px;
+}
+
+.but .s_list{
+    margin-left: 80px; 
+}
+
+.passe .s_list, .ss_list{
+    margin-left: 90px; 
+}
+
+.s_list > li {
+    background-color: blue;
+    color: white;
+}
+
+.s_list > li:hover{
+    background-color: white;
+    color: blue;
+}
+
+.ss_list > li {
+    background-color: orange;
+    color: white;
+}
+
+.ss_list > li:hover{
+    background-color: white;
+    color: orange;
+}
+
+
+.s_list li, .ss_list li{
+    display: inline-block;
+    list-style: none;
+    margin: 2px;
+    border-radius: 2px;
+}
+
+.boiteAction li:hover > .s_list{
+    display: block;
+}
+
+.s_list li:hover > .ss_list{
+    display: block;
+}
+
 
 /*
 *

@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Projet\StatisfootBundle\Entity\match_equipe;
 use Projet\StatisfootBundle\Entity\match_foot;
+use Projet\StatisfootBundle\Entity\match_joueur;
 use Projet\StatisfootBundle\Entity\equipe;
 /**
 * 
@@ -424,10 +425,150 @@ class MatchController extends Controller
 		array_multisort($tab, SORT_DESC, $classementButeurs);
 
 		return $this->render('ProjetStatisfootBundle:Match:manage_avant_match.html.twig', array(
-			'equipe'=>$equipe, 'equipeAdv'=>$equipeAdv, 'faceface'=>$faceface,'classement'=>$classement,
+			'match'=>$match,'equipe'=>$equipe, 'equipeAdv'=>$equipeAdv, 'faceface'=>$faceface,'classement'=>$classement,
 			'titulaires'=>$titulaires, 'remplacants'=>$remplacants,'derniersMatch'=>$derniersMatchsAdv,
 			'classementButeurs'=>$classementButeurs, 'nomCompet'=>$match->getCompetition()->getNomCompet()));
 	}
 
 	//function qui gere les matchs en cours
+
+	public function match_encoursAction($id, Request $request){
+
+		$em = $this->getDoctrine()->getManager();
+
+		$id_equipe = $request->getSession()->get('id_equipe');
+
+		$match = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_foot')->find($id);
+
+		$equipe =  $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:equipe')->find($id_equipe);
+
+		$req = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_equipe')
+			->findAdversaire($match->getId(), $equipe->getId());
+		$equipeAdv = $req[0]->getEquipe();
+
+		$match_equipe = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_equipe')
+			->findMatchEquipe($match->getId());
+
+		//renseignement des resultat du match pour l'equipe 1	
+		$match_equipe[0]->setButMarq(0);
+		$match_equipe[0]->setButEnc(0);
+		$match_equipe[0]->setCornerObt(0);
+		$match_equipe[0]->setCornerConc(0);
+		$match_equipe[0]->setTirCadre(0);
+		$match_equipe[0]->setCfObt(0);
+		$match_equipe[0]->setCfConc(0);
+
+		//renseignement des resultat du match pour l'equipe 2 
+		$match_equipe[1]->setButMarq(0);
+		$match_equipe[1]->setButEnc(0);
+		$match_equipe[1]->setCornerObt(0);
+		$match_equipe[1]->setCornerConc(0);
+		$match_equipe[1]->setTirCadre(0);
+		$match_equipe[1]->setCfObt(0);
+		$match_equipe[1]->setCfConc(0);
+
+		$titu = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:joueur_equipe')
+		->findTitulaires($equipe->getId());
+
+		$remplac = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:joueur_equipe')
+		->findRemplacants($equipe->getId());
+		
+		$titulaires = array();
+		$tab = array();
+		//on trie la liste des titulaires par poste
+		$em = $this->getDoctrine()->getManager();
+		foreach ($titu as $tit) {
+			if ($tit->getPoste() == 'GB') {
+				$rang = 1;
+			} 
+			elseif ($tit->getPoste() == 'DC' || $tit->getPoste() == 'LIB') {
+				$rang=2;
+			} 
+			elseif ($tit->getPoste() == 'LD' || $tit->getPoste() == 'LG') {
+				$rang=3;	
+			}
+			elseif ($tit->getPoste() == 'MD') {
+				$rang=4;	
+			}
+			elseif ($tit->getPoste() == 'MR' || $tit->getPoste() == 'MO') {
+				$rang=5;	
+			}
+			elseif ($tit->getPoste() == 'AG' || $tit->getPoste() == 'AD') {
+				$rang=6;
+			}
+			else{
+				$rang=7;
+			}
+
+			//Enregistrement de chaque joueur retenu pour le match dans la table match_joueur
+
+			// $match_joueur = new match_joueur();
+
+			// $match_joueur->setPoste($tit->getPoste());
+			// $match_joueur->setMinEntre(0);
+			// $match_joueur->setMinSortie(90);
+			// $match_joueur->setNbDuelGagne(0);
+			// $match_joueur->setNbBalleInter(0);
+			// $match_joueur->setNballeRecup(0);
+			// $match_joueur->setNbBalleArret(0);
+			// $match_joueur->setNbCentre(0);
+			// $match_joueur->setNbTacle(0);
+			// $match_joueur->setCartonRouge(false);
+			// $match_joueur->setCartonJaune(0);
+
+			// $match_joueur->setJoueur($tit->getJoueur());
+			// $match_joueur->setMatchFoot($match);
+
+			//$em->persist($match_joueur);
+
+			array_push($tab, $rang);
+			array_push($titulaires, array('joueur'=>$tit->getJoueur(),'poste'=>$tit->getPoste(),'rang'=>$rang));
+		}
+
+		//l'enregistrement effectif en base de données
+		$em->flush();
+
+		array_multisort($tab, SORT_ASC, $titulaires);
+
+
+		$remplacants = array();
+		$tab = array();
+		//on trie la liste des remplaçants par poste aussi 
+		foreach ($remplac as $rem) {
+			if ($rem->getPoste() == 'GB') {
+				$rang=1;
+			} 
+			elseif ($rem->getPoste() == 'DC' || $rem->getPoste() == 'LIB') {
+				$rang=2;
+			} 
+			elseif ($rem->getPoste() == 'LD' || $rem->getPoste() == 'LG') {
+				$rang=3;	
+			}
+			elseif ($rem->getPoste() == 'DEF') {
+				$rang=4;	
+			}
+			elseif ($rem->getPoste() == 'MR' || $rem->getPoste() == 'MO') {
+				$rang=5;	
+			}
+			elseif ($rem->getPoste() == 'AG' || $rem->getPoste() == 'AD') {
+				$rang=6;
+			}
+			else{
+				$rang=7;
+			}
+
+			array_push($tab, $rang);
+			array_push($remplacants, array('joueur'=>$rem->getJoueur(),'poste'=>$rem->getPoste(),'rang'=>$rang));
+		}
+
+		array_multisort($tab, SORT_ASC, $remplacants);
+
+
+		$match_equipe = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_equipe')
+			->findMatchEquipe($match->getId());
+
+
+		return $this->render('ProjetStatisfootBundle:Match:manage_match_encours.html.twig', array(
+			'titulaires'=>$titulaires, 'remplacants'=>$remplacants,'matchEquipe'=>$match_equipe,'match'=>$match));	
+	}
 }

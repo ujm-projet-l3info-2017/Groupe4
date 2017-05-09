@@ -1,0 +1,147 @@
+{% extends "ProjetStatisfootBundle::layout.html.twig" %}
+
+{% block title %}{{ parent() }} - Preparation du Match{% endblock %}
+
+{% block body %}
+<div class="bloc_middle">
+	<div class="table_titre">
+		<div class="match_result_container">
+			<div class = match_result>
+				<div class="team_a_match">
+					{{matchEquipe[0].equipe.nom}}
+					<div class="score_match"> {{ matchEquipe[0].butMarq }} </div>
+				</div>
+				<div class="team_mid_match">
+					  - 
+				</div>
+				<div class="team_b_match">
+					{{matchEquipe[1].equipe.nom}}
+					<div class="score_match"> {{ matchEquipe[1].butMarq }} </div>
+				</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="compo">
+		<div id="remp">
+			<h3>Les Remplaçants</h3>
+			<table class="table_match">
+				<tr class="head_tab"> 
+					<td> N°</td>
+					<td>Nom</td>
+					<td>Poste</td>
+				</tr>
+				{% for remp in remplacants%}
+					<tr class="unselectable tr_match">
+						<td>
+							<span class="boule draggable" data-id="{{remp['joueur'].id}}" data-nom="{{remp['joueur'].nomJ}}" data-pre="{{remp['joueur'].prenomJ}}" data-poste="{{remp['poste']}}" draggable="true">
+							   {{remp['joueur'].id}}
+							</span>
+						</td><td>								
+							{{remp['joueur'].nomJ}}
+							{{remp['joueur'].prenomJ}}
+						</td><td>
+							{{remp['poste']}}
+						</td>				
+					</tr>
+				{% endfor %}
+			</table>
+		</div>
+		
+		<div id="titu">
+			<h3>Les Titulaires</h3>
+			<table class="table_match">
+				<tr class="head_tab"> 
+					<td> N°</td>
+					<td>Nom</td>
+					<td>Poste</td>
+				</tr>
+				{% for tit in titulaires %}
+					<tr class="unselectable tr_match joueur">
+						<td class="titulaire">
+							<span class="boule dropper draggable" data-id="{{tit['joueur'].id}}" data-nom="{{tit['joueur'].nomJ}}" data-pre="{{tit['joueur'].prenomJ}}" data-poste="{{tit['poste']}}">
+							   {{tit['joueur'].id}}
+							</span>
+						</td><td>								
+							{{tit['joueur'].nomJ}}
+							{{tit['joueur'].prenomJ}}
+						</td><td>
+							{{tit['poste']}}
+						</td>
+						<td>
+							<ul class="boiteAction" data-id="{{tit['joueur'].id}}" data-match="{{ match.id }}">
+								<li class="bouton but"  data-action="but"> But 
+									<ul class="s_list">
+										<li class="bouton" data-type="tete"> Tête 
+											<ul class="ss_list">
+												<li class="bouton" data-type="corner"> Corner </li>
+												<li class="bouton" data-type="contre"> Contre Attaque </li>
+												<li class="bouton" data-type="cf"> Cf indirect </li>
+												<li class="bouton" data-type="ccollect"> A. Collect </li>
+											</ul>
+										</li>
+										<li class="bouton" data-type="frappe"> Frappe 
+											<ul class="ss_list">
+												<li class="bouton" data-type="corner"> Corner </li>
+												<li class="bouton" data-type="contre"> Contre Attaque </li>
+												<li class="bouton" data-type="cf"> Cf indirect </li>
+												<li class="bouton" data-type="ccollect"> A. Collect </li>
+											</ul>
+										</li>
+										<li class="bouton" data-type="enrobe"> Tir Enrobé 
+											<ul class="ss_list">
+												<li class="bouton" data-type="corner"> Corner </li>
+												<li class="bouton" data-type="contre"> Contre Attaque </li>
+												<li class="bouton" data-type="cf"> Cf indirect </li>
+												<li class="bouton" data-type="ccollect"> A. Collect </li>
+											</ul class="ss_list">
+										</li>
+										<li class="bouton" data-type="lobe"> Tir Lobé 
+											<ul class="ss_list">
+												<li class="bouton" data-type="corner"> Corner </li>
+												<li class="bouton" data-type="contre"> Contre Attaque </li>
+												<li class="bouton" data-type="cf"> Cf indirect </li>
+												<li class="bouton" data-type="ccollect"> A. Collect </li>
+											</ul>
+										</li>
+										<li class="bouton" data-type="vole"> R. Volée 
+											<ul class="ss_list">
+												<li class="bouton" data-type="corner"> Corner </li>
+												<li class="bouton" data-type="contre"> Contre Attaque </li>
+												<li class="bouton" data-type="cf"> Cf indirect </li>
+												<li class="bouton" data-type="ccollect"> A. Collect </li>
+											</ul>
+										</li>
+										<li class="bouton" data-type="penalty"> Penalty </li>
+										<li class="bouton" data-type="cf"> Cf Direct </li>
+										<li class="bouton" data-type="csc"> CSC </li>
+									</ul>
+								</li>
+								<li class="bouton passe" data-action="passe"> Passe Dec 
+									<ul class="s_list">
+										<li class="bouton" data-type="corner"> C. Corner </li>
+										<li class="bouton" data-type="cf"> C. Cf  </li>
+										<li class="bouton" data-type="centre"> Centre </li>
+										<li class="bouton" data-type="simple"> P. Simple </li>
+										<li class="bouton" data-type="travers"> P. Travers </li>
+										<li class="bouton" data-type="dessus"> P. Dessus </li>
+									</ul>
+								</li>
+								<li class="bouton" data-action="duel"> Duel Gagné  </li>
+								<li class="bouton" data-action="inter"> Interception </li>
+								<li class="bouton" data-action="recup"> Recupèration </li>
+								<li class="bouton" data-action="tacle"> Tacle Reussi </li>
+								<li class="bouton" data-action="arret"> Arret </li>
+								<li class="bouton" data-action="centre"> Centre Reussi </li>
+								<li class="bouton" data-action="cj"> Carton Jaune  </li>
+								<li class="bouton" data-action="cr"> Carton Rouge </li>
+							</ul>
+						</td>				
+					</tr>
+				{% endfor %}
+			</table>
+		</div>
+	</div>
+</div>
+{%endblock%}
