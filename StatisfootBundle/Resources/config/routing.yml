@@ -36,6 +36,14 @@ statisfoot_manage_match_encours:
     requirements:
         id: \d+
 
+statisfoot_manage_match_event:
+    path:     /manage/match/event/{idM}/{idA}
+    defaults: 
+        _controller: ProjetStatisfootBundle:Match:match_event
+    requirements:
+        idM: \d+
+        idA: \d+
+
 statisfoot_club:
     path:     /club/{id}
     defaults: 
@@ -111,7 +119,16 @@ statisfoot_manage_joueur_passe:
     requirements:
         idJ: \d+
         idM: \d+
-        idP: \d+     
+        idP: \d+  
+
+statisfoot_manage_joueur_action:
+    path:     /manage/joueur/action/{idJ}/{idM}/{idA}
+    defaults: 
+        _controller: ProjetStatisfootBundle:Joueur:joueur_action
+    requirements:
+        idJ: \d+
+        idM: \d+
+        idA: \d+ 
 
 statisfoot_effectif:
     path:     /equipe/{id}/effectif

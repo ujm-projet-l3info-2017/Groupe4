@@ -53,6 +53,24 @@
 
     }
 
+
+    function actionDansLeJeu(el){
+        var idJ = el.parentNode.getAttribute('data-id'),
+            idM = el.parentNode.getAttribute('data-match'),
+            idA = el.getAttribute('data-action'),
+            xhr= new XMLHttpRequest();
+
+        xhr.open("GET","http://localhost/Symfony/web/app_dev.php/statisfoot/manage/joueur/action/"+idJ+"/"+idM+"/"+idA,true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                alert('Reussi');
+            }
+        }
+
+        xhr.send(null); 
+    }
+
+
     function passeDecisive(el){
         var idJ = el.parentNode.parentNode.parentNode.getAttribute('data-id'),
             idM = el.parentNode.parentNode.parentNode.getAttribute('data-match'),
@@ -66,8 +84,25 @@
             }
         }
 
-        xhr.send(null); 
+        xhr.send(null);
     }
+
+
+    function evenMatch(el){
+        var idM = el.getAttribute('data-match'),
+            idA = el.getAttribute('data-type'),
+            xhr= new XMLHttpRequest();
+
+        xhr.open("GET","http://localhost/Symfony/web/app_dev.php/statisfoot/manage/match/event/"+idM+"/"+idA,true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                alert('Reussi');
+            }
+        }
+
+        xhr.send(null);
+    }
+
 
     var dndHandler = {
 
@@ -212,6 +247,14 @@
     for (var i = 0; i < actionSimple.length; i++) {
         actionSimple[i].addEventListener('click', function(){
             actionDansLeJeu(this);
+        });
+    }
+
+    var evMatch = document.getElementsByClassName('evMatch');
+
+    for (var i = 0; i < evMatch.length; i++) {
+        evMatch[i].addEventListener('click', function(){
+            evenMatch(this);
         });
     }
 

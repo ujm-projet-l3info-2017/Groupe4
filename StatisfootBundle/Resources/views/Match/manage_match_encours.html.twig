@@ -1,6 +1,6 @@
 {% extends "ProjetStatisfootBundle::layout.html.twig" %}
 
-{% block title %}{{ parent() }} - Preparation du Match{% endblock %}
+{% block title %}{{ parent() }} - Match En Cours{% endblock %}
 
 {% block body %}
 <div class="bloc_middle">
@@ -20,6 +20,18 @@
 				</div>
 				</div>
 			</div>
+		</div>
+	</div>
+
+	<div id="evMatch">
+		<div id="ajout" class="bouton evMatch" data-type="1" data-match="{{ match.id }}"> 
+			 Nouveau Corner
+		</div>
+		<div id="ajout" class="bouton evMatch" data-type="2" data-match="{{ match.id }}"> 
+			Nouveau C. Franc 
+		</div>
+		<div id="ajout" class="bouton evMatch" data-type="3" data-match="{{ match.id }}"> 
+			 Nouveau Penalty 
 		</div>
 	</div>
 
@@ -145,4 +157,10 @@
 		</div>
 	</div>
 </div>
+
+{% javascripts 'bundles/ProjetStatisfoot/js/encours.js' %}
+
+  <script type="text/javascript" src="{{ asset_url }}"></script>
+
+{% endjavascripts %}
 {%endblock%}

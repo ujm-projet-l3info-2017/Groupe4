@@ -24,7 +24,7 @@ class joueur_equipe
     /**
      * @var string
      *
-     * @ORM\Column(name="poste", type="string", length=10)
+     * @ORM\Column(name="poste", type="string", nullable=true, length=10)
      */
     private $poste;
 

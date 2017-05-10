@@ -37,4 +37,17 @@ class match_joueurRepository extends EntityRepository
 		
 		return $qb->getQuery()->getResult();
 	}
+
+	//recuperation des performances d'un joueur dans un match donnée
+	public function findMatchJoueur($idM,$idJ){
+		$qb = $this->createQueryBuilder('m')
+			->leftJoin('m.match_foot','match')
+			->leftJoin('m.joueur','j')
+			->where('match.id = :idM')
+			->andWhere('j.id = :idJ')
+			->setParameter('idM',$idM)
+			->setParameter('idJ',$idJ);
+		
+		return $qb->getQuery()->getResult();
+	}
 }

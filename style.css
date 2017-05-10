@@ -490,6 +490,24 @@ label{
 *
 */
 
+#evMatch{
+    padding-top: 10px;
+    width: 460px;
+    margin: auto;
+}
+
+#evMatch > div{
+    display: inline-block;
+    width: 200px;
+    border-radius: 5px;
+    color:white;
+}
+
+#evMatch > div:hover{
+    color: green;
+    cursor: pointer;
+}
+
 .joueur td:last-child{
     display: none;
 }

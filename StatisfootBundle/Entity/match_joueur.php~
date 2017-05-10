@@ -439,28 +439,4 @@ class match_joueur
     {
         return $this->match_foot;
     }
-
-    /**
-     * Set nbTirCadre
-     *
-     * @param integer $nbTirCadre
-     *
-     * @return match_joueur
-     */
-    public function setNbTirCadre($nbTirCadre)
-    {
-        $this->nbTirCadre = $nbTirCadre;
-
-        return $this;
-    }
-
-    /**
-     * Get nbTirCadre
-     *
-     * @return integer
-     */
-    public function getNbTirCadre()
-    {
-        return $this->nbTirCadre;
-    }
 }

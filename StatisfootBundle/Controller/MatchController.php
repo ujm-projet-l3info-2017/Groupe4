@@ -457,6 +457,8 @@ class MatchController extends Controller
 		$match_equipe[0]->setTirCadre(0);
 		$match_equipe[0]->setCfObt(0);
 		$match_equipe[0]->setCfConc(0);
+		$match_equipe[0]->setPenaltyObt(0);
+		$match_equipe[0]->setPenaltyConc(0);
 
 		//renseignement des resultat du match pour l'equipe 2 
 		$match_equipe[1]->setButMarq(0);
@@ -466,6 +468,8 @@ class MatchController extends Controller
 		$match_equipe[1]->setTirCadre(0);
 		$match_equipe[1]->setCfObt(0);
 		$match_equipe[1]->setCfConc(0);
+		$match_equipe[1]->setPenaltyObt(0);
+		$match_equipe[1]->setPenaltyConc(0);
 
 		$titu = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:joueur_equipe')
 		->findTitulaires($equipe->getId());
@@ -502,24 +506,25 @@ class MatchController extends Controller
 
 			//Enregistrement de chaque joueur retenu pour le match dans la table match_joueur
 
-			// $match_joueur = new match_joueur();
+			$match_joueur = new match_joueur();
 
-			// $match_joueur->setPoste($tit->getPoste());
-			// $match_joueur->setMinEntre(0);
-			// $match_joueur->setMinSortie(90);
-			// $match_joueur->setNbDuelGagne(0);
-			// $match_joueur->setNbBalleInter(0);
-			// $match_joueur->setNballeRecup(0);
-			// $match_joueur->setNbBalleArret(0);
-			// $match_joueur->setNbCentre(0);
-			// $match_joueur->setNbTacle(0);
-			// $match_joueur->setCartonRouge(false);
-			// $match_joueur->setCartonJaune(0);
+			$match_joueur->setPoste($tit->getPoste());
+			$match_joueur->setMinEntre(0);
+			$match_joueur->setMinSortie(90);
+			$match_joueur->setNbDuelGagne(0);
+			$match_joueur->setNbBalleInter(0);
+			$match_joueur->setNbBalleRecup(0);
+			$match_joueur->setNbBalleArret(0);
+			$match_joueur->setNbCentre(0);
+			$match_joueur->setNbTacle(0);
+			$match_joueur->setCartonRouge(false);
+			$match_joueur->setCartonJaune(0);
+			$match_joueur->setNbTirCadre(0);
 
-			// $match_joueur->setJoueur($tit->getJoueur());
-			// $match_joueur->setMatchFoot($match);
+			$match_joueur->setJoueur($tit->getJoueur());
+			$match_joueur->setMatchFoot($match);
 
-			//$em->persist($match_joueur);
+			$em->persist($match_joueur);
 
 			array_push($tab, $rang);
 			array_push($titulaires, array('joueur'=>$tit->getJoueur(),'poste'=>$tit->getPoste(),'rang'=>$rang));
@@ -568,7 +573,62 @@ class MatchController extends Controller
 			->findMatchEquipe($match->getId());
 
 
-		return $this->render('ProjetStatisfootBundle:Match:manage_match_encours.html.twig', array(
+		return $this->render('ProjetStatisfootBundle:Match:manage_match_encours.html.twig', array('equipe'=>$equipe,
 			'titulaires'=>$titulaires, 'remplacants'=>$remplacants,'matchEquipe'=>$match_equipe,'match'=>$match));	
+	}
+
+	//ajout d'un evement pour une equipe par rapport à un match donné
+
+	public function match_eventAction($idM,$idA, Request $request){
+
+		//on recupere l'equipe grace à la session
+		$id_equipe = $request->getSession()->get('id_equipe');
+
+		$em = $this->getDoctrine()->getManager();
+
+		$match_equipe = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_equipe')
+		->findMatchEquipe($idM);
+
+		switch ($idA) {
+			case 1 :
+				if ($id_equipe == $match_equipe[0]->getEquipe()->getId()) {
+
+					$match_equipe[0]->setCornerObt($match_equipe[0]->getCornerObt()+1);	
+					$match_equipe[1]->setCornerConc($match_equipe[1]->getCornerConc()+1);
+				}
+				else{
+					$match_equipe[1]->setCornerObt($match_equipe[1]->getCornerObt()+1);	
+					$match_equipe[0]->setCornerConc($match_equipe[0]->getCornerConc()+1);
+				}
+				break;
+
+			case 2 :
+				if ($id_equipe == $match_equipe[0]->getEquipe()->getId()) {
+
+					$match_equipe[0]->setCfObt($match_equipe[0]->getCfObt()+1);	
+					$match_equipe[1]->setCfConc($match_equipe[1]->getCfConc()+1);
+				}
+				else{
+					$match_equipe[1]->setCfObt($match_equipe[1]->getCfObt()+1);	
+					$match_equipe[0]->setCfConc($match_equipe[0]->getCfConc()+1);
+				}
+				break;
+			
+			default:
+				if ($id_equipe == $match_equipe[0]->getEquipe()->getId()) {
+
+					$match_equipe[0]->setPenaltyObt($match_equipe[0]->getPenaltyObt()+1);	
+					$match_equipe[1]->setPenaltyConc($match_equipe[1]->getPenaltyConc()+1);
+				}
+				else{
+					$match_equipe[1]->setPenaltyObt($match_equipe[1]->getPenaltyObt()+1);	
+					$match_equipe[0]->setPenaltyConc($match_equipe[0]->getPenaltyConc()+1);
+				}
+				break;
+		}
+
+		$em->flush();
+
+		return new Response($idM." et ".$idA, 200);
 	}
 }

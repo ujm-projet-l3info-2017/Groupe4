@@ -164,6 +164,7 @@ class JoueurController extends Controller
 
 			//on recupere l'equipe grace à la session
 			$id_equipe = $request->getSession()->get('id_equipe');
+
 			$equipe = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:equipe')
 			->find($id_equipe);
 
@@ -261,7 +262,7 @@ class JoueurController extends Controller
 		// return new Response("Erreur : ce n'est pas une requete POST".$request->get('idRt'), 400);
 	}
 
-	public function joueur_but($idJ,$idM,$idB,$idA, Request $request){
+	public function joueur_butAction($idJ,$idM,$idB,$idA, Request $request){
 
 		$em = $this->getDoctrine()->getManager();
 
@@ -273,11 +274,27 @@ class JoueurController extends Controller
 
 		$typeBut = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:type_but')->find($idB);
 
-		if ($idA = 0) {
+		if ($idA == 0) {
 			$typeAction = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:type_action')->find(5);
 		}
 		else{
 			$typeAction = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:type_action')->find($idA);
+		}
+
+		//on recupere l'equipe grace à la session
+		$id_equipe = $request->getSession()->get('id_equipe');
+
+		$match_equipe = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_equipe')
+		->findMatchEquipe($idM);
+
+		if ($id_equipe == $match_equipe[0]->getEquipe()->getId()) {
+
+			$match_equipe[0]->setButMarq($match_equipe[0]->getButMarq()+1);
+			$match_equipe[1]->setButEnc($match_equipe[1]->getButEnc()+1);	
+		}
+		else{
+			$match_equipe[1]->setButMarq($match_equipe[1]->getButMarq()+1);
+			$match_equipe[0]->setButEnc($match_equipe[0]->getButEnc()+1);
 		}
 
 		$but->setMinJeu(40);
@@ -288,13 +305,15 @@ class JoueurController extends Controller
 
 		$em->persist($but);
 		$em->flush();
+
+		return new Response($idJ.", ".$idM.", ".$idB." et ".$idA, 200);
 	}
 
-	public function joueur_passe($idJ,$idM,$idP Request $request){
+	public function joueur_passeAction($idJ,$idM,$idP, Request $request){
 
 		$em = $this->getDoctrine()->getManager();
 
-		$passe = new passe();
+		$passe = new passe_decisive();
 
 		$joueur = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:joueur')->find($idJ);
 
@@ -302,12 +321,82 @@ class JoueurController extends Controller
 
 		$typePasse = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:type_passe')->find($idP);
 
-		$passe->setBut($but);
+		$passe->setBut($but[0]);
 		$passe->setJoueur($joueur);
 		$passe->setTypePasse($typePasse);
 
 		$em->persist($passe);
 		$em->flush();
+
+		return new Response($idJ.", ".$idM." et ".$idP, 200);
+	}
+
+	public function joueur_actionAction($idJ,$idM,$idA, Request $request){
+
+		$em = $this->getDoctrine()->getManager();
+
+		$match_joueur = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_joueur')
+		->findMatchJoueur($idM,$idJ);
+
+		switch ($idA) {
+			case 3 :
+				$match_joueur[0]->setNbDuelGagne($match_joueur[0]->getNbDuelGagne()+1);
+				break;
+
+			case 4 :
+				$match_joueur[0]->setNbBalleInter($match_joueur[0]->getNbBalleInter()+1);
+				break;
+
+			case 5 :
+				$match_joueur[0]->setNbBalleRecup($match_joueur[0]->getNbBalleRecup()+1);
+				break;
+
+			case 7 :
+				$match_joueur[0]->setNbBalleArret($match_joueur[0]->getNbBalleArret()+1);
+				break;
+
+			case 8 :
+				$match_joueur[0]->setNbCentre($match_joueur[0]->getNbCentre()+1);
+				break;
+
+			case 6 :
+				$match_joueur[0]->setNbTacle($match_joueur[0]->getNbTacle()+1);
+				break;
+
+			case 9 :
+				$match_joueur->setCartonJaune($match_joueur[0]->getCartonJaune()+1);
+				if ($match_joueur[0]->getCartonJaune() == 2) {
+					$match_joueur[0]->setMinSortie(60);
+				}
+				break;
+
+			case 10 :
+				$match_joueur[0]->setCartonRouge(true);
+				$match_joueur[0]->setMinSortie(60);
+				break;
+			
+			default:
+				$match_joueur[0]->setNbTirCadre($match_joueur[0]->getNbTirCadre()+1);
+
+				//on recupere l'equipe grace à la session
+				$id_equipe = $request->getSession()->get('id_equipe');
+
+				$match_equipe = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_equipe')
+				->findMatchEquipe($idM);
+
+				if ($id_equipe == $match_equipe[0]->getEquipe()->getId()) {
+
+					$match_equipe[0]->setTirCadre($match_equipe[0]->getTirCadre()+1);	
+				}
+				else{
+					$match_equipe[1]->setTirCadre($match_equipe[1]->getTirCadre()+1);
+				}
+				break;
+		}
+
+		$em->flush();
+
+		return new Response($idJ.", ".$idM." et ".$idA, 200);
 	}
 
 }
