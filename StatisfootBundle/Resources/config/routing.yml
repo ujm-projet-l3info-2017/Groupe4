@@ -100,10 +100,20 @@ statisfoot_manage_joueur_remp:
         _controller: ProjetStatisfootBundle:Joueur:joueur_remp
     requirements:
         idRt: \d+
-        idRe: \d+  
+        idRe: \d+
+
+statisfoot_manage_joueur_chang:
+    path:     /manage/joueur/chang/{idRt}/{idRe}/{idM}/{t}
+    defaults: 
+        _controller: ProjetStatisfootBundle:Joueur:joueur_chang
+    requirements:
+        idRt: \d+
+        idRe: \d+
+        idM: \d+  
+        t: \d+
 
 statisfoot_manage_joueur_but:
-    path:     /manage/joueur/but/{idJ}/{idM}/{idB}/{idA}
+    path:     /manage/joueur/but/{idJ}/{idM}/{idB}/{idA}/{t}
     defaults: 
         _controller: ProjetStatisfootBundle:Joueur:joueur_but
     requirements:
@@ -111,6 +121,7 @@ statisfoot_manage_joueur_but:
         idM: \d+
         idB: \d+
         idA: \d+
+        t: \d+
 
 statisfoot_manage_joueur_passe:
     path:     /manage/joueur/passe/{idJ}/{idM}/{idP}
@@ -122,13 +133,14 @@ statisfoot_manage_joueur_passe:
         idP: \d+  
 
 statisfoot_manage_joueur_action:
-    path:     /manage/joueur/action/{idJ}/{idM}/{idA}
+    path:     /manage/joueur/action/{idJ}/{idM}/{idA}/{t}
     defaults: 
         _controller: ProjetStatisfootBundle:Joueur:joueur_action
     requirements:
         idJ: \d+
         idM: \d+
-        idA: \d+ 
+        idA: \d+
+        t: \d+ 
 
 statisfoot_effectif:
     path:     /equipe/{id}/effectif

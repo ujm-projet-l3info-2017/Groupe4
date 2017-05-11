@@ -262,7 +262,25 @@ class JoueurController extends Controller
 		// return new Response("Erreur : ce n'est pas une requete POST".$request->get('idRt'), 400);
 	}
 
-	public function joueur_butAction($idJ,$idM,$idB,$idA, Request $request){
+	//changement d'un joueur au cours d'un match
+	public function joueur_changAction($idRt, $idRe, $idM, $t, Request $request){
+
+		$em = $this->getDoctrine()->getManager();
+
+		$remplacant = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_joueur')
+		->findMatchJoueur($idM,$idRt);
+
+		$remplace = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_joueur')
+		->findMatchJoueur($idM,$idRe);
+
+		$remplacant[0]->setMinEntre($t);
+
+		$remplace[0]->setMinSortie($t);
+
+		$em->flush();
+	}
+
+	public function joueur_butAction($idJ,$idM,$idB,$idA,$t, Request $request){
 
 		$em = $this->getDoctrine()->getManager();
 
@@ -297,7 +315,7 @@ class JoueurController extends Controller
 			$match_equipe[0]->setButEnc($match_equipe[0]->getButEnc()+1);
 		}
 
-		$but->setMinJeu(40);
+		$but->setMinJeu($t);
 		$but->setJoueur($joueur);
 		$but->setTypeBut($typeBut);
 		$but->setTypeAction($typeAction);
@@ -331,7 +349,7 @@ class JoueurController extends Controller
 		return new Response($idJ.", ".$idM." et ".$idP, 200);
 	}
 
-	public function joueur_actionAction($idJ,$idM,$idA, Request $request){
+	public function joueur_actionAction($idJ,$idM,$idA,$t, Request $request){
 
 		$em = $this->getDoctrine()->getManager();
 
@@ -366,13 +384,13 @@ class JoueurController extends Controller
 			case 9 :
 				$match_joueur->setCartonJaune($match_joueur[0]->getCartonJaune()+1);
 				if ($match_joueur[0]->getCartonJaune() == 2) {
-					$match_joueur[0]->setMinSortie(60);
+					$match_joueur[0]->setMinSortie($t);
 				}
 				break;
 
 			case 10 :
 				$match_joueur[0]->setCartonRouge(true);
-				$match_joueur[0]->setMinSortie(60);
+				$match_joueur[0]->setMinSortie($t);
 				break;
 			
 			default:

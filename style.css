@@ -333,16 +333,18 @@ td.selected{
 .team_a_match{
     float: left;
     text-align: right;
-    width:45%;
+    width:42%;
 }
 .team_mid_match{
     float: left;
     text-align: center;
-    width:10%;
+    width:15%;
+    background-color: #b2f7fc;
+    border-radius: 5px; 
 }
 .team_b_match{
     float: left;
-    width: 45%;
+    width: 42%;
     text-align: left;
 }
 .score_match{

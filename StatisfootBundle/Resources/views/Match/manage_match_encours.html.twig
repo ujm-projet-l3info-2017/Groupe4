@@ -12,7 +12,7 @@
 					<div class="score_match"> {{ matchEquipe[0].butMarq }} </div>
 				</div>
 				<div class="team_mid_match">
-					  - 
+					  <span id="minute" data-match="{{ match.id }}">00</span> : <span id="seconde">00</span>
 				</div>
 				<div class="team_b_match">
 					{{matchEquipe[1].equipe.nom}}
@@ -80,9 +80,7 @@
 							{{tit['joueur'].prenomJ}}
 						</td><td>
 							{{tit['poste']}}
-						</td>
-						<td>
-							<ul class="boiteAction" data-id="{{tit['joueur'].id}}" data-match="{{ match.id }}">
+						</td><td><ul class="boiteAction" data-id="{{tit['joueur'].id}}" data-match="{{ match.id }}">
 								<li class="bouton but"  data-action="1"> But 
 									<ul class="s_list">
 										<li class="bouton" data-type="1"> Tête 

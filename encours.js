@@ -1,11 +1,39 @@
 (function() {
 
-    function remplacer(remplace, remplacant){
+    var min = document.getElementById('minute'),
+        sec = document.getElementById('seconde');
+
+     function init(){
+        var minute = 00, seconde = 00;
+        min.textContent = minute;
+        seconde.textContent = seconde; 
+     }
+
+     function horloge(){
+        var minute = parseInt(min.innerText || min.textContent, 10),
+            seconde = parseInt(sec.innerText || sec.textContent, 10);
+
+            seconde++;
+
+            if (seconde == 60 ) {
+                minute++;
+                seconde = 0;
+            }
+
+            min.textContent = minute;
+            sec.textContent = seconde;
+     }
+
+     setInterval(horloge,1000);   
+
+    function changement(remplace, remplacant){
         var idRt = remplacant.getAttribute('data-id'),
             idRe = remplace.getAttribute('data-id'),
+            t =  parseInt(min.innerText || min.textContent, 10),
+            idM = min.getAttribute('data-match'),
             xhr= new XMLHttpRequest();
             alert(idRt+" et "+idRe);
-            xhr.open("GET","http://localhost/Symfony/web/app_dev.php/statisfoot/manage/joueur/remp/"+idRt+"/"+idRe,true);
+            xhr.open("GET","http://localhost/Symfony/web/app_dev.php/statisfoot/manage/joueur/chang/"+idRt+"/"+idRe+"/"+idM+"/"+t,true);
             xhr.onreadystatechange = function() {
                 if (xhr.readyState == 4 && xhr.status == 200) {
                     alert('Reussi');
@@ -20,10 +48,11 @@
         var idB = el.getAttribute('data-type'),
             idJ = el.parentNode.parentNode.parentNode.getAttribute('data-id'),
             idM = el.parentNode.parentNode.parentNode.getAttribute('data-match'),
+            t =  parseInt(min.innerText || min.textContent, 10),
             idA = 0,
             xhr= new XMLHttpRequest();
 
-        xhr.open("GET","http://localhost/Symfony/web/app_dev.php/statisfoot/manage/joueur/but/"+idJ+"/"+idM+"/"+idB+"/"+idA,true);
+        xhr.open("GET","http://localhost/Symfony/web/app_dev.php/statisfoot/manage/joueur/but/"+idJ+"/"+idM+"/"+idB+"/"+idA+"/"+t,true);
         xhr.onreadystatechange = function() {
             if (xhr.readyState == 4 && xhr.status == 200) {
                 alert('Reussi');
@@ -38,11 +67,12 @@
     function butSurAction(el){
         var idB = el.parentNode.parentNode.getAttribute('data-type'),
             idJ = el.parentNode.parentNode.parentNode.parentNode.parentNode.getAttribute('data-id'),
+            t =  parseInt(min.innerText || min.textContent, 10),
             idM = el.parentNode.parentNode.parentNode.parentNode.parentNode.getAttribute('data-match'),
             idA = el.getAttribute('data-type'),
             xhr= new XMLHttpRequest();
 
-        xhr.open("GET","http://localhost/Symfony/web/app_dev.php/statisfoot/manage/joueur/but/"+idJ+"/"+idM+"/"+idB+"/"+idA,true);
+        xhr.open("GET","http://localhost/Symfony/web/app_dev.php/statisfoot/manage/joueur/but/"+idJ+"/"+idM+"/"+idB+"/"+idA+"/"+t,true);
         xhr.onreadystatechange = function() {
             if (xhr.readyState == 4 && xhr.status == 200) {
                 alert('Reussi');
@@ -57,10 +87,11 @@
     function actionDansLeJeu(el){
         var idJ = el.parentNode.getAttribute('data-id'),
             idM = el.parentNode.getAttribute('data-match'),
+            t =  parseInt(min.innerText || min.textContent, 10),
             idA = el.getAttribute('data-action'),
             xhr= new XMLHttpRequest();
 
-        xhr.open("GET","http://localhost/Symfony/web/app_dev.php/statisfoot/manage/joueur/action/"+idJ+"/"+idM+"/"+idA,true);
+        xhr.open("GET","http://localhost/Symfony/web/app_dev.php/statisfoot/manage/joueur/action/"+idJ+"/"+idM+"/"+idA+"/"+t,true);
         xhr.onreadystatechange = function() {
             if (xhr.readyState == 4 && xhr.status == 200) {
                 alert('Reussi');
@@ -171,7 +202,9 @@
 
                 dndHandler.applyDropEvents(clonedElement);
 
-                var nom = target.parentNode.nextSibling;
+                var nom = target.parentNode.nextSibling,
+                    idClone = clonedElement.getAttribute('data-id');
+
                 nom.innerHTML="";
                 //on replace le nom du joueur remplacé
                 nom.textContent= clonedElement.getAttribute('data-nom')+" "+clonedElement.getAttribute('data-pre');
@@ -183,7 +216,10 @@
                 poste.innerHTML="";
                 //on affecte 
                 nom2.textContent = clonedTarget.getAttribute('data-nom')+" "+clonedTarget.getAttribute('data-pre');
-                poste.textContent = clonedTarget.getAttribute('data-poste');                
+                poste.textContent = clonedTarget.getAttribute('data-poste');
+
+                //on charge l'id du remplaçant dans la boite d'action
+                target.parentNode.nextSibling.nextSibling.nextSibling.getElementsByTagName('ul')[0].setAttribute('data-id',idClone);                
 
                //alert(target.parentNode.nextSibling);
                 draggedElement.parentNode.appendChild(clonedTarget);
@@ -196,7 +232,7 @@
                 target.parentNode.removeChild(target); //suppression de l'element remplacé
                 draggedElement.parentNode.removeChild(draggedElement); // Suppression de l'élément d'origine
 
-                remplacer(clonedTarget,clonedElement);
+                changement(clonedTarget,clonedElement);
 
             });
 
