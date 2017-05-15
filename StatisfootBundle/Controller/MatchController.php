@@ -424,6 +424,118 @@ class MatchController extends Controller
 
 		array_multisort($tab, SORT_DESC, $classementButeurs);
 
+
+		///LA SIMULATION
+
+		//les 5DerniersMatch de l'equipe
+		$derniersMatch = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_equipe')
+		->find5DerniersMatch($equipe->getId());
+
+		$poste = 'GB';
+		$gardiens = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:joueur_equipe')
+		->findJoueursPoste($equipe->getId(),$poste);
+
+		$n = count($gardiens);
+		$bool = true;
+		while ($bool == true) {
+
+			$bool = false;
+
+			for ($i = 0; $i < $n-1; $i++){
+
+				$nbm1 = 0;
+				$rb1 = 0;
+				$crt1 = 0;
+				$nba1 = 0;
+
+				$nbm2 = 0;
+				$rb2 = 0;
+				$crt2 = 0;
+				$nba2 = 0;
+
+
+				foreach ($derniersMatch as $ma) {
+					//pour le joueur $i
+					$ma_jou = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_joueur')
+					->findMatchJoueur($ma->getMatch()->getId(), $gardiens[$i]->getId());
+
+					if ($ma_jou != null) {
+						$nbm1+= 1;
+						$rb1+= $ma->$getButEnc();
+						$nba1+= $ma_jou->getNbBalleArret();
+						$crt1+= $ma_jou->getCartonJaune();
+						//si le joueur a pris un carton rouge
+						if ($ma_jou->getCartonRouge()) {
+							$crt1+= 2;
+						}
+
+					}
+
+					//pour le joueur $i+1
+					$ma_jou = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_joueur')
+					->findMatchJoueur($ma->getMatch()->getId(), $gardiens[$i+1]->getId());
+
+					if ($ma_jou != null) {
+						$nbm2+= 1;
+						$rb2+= $ma->$getButEnc();
+						$nba2+= $ma_jou->getNbBalleArret();
+						$crt2+= $ma_jou->getCartonJaune();
+						//si le joueur a pris un carton rouge
+						if ($ma_jou->getCartonRouge()) {
+							$crt2+= 2;
+						}
+					}
+				}
+
+				$rb1 = $rb1/$nbm1;
+				$rb2 =$rb2/$nbm2;
+
+				$nba1 = $nba1/$nbm1;
+				$nba2 = $nba2/$nbm2;
+				
+				if (($nbm1-$nbm2) < -2) {
+					//on garde l'ordre	
+				}
+				elseif (($nbm1-$nbm2) > 2) {
+					$joueur  = $gardiens[$i];
+					$gardiens[$i] = $gardiens[$i+1];
+					$gardiens[$i+1] = $joueur;
+					$bool = true;
+				}
+				else{
+					if ($rb1 < $rb2) {
+						$joueur  = $gardiens[$i];
+						$gardiens[$i] = $gardiens[$i+1];
+						$gardiens[$i+1] = $joueur;
+						$bool = true;
+					}
+					elseif ($rb1 > $rb2) {
+						//on garde l'ordre
+					}
+					else{
+						if ($nba1 > $nba2) {
+							$joueur  = $gardiens[$i];
+							$gardiens[$i] = $gardiens[$i+1];
+							$gardiens[$i+1] = $joueur;
+							$bool = true;
+						}
+						elseif ($nba1 < $nba2) {
+							//on garde l'ordre
+						}
+						else{
+							if ($crt1 < $crt2) {
+								$joueur  = $gardiens[$i];
+								$gardiens[$i] = $gardiens[$i+1];
+								$gardiens[$i+1] = $joueur;
+								$bool = true;
+							}
+						}
+					}
+				}
+			}
+		}
+		
+
 		return $this->render('ProjetStatisfootBundle:Match:manage_avant_match.html.twig', array(
 			'match'=>$match,'equipe'=>$equipe, 'equipeAdv'=>$equipeAdv, 'faceface'=>$faceface,'classement'=>$classement,
 			'titulaires'=>$titulaires, 'remplacants'=>$remplacants,'derniersMatch'=>$derniersMatchsAdv,

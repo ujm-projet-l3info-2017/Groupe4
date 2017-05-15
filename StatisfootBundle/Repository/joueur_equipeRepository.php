@@ -122,4 +122,37 @@ class joueur_equipeRepository extends EntityRepository
 
 		return $qb->getQuery()->getResult();
 	}	
+
+	//fonction qui recupere tous les joueurs evolouant à un poste donnés dans une equipe donnée
+	public function findJoueursPoste($idE, $poste){
+		$qb = $this->createQueryBuilder('j')
+			->leftJoin('j.joueur','joue')
+			->addSelect('joue')
+			->leftJoin('j.equipe','eq')
+			->where('j.date_fin > :date')
+			->andWhere('eq.id = :idE')
+			->andWhere('joue.poste.libellePoste = :p')
+			->setParameter('date', new \DateTIME())
+			->setParameter('idE', $idE)
+			->setParameter('p',$poste);
+
+		return $qb->getQuery()->getResult();
+	}
+
+	//fonction qui recupere tous les joueurs evolouant aux  postes donnés dans une equipe donnée
+	public function findJoueursLesPoste($idE, $lesPoste){
+		$qb = $this->createQueryBuilder('j')
+			->leftJoin('j.joueur','joue')
+			->addSelect('joue')
+			->leftJoin('j.equipe','eq')
+			->where('j.date_fin > :date')
+			->andWhere('eq.id = :idE')
+			->andWhere('joue.poste.libellePoste IN (:pt)')
+			->setParameter('date', new \DateTIME())
+			->setParameter('idE', $idE)
+			->setParameter('pt',array_values($lesPoste));
+
+		return $qb->getQuery()->getResult();
+	}
+
 }
