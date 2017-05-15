@@ -23,4 +23,18 @@ class passe_decisiveRepository extends EntityRepository
 		
 		return $qb->getQuery()->getResult();
 	}
+
+	public function findPasseJoueurMatch($idM,$idJ){
+		$qb = $this->createQueryBuilder('p')
+			->leftJoin('p.but','b')
+			->leftJoin('b.match_foot','match')
+			->leftJoin('p.joueur','j')
+			->select('COUNT(p.id) AS nbp')
+			->where('j.id = :idJ')
+			->andWhere('match.id = :idM')
+			->setParameter('idJ',$idJ)
+			->setParameter('idM',$idM);
+		
+		return $qb->getQuery()->getResult();
+	}
 }

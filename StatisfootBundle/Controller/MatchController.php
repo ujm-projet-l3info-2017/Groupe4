@@ -431,6 +431,7 @@ class MatchController extends Controller
 		$derniersMatch = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_equipe')
 		->find5DerniersMatch($equipe->getId());
 
+		///Simulation Gardiens
 		$poste = 'GB';
 		$gardiens = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:joueur_equipe')
 		->findJoueursPoste($equipe->getId(),$poste);
@@ -534,7 +535,654 @@ class MatchController extends Controller
 				}
 			}
 		}
-		
+
+		//Simulation Defenseur
+
+		$poste = array('DC','LIB');
+		$defenseurs = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:joueur_equipe')
+		->findJoueursLesPoste($equipe->getId(),$poste);
+
+
+		$n = count($defenseurs);
+		$bool = true;
+		while ($bool == true) {
+
+			$bool = false;
+
+			for ($i = 0; $i < $n-1; $i++){
+
+				$nbm1 = 0;
+				$rb1 = 0;
+				$crt1 = 0;
+				$nbd1 = 0;
+
+				$nbm2 = 0;
+				$rb2 = 0;
+				$crt2 = 0;
+				$nbd2 = 0;
+
+
+				foreach ($derniersMatch as $ma) {
+					//pour le joueur $i
+					$ma_jou = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_joueur')
+					->findMatchJoueur($ma->getMatch()->getId(), $defenseurs[$i]->getId());
+
+					if ($ma_jou != null) {
+						$nbm1+= 1;
+						$rb1+= $ma->$getButEnc();
+						$nbd1+= $ma_jou->getNbDuelGagne();
+						$crt1+= $ma_jou->getCartonJaune();
+						//si le joueur a pris un carton rouge
+						if ($ma_jou->getCartonRouge()) {
+							$crt1+= 2;
+						}
+
+					}
+
+					//pour le joueur $i+1
+					$ma_jou = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_joueur')
+					->findMatchJoueur($ma->getMatch()->getId(), $defenseurs[$i+1]->getId());
+
+					if ($ma_jou != null) {
+						$nbm2+= 1;
+						$rb2+= $ma->$getButEnc();
+						$nbd2+= $ma_jou->getNbDuelGagne();
+						$crt2+= $ma_jou->getCartonJaune();
+						//si le joueur a pris un carton rouge
+						if ($ma_jou->getCartonRouge()) {
+							$crt2+= 2;
+						}
+					}
+				}
+
+				$rb1 = $rb1/$nbm1;
+				$rb2 =$rb2/$nbm2;
+
+				$nbd1 = $nbd1/$nbm1;
+				$nbd2 = $nbd2/$nbm2;
+				
+				if (($nbm1-$nbm2) < -2) {
+					//on garde l'ordre	
+				}
+				elseif (($nbm1-$nbm2) > 2) {
+					$joueur  = $defenseurs[$i];
+					$defenseurs[$i] = $defenseurs[$i+1];
+					$defenseurs[$i+1] = $joueur;
+					$bool = true;
+				}
+				else{
+					if ($rb1 < $rb2) {
+						$joueur  = $defenseurs[$i];
+						$defenseurs[$i] = $defenseurs[$i+1];
+						$defenseurs[$i+1] = $joueur;
+						$bool = true;
+					}
+					elseif ($rb1 > $rb2) {
+						//on garde l'ordre
+					}
+					else{
+						if ($nbd1 > $nbd2) {
+							$joueur  = $defenseurs[$i];
+							$defenseurs[$i] = $defenseurs[$i+1];
+							$defenseurs[$i+1] = $joueur;
+							$bool = true;
+						}
+						elseif ($nba1 < $nba2) {
+							//on garde l'ordre
+						}
+						else{
+							if ($crt1 < $crt2) {
+								$joueur  = $defenseurs[$i];
+								$defenseurs[$i] = $defenseurs[$i+1];
+								$defenseurs[$i+1] = $joueur;
+								$bool = true;
+							}
+						}
+					}
+				}
+			}
+		}
+
+		//Simulation des lateraux
+
+		$poste = array('LD','LG');
+		$lateraux = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:joueur_equipe')
+		->findJoueursLesPoste($equipe->getId(),$poste);
+
+		$n = count($lateraux);
+		$bool = true;
+		while ($bool == true) {
+
+			$bool = false;
+
+			for ($i = 0; $i < $n-1; $i++){
+
+				$nbm1 = 0;
+				$rb1 = 0;
+				$crt1 = 0;
+				$nbd1 = 0;
+				$centre1 = 0;
+
+				$nbm2 = 0;
+				$rb2 = 0;
+				$crt2 = 0;
+				$nbd2 = 0;
+				$centre2 = 0;
+
+				foreach ($derniersMatch as $ma) {
+					//pour le joueur $i
+					$ma_jou = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_joueur')
+					->findMatchJoueur($ma->getMatch()->getId(), $lateraux[$i]->getId());
+
+					if ($ma_jou != null) {
+						$nbm1+= 1;
+						$rb1+= $ma->$getButEnc();
+						$nbd1+= $ma_jou->getNbDuelGagne();
+						$crt1+= $ma_jou->getCartonJaune();
+						$centre1 += $ma_jou->getNbCentre();
+						//si le joueur a pris un carton rouge
+						if ($ma_jou->getCartonRouge()) {
+							$crt1+= 2;
+						}
+
+					}
+
+					//pour le joueur $i+1
+					$ma_jou = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_joueur')
+					->findMatchJoueur($ma->getMatch()->getId(), $lateraux[$i+1]->getId());
+
+					if ($ma_jou != null) {
+						$nbm2+= 1;
+						$rb2+= $ma->$getButEnc();
+						$nbd2+= $ma_jou->getNbDuelGagne();
+						$crt2+= $ma_jou->getCartonJaune();
+						$centre2 += $ma_jou->getNbCentre();
+						//si le joueur a pris un carton rouge
+						if ($ma_jou->getCartonRouge()) {
+							$crt2+= 2;
+						}
+					}
+				}
+
+				$rb1 = $rb1/$nbm1;
+				$rb2 =$rb2/$nbm2;
+				$centre1 = $centre1/$nbm1;
+
+				$nbd1 = $nbd1/$nbm1;
+				$nbd2 = $nbd2/$nbm2;
+				$centre2 = $centre2/$nbm2;
+				
+				if (($nbm1-$nbm2) < -2) {
+					//on garde l'ordre	
+				}
+				elseif (($nbm1-$nbm2) > 2) {
+					$joueur  = $lateraux[$i];
+					$lateraux[$i] = $lateraux[$i+1];
+					$lateraux[$i+1] = $joueur;
+					$bool = true;
+				}
+				else{
+					if ($rb1 < $rb2) {
+						$joueur  = $lateraux[$i];
+						$lateraux[$i] = $lateraux[$i+1];
+						$lateraux[$i+1] = $joueur;
+						$bool = true;
+					}
+					elseif ($rb1 > $rb2) {
+						//on garde l'ordre
+					}
+					else{
+						if ($nbd1 > $nbd2) {
+							$joueur  = $lateraux[$i];
+							$lateraux[$i] = $lateraux[$i+1];
+							$lateraux[$i+1] = $joueur;
+							$bool = true;
+						}
+						elseif ($nba1 < $nba2) {
+							//on garde l'ordre
+						}
+						else{
+							if ($centre1 > $centre2) {
+								$joueur  = $lateraux[$i];
+								$lateraux[$i] = $lateraux[$i+1];
+								$lateraux[$i+1] = $joueur;
+								$bool = true;
+							}
+							elseif ($centre1 < $centre2) {
+								//on garde l'ordre
+							}
+							else{
+								if ($crt1 < $crt2) {
+									$joueur  = $lateraux[$i];
+									$lateraux[$i] = $lateraux[$i+1];
+									$lateraux[$i+1] = $joueur;
+									$bool = true;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		//Simulation des milieu Defensif
+		$poste = 'MDF';
+		$mdf = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:joueur_equipe')
+		->findJoueursPoste($equipe->getId(),$poste);
+
+		$n = count($mdf);
+		$bool = true;
+		while ($bool == true) {
+
+			$bool = false;
+
+			for ($i = 0; $i < $n-1; $i++){
+
+				$nbm1 = 0;
+				$rb1 = 0;
+				$recup1 = 0;
+				$inter1 = 0;
+				$crt1 = 0;
+				$nbd1 = 0;
+
+				$nbm2 = 0;
+				$rb2 = 0;
+				$recup2 = 0;
+				$inter2 = 0;
+				$crt2 = 0;
+				$nbd2 = 0;
+
+				foreach ($derniersMatch as $ma) {
+					//pour le joueur $i
+					$ma_jou = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_joueur')
+					->findMatchJoueur($ma->getMatch()->getId(), $mdf[$i]->getId());
+
+					if ($ma_jou != null) {
+						$nbm1+= 1;
+						$rb1+= $ma->$getButEnc();
+						$nbd1+= $ma_jou->getNbDuelGagne();
+						$recup1 += $ma_jou->getNbBalleRecup();
+						$inter1 += $ma_jou->getNbBalleInter();
+						$crt1+= $ma_jou->getCartonJaune();
+						//si le joueur a pris un carton rouge
+						if ($ma_jou->getCartonRouge()) {
+							$crt1+= 2;
+						}
+
+					}
+
+					//pour le joueur $i+1
+					$ma_jou = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_joueur')
+					->findMatchJoueur($ma->getMatch()->getId(), $mdf[$i+1]->getId());
+
+					if ($ma_jou != null) {
+						$nbm2+= 1;
+						$rb2+= $ma->$getButEnc();
+						$nbd2+= $ma_jou->getNbDuelGagne();
+						$recup2 += $ma_jou->getNbBalleRecup();
+						$inter2 += $ma_jou->getNbBalleInter();
+						$crt2+= $ma_jou->getCartonJaune();
+						//si le joueur a pris un carton rouge
+						if ($ma_jou->getCartonRouge()) {
+							$crt2+= 2;
+						}
+					}
+				}
+
+				$rb1 = $rb1/$nbm1;
+				$rb2 =$rb2/$nbm2;
+
+				$recup1 = $recup1/$nbm1;
+				$inter1 = $inter1/$nbm1;
+
+				$nbd1 = $nbd1/$nbm1;
+				$nbd2 = $nbd2/$nbm2;
+
+				$recup2 = $recup2/$nbm2;
+				$inter2 = $inter2/$nbm2;
+				
+				if (($nbm1-$nbm2) < -2) {
+					//on garde l'ordre	
+				}
+				elseif (($nbm1-$nbm2) > 2) {
+					$joueur  = $mdf[$i];
+					$mdf[$i] = $mdf[$i+1];
+					$mdf[$i+1] = $joueur;
+					$bool = true;
+				}
+				else{
+
+					if ($recup1 > $recup2) {
+						$joueur  = $mdf[$i];
+						$mdf[$i] = $mdf[$i+1];
+						$mdf[$i+1] = $joueur;
+						$bool = true;
+					}
+					elseif ($recup1 < $recup2) {
+						//on garde l'ordre
+					}
+					else{
+						if ($inter1 > $inter2) {
+							$joueur  = $mdf[$i];
+							$mdf[$i] = $mdf[$i+1];
+							$mdf[$i+1] = $joueur;
+							$bool = true;
+						}
+						elseif ($inter1 < $inter2) {
+							//on garde l'ordre
+						}
+						else{
+							if ($rb1 < $rb2) {
+								$joueur  = $mdf[$i];
+								$mdf[$i] = $mdf[$i+1];
+								$mdf[$i+1] = $joueur;
+								$bool = true;
+							}
+							elseif ($rb1 > $rb2) {
+								//on garde l'ordre
+							}
+							else{
+								if ($nbd1 > $nbd2) {
+									$joueur  = $mdf[$i];
+									$mdf[$i] = $mdf[$i+1];
+									$mdf[$i+1] = $joueur;
+									$bool = true;
+								}
+								elseif ($nba1 < $nba2) {
+									//on garde l'ordre
+								}
+								else{
+									if ($crt1 < $crt2) {
+										$joueur  = $mdf[$i];
+										$mdf[$i] = $mdf[$i+1];
+										$mdf[$i+1] = $joueur;
+										$bool = true;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		//Simulation Des milieu offensif
+
+		$poste = array('MO','MR');
+		$mileux = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:joueur_equipe')
+		->findJoueursLesPoste($equipe->getId(),$poste);
+
+		$n = count($mileux);
+		$bool = true;
+		while ($bool == true) {
+
+			$bool = false;
+
+			for ($i = 0; $i < $n-1; $i++){
+
+				$nbm1 = 0;
+				$crt1 = 0;
+				$nbd1 = 0;
+				$recup1 = 0;
+				$inter1 = 0;
+				$passe1 = 0;
+				$but1 = 0;
+
+				$nbm2 = 0;
+				$crt2 = 0;
+				$nbd2 = 0;
+				$recup2 = 0;
+				$inter2 = 0;
+				$passe2 = 0;
+				$but2 = 0;
+
+				foreach ($derniersMatch as $ma) {
+					//pour le joueur $i
+					$ma_jou = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_joueur')
+					->findMatchJoueur($ma->getMatch()->getId(), $mileux[$i]->getId());
+
+					if ($ma_jou != null) {
+						$nbm1+= 1;
+						$recup1 += $ma_jou->getNbBalleRecup();
+						$inter1 += $ma_jou->getNbBalleInter();
+
+						$nbbut1 = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:but')
+						->findButMatchJoueur($ma->getMatch()->getId(),$mileux[$i]->getId());
+						$but1 += $nbbut1['nbr'];
+
+						$nbr1 = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:passe_decisive')
+							->findPasseJoueurMatch($ma->getMatch()->getId(),$mileux[$i]->getId());
+						$passe1 += $nbr1['nbr'];
+
+						$nbd1+= $ma_jou->getNbDuelGagne();
+						$crt1+= $ma_jou->getCartonJaune();
+						//si le joueur a pris un carton rouge
+						if ($ma_jou->getCartonRouge()) {
+							$crt1+= 2;
+						}
+
+					}
+
+					//pour le joueur $i+1
+					$ma_jou = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_joueur')
+					->findMatchJoueur($ma->getMatch()->getId(), $mileux[$i+1]->getId());
+
+					if ($ma_jou != null) {
+						$nbm2+= 1;
+						$recup2 += $ma_jou->getNbBalleRecup();
+						$inter2 += $ma_jou->getNbBalleInter();
+
+						$nbbut2 = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:but')
+						->findButMatchJoueur($ma->getMatch()->getId(),$mileux[$i+1]->getId());
+						$but2 += $nbbut1['nbr'];	
+
+						$nbr2 = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:passe_decisive')
+							->findPasseJoueurMatch($ma->getMatch()->getId(),$mileux[$i+1]->getId());
+						$passe2 += $nbr2['nbr'];
+						$nbd2 += $ma_jou->getNbDuelGagne();
+						$crt2 += $ma_jou->getCartonJaune();
+
+						//si le joueur a pris un carton rouge
+						if ($ma_jou->getCartonRouge()) {
+							$crt2+= 2;
+						}
+					}
+				}
+
+				$rb1 = $rb1/$nbm1;
+				$rb2 =$rb2/$nbm2;
+
+				$recup1 = $recup1/$nbm1;
+				$inter1 = $inter1/$nbm1;
+
+				$but1 = $but1/$nbm1;
+				$but2 = $but2/$nbm2; 
+
+				$passe1 = $passe1/$nbm1;
+				$passe2 = $passe2/$nbm2;
+
+				$nbd1 = $nbd1/$nbm1;
+				$nbd2 = $nbd2/$nbm2;
+				
+				if (($nbm1-$nbm2) < -2) {
+					//on garde l'ordre	
+				}
+				elseif (($nbm1-$nbm2) > 2) {
+					$joueur  = $mileux[$i];
+					$mileux[$i] = $mileux[$i+1];
+					$mileux[$i+1] = $joueur;
+					$bool = true;
+				}
+				else{
+					if ($passe1 > $passe2) {
+						$joueur  = $mileux[$i];
+						$mileux[$i] = $mileux[$i+1];
+						$mileux[$i+1] = $joueur;
+						$bool = true;
+					}
+					elseif ($passe1 < $passe2) {
+							//on garde l'ordre
+					}
+					else{
+						if ($but1 > $but2) {
+							$joueur  = $mileux[$i];
+							$mileux[$i] = $mileux[$i+1];
+							$mileux[$i+1] = $joueur;
+							$bool = true;
+						}
+						elseif ($but1 < $but2) {
+							//on garde l'ordre
+						}
+						else{
+							if ($recup1 > $recup2) {
+								$joueur  = $mileux[$i];
+								$mileux[$i] = $mileux[$i+1];
+								$mileux[$i+1] = $joueur;
+								$bool = true;
+							}
+							elseif ($recup1 < $recup2) {
+								//on garde l'ordre
+							}
+							else{
+								if ($inter1 > $inter2) {
+									$joueur  = $mileux[$i];
+									$mileux[$i] = $mileux[$i+1];
+									$mileux[$i+1] = $joueur;
+									$bool = true;
+								}
+								elseif ($inter1 < $inter2) {
+									//on garde l'ordre
+								}
+								else{
+									if ($nbd1 > $nbd2) {
+										$joueur  = $mileux[$i];
+										$mileux[$i] = $mileux[$i+1];
+										$mileux[$i+1] = $joueur;
+										$bool = true;
+									}
+									elseif ($nba1 < $nba2) {
+										//on garde l'ordre
+									}
+									else{
+										if ($crt1 < $crt2) {
+											$joueur  = $mileux[$i];
+											$mileux[$i] = $mileux[$i+1];
+											$mileux[$i+1] = $joueur;
+											$bool = true;
+										}
+									}
+								}
+							}
+						}
+					}		
+				}
+			}
+		}
+
+		//Simulation attaques
+
+		$poste = array('AD','AG','AC');
+		$attaquants = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:joueur_equipe')
+		->findJoueursLesPoste($equipe->getId(),$poste);
+
+		$n = count($attaquants);
+		$bool = true;
+		while ($bool == true) {
+
+			$bool = false;
+
+			for ($i = 0; $i < $n-1; $i++){
+
+				$nbm1 = 0;
+				$rb1 = 0;
+				$crt1 = 0;
+				$nbd1 = 0;
+
+				$nbm2 = 0;
+				$rb2 = 0;
+				$crt2 = 0;
+				$nbd2 = 0;
+
+				foreach ($derniersMatch as $ma) {
+					//pour le joueur $i
+					$ma_jou = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_joueur')
+					->findMatchJoueur($ma->getMatch()->getId(), $attaquants[$i]->getId());
+
+					if ($ma_jou != null) {
+						$nbm1+= 1;
+						$rb1+= $ma->$getButEnc();
+						$nbd1+= $ma_jou->getNbDuelGagne();
+						$crt1+= $ma_jou->getCartonJaune();
+						//si le joueur a pris un carton rouge
+						if ($ma_jou->getCartonRouge()) {
+							$crt1+= 2;
+						}
+
+					}
+
+					//pour le joueur $i+1
+					$ma_jou = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_joueur')
+					->findMatchJoueur($ma->getMatch()->getId(), $attaquants[$i+1]->getId());
+
+					if ($ma_jou != null) {
+						$nbm2+= 1;
+						$rb2+= $ma->$getButEnc();
+						$nbd2+= $ma_jou->getNbDuelGagne();
+						$crt2+= $ma_jou->getCartonJaune();
+						//si le joueur a pris un carton rouge
+						if ($ma_jou->getCartonRouge()) {
+							$crt2+= 2;
+						}
+					}
+				}
+
+				$rb1 = $rb1/$nbm1;
+				$rb2 =$rb2/$nbm2;
+
+				$nbd1 = $nbd1/$nbm1;
+				$nbd2 = $nbd2/$nbm2;
+				
+				if (($nbm1-$nbm2) < -2) {
+					//on garde l'ordre	
+				}
+				elseif (($nbm1-$nbm2) > 2) {
+					$joueur  = $attaquants[$i];
+					$attaquants[$i] = $attaquants[$i+1];
+					$attaquants[$i+1] = $joueur;
+					$bool = true;
+				}
+				else{
+					if ($rb1 < $rb2) {
+						$joueur  = $attaquants[$i];
+						$attaquants[$i] = $attaquants[$i+1];
+						$attaquants[$i+1] = $joueur;
+						$bool = true;
+					}
+					elseif ($rb1 > $rb2) {
+						//on garde l'ordre
+					}
+					else{
+						if ($nbd1 > $nbd2) {
+							$joueur  = $attaquants[$i];
+							$attaquants[$i] = $attaquants[$i+1];
+							$attaquants[$i+1] = $joueur;
+							$bool = true;
+						}
+						elseif ($nba1 < $nba2) {
+							//on garde l'ordre
+						}
+						else{
+							if ($crt1 < $crt2) {
+								$joueur  = $attaquants[$i];
+								$attaquants[$i] = $attaquants[$i+1];
+								$attaquants[$i+1] = $joueur;
+								$bool = true;
+							}
+						}
+					}
+				}
+			}
+		}
 
 		return $this->render('ProjetStatisfootBundle:Match:manage_avant_match.html.twig', array(
 			'match'=>$match,'equipe'=>$equipe, 'equipeAdv'=>$equipeAdv, 'faceface'=>$faceface,'classement'=>$classement,

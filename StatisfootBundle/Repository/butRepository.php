@@ -24,6 +24,20 @@ class butRepository extends EntityRepository
 		return $qb->getQuery()->getResult();
 	}
 
+	//recupération des buts marqués par un joueur dans un match donné
+	public function findButMatchJoueur($idJ,$idM){
+		$qb = $this->createQueryBuilder('b')
+			->leftJoin('b.match_foot','match')
+			->leftJoin('b.joueur','j')
+			->select('COUNT(b.id) AS nbr')
+			->where('j.id = :idJ')
+			->andWhere('match.id = :idM')
+			->setParameter('idJ',$idJ)
+			->setParameter('idM',$idM);
+		
+		return $qb->getQuery()->getResult();
+	}
+
 	//recupération des buts marqués dans une compétitions donnée
 	public function findButCompet($idC){
 		$qb = $this->createQueryBuilder('b')
