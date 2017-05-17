@@ -9,6 +9,7 @@ use Projet\StatisfootBundle\Entity\joueur;
 use Projet\StatisfootBundle\Entity\joueur_equipe;
 use Projet\StatisfootBundle\Entity\but;
 use Projet\StatisfootBundle\Entity\passe_decisive;
+use Projet\StatisfootBundle\Entity\match_joueur;
 use Projet\StatisfootBundle\Form\joueurType;
 use Projet\StatisfootBundle\Form\joueurModType;
 
@@ -267,17 +268,39 @@ class JoueurController extends Controller
 
 		$em = $this->getDoctrine()->getManager();
 
-		$remplacant = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_joueur')
-		->findMatchJoueur($idM,$idRt);
+		$match = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_foot')->find($idM);
+
+		$joueur = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:joueur')->find($idRt);
+
+		$remplacant = new match_joueur();
+
+		$remplacant->setPoste($joueur->getPoste()->getLibellePoste());
+		$remplacant->setMinEntre($t);
+		$remplacant->setMinSortie(90);
+		$remplacant->setNbDuelGagne(0);
+		$remplacant->setNbBalleInter(0);
+		$remplacant->setNbBalleRecup(0);
+		$remplacant->setNbBalleArret(0);
+		$remplacant->setNbCentre(0);
+		$remplacant->setNbTacle(0);
+		$remplacant->setCartonRouge(false);
+		$remplacant->setCartonJaune(0);
+		$remplacant->setNbTirCadre(0);
+
+		$remplacant->setJoueur($joueur);
+		$remplacant->setMatchFoot($match);
 
 		$remplace = $this->getDoctrine()->getManager()->getRepository('ProjetStatisfootBundle:match_joueur')
 		->findMatchJoueur($idM,$idRe);
 
-		$remplacant[0]->setMinEntre($t);
-
 		$remplace[0]->setMinSortie($t);
 
+		$em->persist($remplacant);
+
 		$em->flush();
+
+		return new Response($idRt.", ".$idRe.", ".$idM." et ".$t, 200);
+
 	}
 
 	public function joueur_butAction($idJ,$idM,$idB,$idA,$t, Request $request){
@@ -382,7 +405,7 @@ class JoueurController extends Controller
 				break;
 
 			case 9 :
-				$match_joueur->setCartonJaune($match_joueur[0]->getCartonJaune()+1);
+				$match_joueur[0]->setCartonJaune($match_joueur[0]->getCartonJaune()+1);
 				if ($match_joueur[0]->getCartonJaune() == 2) {
 					$match_joueur[0]->setMinSortie($t);
 				}

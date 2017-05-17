@@ -25,7 +25,7 @@ class butRepository extends EntityRepository
 	}
 
 	//recupération des buts marqués par un joueur dans un match donné
-	public function findButMatchJoueur($idJ,$idM){
+	public function findButMatchJoueur($idM,$idJ){
 		$qb = $this->createQueryBuilder('b')
 			->leftJoin('b.match_foot','match')
 			->leftJoin('b.joueur','j')

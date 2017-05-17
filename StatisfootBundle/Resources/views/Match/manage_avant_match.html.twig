@@ -72,6 +72,31 @@
 				{% endfor %}
 			</table>
 		</div>
+
+		<div id="simul">
+			<h3>Simulation de la composition</h3>
+			<table class="table_match">
+				<tr class="head_tab"> 
+					<td> N°</td>
+					<td>Nom</td>
+					<td>Poste</td>
+				</tr>
+				{% for sim in simulation %}
+					<tr class="unselectable tr_match">
+						<td class="simule">
+							<span class="boule dropper draggable" data-id="{{sim.id}}" data-nom="{{sim.nomJ}}" data-pre="{{sim.prenomJ}}" data-poste="{{sim.poste.libellePoste}}">
+							   {{sim.id}}
+							</span>
+						</td><td>								
+							{{sim.nomJ}}
+							{{sim.prenomJ}}
+						</td><td>
+							{{sim.poste.libellePoste}}
+						</td>				
+					</tr>
+				{% endfor %}
+			</table>
+		</div>
 	</div>
 
 	<div id="lance_match" class="bouton"> 

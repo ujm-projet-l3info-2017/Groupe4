@@ -26,7 +26,7 @@ class joueurType extends AbstractType
             ->add('poste', EntityType::class, array(
                 'class' => 'ProjetStatisfootBundle:poste',
                 'choice_label' => 'libellePoste'))
-            ->add('Enregistrer', SubmitType::class);
+            ->add('Ajouter', SubmitType::class);
     }
     
     /**

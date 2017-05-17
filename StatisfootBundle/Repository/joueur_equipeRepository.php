@@ -129,9 +129,10 @@ class joueur_equipeRepository extends EntityRepository
 			->leftJoin('j.joueur','joue')
 			->addSelect('joue')
 			->leftJoin('j.equipe','eq')
+			->leftJoin('joue.poste','poste')
 			->where('j.date_fin > :date')
 			->andWhere('eq.id = :idE')
-			->andWhere('joue.poste.libellePoste = :p')
+			->andWhere('poste.libellePoste = :p')
 			->setParameter('date', new \DateTIME())
 			->setParameter('idE', $idE)
 			->setParameter('p',$poste);
@@ -145,9 +146,10 @@ class joueur_equipeRepository extends EntityRepository
 			->leftJoin('j.joueur','joue')
 			->addSelect('joue')
 			->leftJoin('j.equipe','eq')
+			->leftJoin('joue.poste','poste')
 			->where('j.date_fin > :date')
 			->andWhere('eq.id = :idE')
-			->andWhere('joue.poste.libellePoste IN (:pt)')
+			->andWhere('poste.libellePoste IN (:pt)')
 			->setParameter('date', new \DateTIME())
 			->setParameter('idE', $idE)
 			->setParameter('pt',array_values($lesPoste));

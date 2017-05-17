@@ -29,7 +29,7 @@ class passe_decisiveRepository extends EntityRepository
 			->leftJoin('p.but','b')
 			->leftJoin('b.match_foot','match')
 			->leftJoin('p.joueur','j')
-			->select('COUNT(p.id) AS nbp')
+			->select('COUNT(p.id) AS nbr')
 			->where('j.id = :idJ')
 			->andWhere('match.id = :idM')
 			->setParameter('idJ',$idJ)

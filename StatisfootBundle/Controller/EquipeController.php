@@ -90,7 +90,7 @@ class EquipeController extends Controller
 			elseif ($tit->getPoste() == 'LD' || $tit->getPoste() == 'LG') {
 				$rang=3;	
 			}
-			elseif ($tit->getPoste() == 'DEF') {
+			elseif ($tit->getPoste() == 'MD') {
 				$rang=4;	
 			}
 			elseif ($tit->getPoste() == 'MR' || $tit->getPoste() == 'MO') {
@@ -122,7 +122,7 @@ class EquipeController extends Controller
 			elseif ($rem->getPoste() == 'LD' || $rem->getPoste() == 'LG') {
 				$rang=3;	
 			}
-			elseif ($rem->getPoste() == 'DEF') {
+			elseif ($rem->getPoste() == 'MD') {
 				$rang=4;	
 			}
 			elseif ($rem->getPoste() == 'MR' || $rem->getPoste() == 'MO') {
